@@ -1,0 +1,83 @@
+@import url('https://fonts.googleapis.com/css2?family=Noto+Sans+KR&display=swap');
+
+:root {
+  /* color */
+  --magenta: #e6007e;
+  --blue: #0e4194;
+  --yellow: #ffcc03;
+  --light-blue: #0188cc;
+  --gray1: #eeeeee;
+  --gray2: #d9d9d9;
+  --gray3: #b5b5b5;
+  --gray4: #999999;
+  --black: #000000;
+
+  /* font-size */
+  --big: 24px;
+  --regular: 16px;
+  --small: 14px;
+}
+
+/* wrap */
+.wrap {
+  width: 1280px;
+  margin: 0 auto;
+}
+
+/* stamp_box & stamp_map */
+.wrap > div > div {
+  float: left;
+  margin-top: 50px;
+}
+
+/* stamp_box */
+.stamp_box {
+  display: flex;
+  flex-wrap: wrap;
+  width: 700px;
+  background-color: var(--gray1);
+  border-radius: 10px;
+  padding: 50px 80px 20px;
+  box-sizing: border-box;
+  margin-right: 30px;
+}
+
+.stamp_box .stamp {
+  width: 150px;
+  margin-right: 45px;
+  margin-bottom: 30px;
+}
+
+/* stamp_book에서 3n번째 위치의 stamp */
+.stamp_box > div:nth-child(3n) {
+  margin-right: 0;
+}
+
+.stamp_box .stamp .stamp_img {
+  background-color: var(--gray3);
+  width: 150px;
+  height: 150px;
+  border-radius: 50%;
+  margin-bottom: 10px;
+  overflow: hidden;
+}
+
+.stamp_box .stamp .stamp_img img {
+  width: 200px;
+}
+
+.stamp_box .stamp .stamp_txt {
+  text-align: center;
+}
+
+/* stamp_map */
+.stamp_map {
+  width: 550px;
+  border-radius: 12px;
+  overflow: hidden;
+}
+
+/* btn_bar */
+.btn_bar {
+  clear: both;
+}
