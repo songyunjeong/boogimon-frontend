@@ -1,0 +1,210 @@
+:root {
+    /* color */
+    --magenta: #e6007e;
+    --blue: #0e4194;
+    --yellow: #ffcc03;
+    --light-blue: #0188cc;
+    --gray1: #eeeeee;
+    --gray2: #d9d9d9;
+    --gray3: #b5b5b5;
+    --gray4: #999999;
+    --black: #000000;
+  
+    /* font-size */
+    --big: 24px;
+    --regular: 16px;
+    --small: 14px;
+  }
+
+
+
+  * {
+    padding: 0;
+    margin: 0;
+  }
+
+  body {
+    font-family: 'Noto Sans KR', sans-serif;
+    font-size: var(--regular);
+  }
+
+  li {
+    list-style: none;
+  }
+
+  a {
+    color: var(--black);
+    text-decoration: none;
+    
+  }
+  a:hover{
+    color: var(--black);
+  }
+
+
+
+
+div {
+    height: 1000px;
+    width: 1280px;
+    background-color: ivory;
+    margin: auto;
+}
+
+#my{
+    position: relative;
+    top: 300px;
+    height: 250px;
+    width: 1280px;
+    margin: auto;
+    background-color: pink;
+}
+
+
+.PROFILE_IMG{
+    width: 120px;
+    height: 120px;
+    background-color: white;
+    border-radius: 50%; /* 이 부분이 동그라미 모양을 만드는 중요한 부분입니다. */
+    position: absolute;
+    top: 25%;/* 원하는 위쪽 위치 (예: 100px) */
+    left: 80px; /* 원하는 왼쪽 위치 (예: 200px) */
+    overflow: hidden; /* 내용이 원 모양을 벗어나지 않도록 함 */
+    border: 2px solid black/* 테두리 추가 및 색상 설정 */
+  
+  }
+
+img {
+    width: 120px; /* 원하는 가로 크기로 조정합니다. */
+    height: 120px; /* 원하는 세로 크기로 조정합니다. */
+    object-fit: cover; /* 이미지 크기를 조정하여 원 안에 맞춥니다. */
+}
+
+
+.MYPROFILE{
+    width: 240px;
+    height: 200px;
+    position: absolute;
+    top: 10%;/* 원하는 위쪽 위치 (예: 100px) */
+    left: 250px; /* 원하는 왼쪽 위치 (예: 200px) */
+    background-color: pink;
+}
+
+
+.NICKNAME {
+    position: absolute;
+    font-size: var(--big);
+    top: 20%;
+    left: 35%;
+    text-align: center; /* 텍스트를 가운데 정렬 */
+}
+
+
+.btn{
+    position: absolute;
+    top: 60%;
+    left: 20px;
+    height: 50px;
+    width: 200px;
+    background-color: transparent;
+    color: var(--black); /* 텍스트 색상 설정 */
+    font-size: var(--regular);
+    text-decoration: none solid rgb(21,23, 26);
+    vertical-align: middle;
+    padding: 10px 20px;
+    cursor: pointer;
+    outline: none;
+    filter: drop-shadow(0px 4px 4px rgba(0, 0, 0, 0.25)); /* 그림자 효과 추가 */
+    border: 3px solid transparent; /* 테두리 색상 초기화 */
+    border-image: linear-gradient(45deg, #72BAB3, #ECCF63) 1; /* 그라데이션 테두리 추가 */
+    border-image-slice: 1;
+    transform: skew(-20deg);
+}
+
+.btn::before {
+    content: '회원정보 수정';
+    display: block;
+    transform: skewX(20deg); /* 텍스트를 반대로 기울이지 않습니다 */
+}
+
+
+
+.MYDETAIL{
+    width: 670px;
+    height: 200px;
+    background-color: pink;
+    position: absolute;
+    top: 10%;/* 원하는 위쪽 위치 (예: 100px) */
+    left: 550px; /* 원하는 왼쪽 위치 (예: 200px) */
+}
+
+.RANK {
+    position: absolute;
+    font-size: var(--big);
+    top: 40px;
+    left: 5%;
+    text-align: center; /* 텍스트를 가운데 정렬 */
+}
+
+.LEVEL{
+    position: absolute;
+    font-size: var(--big);
+    top: 40px;
+    left: 85%;
+    text-align: center; /* 텍스트를 가운데 정렬 */
+}
+
+
+#progress{
+    position: absolute;
+    top: 50%;
+    left: 5%;
+    width: 600px;
+    appearance: none;
+    
+}
+
+
+#progress::-webkit-progress-bar {   /* progressbar의 배경이 되는 요소 */
+    background:#f0f0f0;
+    border-radius:10px;
+    box-shadow: inset 3px 3px 10px #ccc;
+}
+#progress::-webkit-progress-value {    /* 텍스트를 가운데 정렬 */
+    border-radius:10px;
+    background: var(--magenta);
+    background: -webkit-linear-gradient(to right, var(--light-blue), var(--magenta));
+    background: linear-gradient(to right, var(--light-blue), var(--magenta));
+
+}
+
+
+.STAMP{
+    position: absolute;
+    font-size: var(--regular);
+    top: 70%;
+    left: 5%;
+    text-align: center; /* 텍스트를 가운데 정렬 */
+}
+
+.USER_LIKE{
+    position: absolute;
+    font-size: var(--regular);
+    top: 70%;
+    left: 15%;
+    text-align: center; /* 텍스트를 가운데 정렬 */
+}
+
+.EXP{
+    position: absolute;
+    font-size: var(--regular);
+    top: 70%;
+    left: 85%;
+    text-align: center; /* 텍스트를 가운데 정렬 */
+}
+
+
+
+
+
+
