@@ -1,0 +1,143 @@
+:root {
+  /* color */
+  --magenta: #e6007e;
+  --blue: #0e4194;
+  --yellow: #ffcc03;
+  --light-blue: #0188cc;
+  --gray1: #eeeeee;
+  --gray2: #d9d9d9;
+  --gray3: #b5b5b5;
+  --gray4: #999999;
+  --black: #000000;
+
+  /* font-size */
+  --big: 24px;
+  --regular: 16px;
+  --small: 14px;
+}
+
+* {
+  padding: 0;
+  margin: 0;
+}
+
+body {
+  font-family: 'Noto Sans KR', sans-serif;
+  font-size: var(--regular);
+}
+
+li {
+  list-style: none;
+}
+
+a {
+  color: var(--black);
+  text-decoration: none;
+}
+
+a:hover {
+  color: var(--black);
+}
+
+button {
+  outline:none !important;
+  margin-bottom: 20px;
+}
+
+.btn {
+  padding: 20px 125px;
+  border-radius: 0;
+  font-size: var(--regular);
+  font-weight: 700;
+}
+
+.btn-dark {
+  border-color: var(--black);
+  background-color: var(--black);
+  color: var(--gray1);
+}
+
+.btn-light {
+  border-color: var(--gray1);
+  background-color: var(--gray1);
+  color: var(--black);
+}
+
+.btn-skew {
+  border-radius: 0;
+  transform: skew(-20deg)
+}
+
+.btn-skew>p, .btn-skew>a {
+  position: relative;
+  transform: skew(20deg);
+  text-align: center;
+  z-index: 2
+}
+
+.btn-skew>p:before {
+  content: '';
+  position: absolute;
+  top: 50%;
+  right: -70px;
+  width: 10px;
+  height: 20px;
+  transform: translateY(-50%)
+}
+
+.btn-skew:before {
+  width: 96%;
+  height: 87%
+}
+
+.btn-skew>p:before {
+  right: -28px
+}
+
+.form-wrp {
+  margin-top: 10px;
+  margin-bottom: 10px
+}
+
+.form-wrp .btn {
+  height: 60px;
+  padding: 10px 0;
+  font-size: 18px;
+  font-weight: 400
+}
+
+.form-control {
+  height: auto;
+  padding: 15px 20px;
+  border: 1px solid var(--gray3);
+  border-radius: 0;
+  background: #fff;
+  color: var(--black) !important;
+  font-size: var(--regular);
+  display: block;
+  width: 100%;
+}
+
+.form-control.no-required {
+  background: none !important
+}
+
+.form-control:focus {
+  border-color: var(--black);
+  outline: none;
+  box-shadow: none
+}
+
+.form-control::placeholder {
+  color: var(--gray4)
+}
+
+section {
+  display: block;
+  padding: 120px 0 280px;
+}
+
+.container {
+  max-width: 580px;
+  margin: 0 auto;
+}

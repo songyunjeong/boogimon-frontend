@@ -1,0 +1,43 @@
+<html lang="kr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=1280px, initial-scale=1.0">
+  <link rel="stylesheet" href="./views/css/login.css">
+  <title>로그인</title>
+  <script src="https://unpkg.com/react@16/umd/react.development.js"></script>
+  <script src="https://unpkg.com/react-dom@16/umd/react-dom.development.js"></script>
+  <script src="https://unpkg.com/babel-standalone@6.15.0/babel.min.js"></script>
+</head>
+<body>
+  <section class="login">
+    <div class="container">
+      <img class="logo" src="./images/logo.png" alt width="200">
+      <div>
+        <form class="container-login">
+          <div class="form-wrp">
+            <label for="user_id" hidden>아이디</label>
+            <input type="email" class="form-control" name="user_id" id="user_id" placeholder="아이디" required />
+          </div>
+          <div class="form-wrp">
+            <label for="passwd" hidden>비밀 번호</label>
+            <input type="password" class="form-control" name="passwd" id="passwd" placeholder="비밀번호" required />
+          </div>
+          <button type="submit" id="login_btn" class="btn btn-dark btn-skew">
+            <p>로그인</p>
+          </button>
+        </form>
+
+        <div id="msg"></div>
+
+        <div>
+          <button type="submit" id="find_pw" class="btn btn-light btn-skew">
+            <a href="./findPassword.html">비밀번호 찾기</a>
+          </button>
+        </div>
+
+      </div>
+    </div>
+  </section>
+  
+</body>
+</html>
