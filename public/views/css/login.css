@@ -44,6 +44,13 @@ button {
   margin-bottom: 20px;
 }
 
+.btn-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin-bottom: 20px;
+}
+
 .btn {
   padding: 20px 125px;
   border-radius: 0;
@@ -68,38 +75,20 @@ button {
   transform: skew(-20deg)
 }
 
-.btn-skew>p, .btn-skew>a {
+.btn-skew>p,
+.btn-skew>a {
   position: relative;
   transform: skew(20deg);
   text-align: center;
   z-index: 2
 }
 
-.btn-skew>p:before {
-  content: '';
-  position: absolute;
-  top: 50%;
-  right: -70px;
-  width: 10px;
-  height: 20px;
-  transform: translateY(-50%)
-}
-
-.btn-skew:before {
-  width: 96%;
-  height: 87%
-}
-
-.btn-skew>p:before {
-  right: -28px
-}
-
-.form-wrp {
+.form-group {
   margin-top: 10px;
-  margin-bottom: 10px
+  margin-bottom: 20px
 }
 
-.form-wrp .btn {
+.form-group .btn {
   height: 60px;
   padding: 10px 0;
   font-size: 18px;
@@ -118,10 +107,6 @@ button {
   width: 100%;
 }
 
-.form-control.no-required {
-  background: none !important
-}
-
 .form-control:focus {
   border-color: var(--black);
   outline: none;
@@ -132,12 +117,20 @@ button {
   color: var(--gray4)
 }
 
-section {
-  display: block;
+.login-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
   padding: 120px 0 280px;
+  max-width: 580px;
+  margin: 100px auto 20px;
 }
 
-.container {
-  max-width: 580px;
-  margin: 0 auto;
+.logo {
+  width: 200px;
+  height: auto; 
+  position: relative;
+  left: 50%;
+  transform: translate(-50%, -50%);
 }
