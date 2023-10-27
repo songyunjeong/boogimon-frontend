@@ -3,7 +3,7 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>부기몬 공식 사이트</title>
+    <title>부기몬 공식 사이트 - 스탬프북1</title>
     <link rel="stylesheet" href="./css/global.css" />
     <link rel="stylesheet" href="./css/stampDetail.css" />
   </head>
@@ -25,6 +25,8 @@
     </header>
 
     <div class="wrap">
+      <div class="stamp_book_title">스탬프북1</div>
+
       <div>
         <div class="stamp_box">
           <div class="stamp">
@@ -165,12 +167,79 @@
       <div class="btn_bar">
         <button>공유</button>
         <button>담기</button>
-        <span>좋아요</span>
+        <div class="stamp_book_like">
+          <div class="like_btn">
+            <img src="./images/like.png" alt="좋아요" />
+          </div>
+          <div>13</div>
+        </div>
       </div>
       <!-- 버튼 바 -->
 
-      <div></div>
+      <section class="comment_area">
+        <div class="title">댓글</div>
+
+        <div class="comment_input">
+          <input type="text" placeholder="공백 불가, 최대 250자 작성 가능" />
+          <button>등록</button>
+        </div>
+
+        <div class="comment_list">
+          <div class="comment">
+            <div class="profile">
+              <img src="./images/avatar.png" alt="" />
+            </div>
+            <div class="contents">
+              <div class="comment_id">부기몬 마스터</div>
+              <div class="comment_txt">스탬프북 완성했다</div>
+            </div>
+            <div class="comment_write_date">2023-10-26 16:57:50</div>
+          </div>
+          <div class="comment">
+            <div class="profile">
+              <img src="./images/avatar.png" alt="" />
+            </div>
+            <div class="contents">
+              <div class="comment_id">부기부기</div>
+              <div class="comment_txt">여행 좋아</div>
+            </div>
+            <div class="comment_write_date">2023-11-12 13:24:20</div>
+          </div>
+          <div class="comment">
+            <div class="profile">
+              <img src="./images/avatar.png" alt="" />
+            </div>
+            <div class="contents">
+              <div class="comment_id">부기 좋아</div>
+              <div class="comment_txt">놀러가야지</div>
+            </div>
+            <div class="comment_write_date">2023-08-29 10:20:34</div>
+          </div>
+        </div>
+
+        <div class="more_comment">
+          <button>더보기</button>
+        </div>
+      </section>
       <!-- 댓글 -->
+
+      <div class="create_user_comment">
+        <div class="title">스탬프북 작성자</div>
+
+        <div class="comment">
+          <div class="profile">
+            <img src="./images/avatar.png" alt="" />
+          </div>
+          <div class="contents">
+            <div class="comment_id">부기몬 크리에이터</div>
+            <div class="comment_txt">
+              이 스탬프북을 다 모으신다면 당신은 진정한 부기몬 마스터가 된답니다
+            </div>
+          </div>
+          <div class="comment_write_date">2023-10-27 11:13:12</div>
+        </div>
+      </div>
+      <!-- 스탬프북 작성자 & 상세설명 -->
     </div>
     <!-- wrap -->
   </body>
