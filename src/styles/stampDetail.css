@@ -24,8 +24,8 @@
   margin: 0 auto;
 }
 
-/* stamp_book_title */
-.wrap .stamp_book_title {
+/* stamp_detail_title */
+.wrap .stamp_detail_title {
   font-size: var(--big);
   font-weight: bold;
   margin: 50px 0 20px;
