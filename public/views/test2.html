@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>모달 팝업</title>
+    <style>
+        /* 모달 스타일 */
+        .modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.7);
+
+            
+        }
+
+        
+
+        .modal-content {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            background-color: white;
+            padding: 20px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+            
+        }
+
+        /* 닫기 버튼 스타일 */
+        .close {
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            cursor: pointer;
+        }
+    </style>
+</head>
+<body>
+    <button id="openModal">모달 열기</button>
+    <div id="myModal" class="modal">
+        <div class="modal-content">
+            <span class="close" id="closeModal">&times;</span>
+            <div id="modalContent">
+                <!-- 모달 내용을 원하는 내용으로 채웁니다. -->
+                <h2>놀고싶조 입니다.</h2>
+                <p>부기몬 스탬프 많이 모아주세요</p>
+                <img src="/public/img/boogicard_test.png">
+                <button id="downloadImage">이미지로 저장</button>
+            </div>
+        </div>
+    </div>
+    <script>
+        // 모달 열기 버튼 클릭 시 모달 표시
+        document.getElementById('openModal').addEventListener('click', function() {
+            document.getElementById('myModal').style.display = 'block';
+        });
+
+        // 모달 닫기 버튼 클릭 시 모달 숨김
+        document.getElementById('closeModal').addEventListener('click', function() {
+            document.getElementById('myModal').style.display = 'none';
+        });
+
+        // 이미지 저장 버튼 클릭 시 모달 내용을 이미지로 저장
+        document.getElementById('downloadImage').addEventListener('click', function() {
+            // 이미지 저장 버튼은 모달 팝업 내에 숨겨져 있으므로 다시 표시
+            this.style.display = 'none';
+
+            // HTML2Canvas를 사용하여 모달 내용을 이미지로 변환
+            html2canvas(document.getElementById('modalContent')).then(function(canvas) {
+                // 사용자에게 파일 이름을 입력받습니다.
+                var fileName = prompt("이미지 파일 이름을 입력하세요", "modal_image.png");
+                if (!fileName) {
+                    return; // 입력하지 않은 경우 나가기
+                }
+
+                var imgData = canvas.toDataURL('image/png');
+
+                // 새로운 링크를 생성하여 이미지를 다운로드
+                var a = document.createElement('a');
+                a.href = imgData;
+                a.download = fileName;
+                a.click();
+
+                // 이미지 저장 후 다시 이미지 저장 버튼을 숨김
+                document.getElementById('downloadImage').style.display = 'none';
+            });
+        });
+    </script>
+    <script src="/public/js/html2canvas.min.js"></script>
+</body>
+</html>

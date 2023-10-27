@@ -47,7 +47,7 @@
 div {
     height: 1000px;
     width: 1280px;
-    background-color: ivory;
+    background-color:white;
     margin: auto;
 }
 
@@ -74,7 +74,7 @@ div {
   
   }
 
-img {
+#profile {
     width: 120px; /* 원하는 가로 크기로 조정합니다. */
     height: 120px; /* 원하는 세로 크기로 조정합니다. */
     object-fit: cover; /* 이미지 크기를 조정하여 원 안에 맞춥니다. */
@@ -88,6 +88,10 @@ img {
     top: 10%;/* 원하는 위쪽 위치 (예: 100px) */
     left: 250px; /* 원하는 왼쪽 위치 (예: 200px) */
     background-color: pink;
+    display: flex;
+    align-items: center; /* 수직 가운데 정렬 */
+    justify-content: center; /* 수평 가운데 정렬 */
+    text-align: center; /* 텍스트를 가운데 정렬 */
 }
 
 
@@ -95,8 +99,6 @@ img {
     position: absolute;
     font-size: var(--big);
     top: 20%;
-    left: 35%;
-    text-align: center; /* 텍스트를 가운데 정렬 */
 }
 
 
