@@ -1,181 +1,182 @@
-import React,{useState} from 'react';
+import React, { useState } from 'react';
 import styled from 'styled-components';
 import data from './data.json';
 
 function StampDetail() {
-    const [popupOn, setPopupOn] = useState(false);
-    const onOpenPopup = () => {
-        setPopupOn(!popupOn);
-    }
+  const [popupOn, setPopupOn] = useState(false);
+  const onOpenPopup = () => {
+    setPopupOn(!popupOn);
+  };
 
-    const DetailSee = () => {
-        return(
-            <Detail>{data.detail}</Detail>
-        )
-    }
+  const Popup = () => {
+    return (
+      <Modal>
+        <PopupBg>
+          <CloseBox>
+            <CloseBtn onClick={onOpenPopup}>닫기</CloseBtn>
+          </CloseBox>
+        </PopupBg>
+        <PopupBox>
+            <PlcaeImg>
+                <img
+                src={process.env.PUBLIC_URL + '/test.jpg'}
+                width='600px'
+                height='200px'
+                />
+            </PlcaeImg>
+            <PlaceName> {data.name}</PlaceName>
+            <Addr><Span>주소</Span> {data.addr}</Addr>
+            <Box>
+              <LeftBox>
+                <Span>가는길</Span>
+              </LeftBox>
+              <RightBox>
+                <Traffic>{data.traffic}</Traffic>
+              </RightBox>
+            </Box>
+            <Tel>📞 {data.tel}</Tel>
+            <Pay>💵 {data.money}</Pay>
+            <Facility>💶 {data.facility}</Facility>
+            <Open><Span>운영일</Span> {data.open}</Open>
+            <Close><Span>휴무일</Span> {data.close}</Close>
+            <PageUrl>🌐 {data.url}</PageUrl>
+            <Box2>
+                <LeftBox>
+                  <Span>상세정보</Span>
+                </LeftBox>
+                <RightBox>
+                  <Detail>{data.detail}</Detail>
+                </RightBox>
+            </Box2>
+        </PopupBox>
+      </Modal>
+    );
+  };
 
-    const [moreBtn, setMoreBtn] = useState("상세내용");
-    const [isView, setIsView] = useState(false);
-    
-    const onClick = () => {
-      if (moreBtn === "상세내용") {
-        setMoreBtn("접기");
-        setIsView(true);
-      } else {
-        setMoreBtn("상세내용");
-        setIsView(false);
-      }
-    };
-    
-
-    const Popup = () => {
-        return(
-            <Modal>
-                <PopupBg></PopupBg>
-                <PopupBox>
-                    <PopupBoxLeft>
-                        <PlcaeImg><img src={process.env.PUBLIC_URL + '/test.jpg'} width = '350px' height='350px'/></PlcaeImg>
-                        <PlaceName>{data.name}</PlaceName>
-                        <Pay>💵 {data.money}</Pay>
-                        <Addr>🎗️ {data.addr}</Addr>
-                        <Tel>{data.tel}</Tel>
-                    </PopupBoxLeft>
-                    <PopupBoxRight>
-                        <Box1>
-                            <Open>{data.open}</Open>
-                            <Close>{data.close}</Close>
-                        </Box1>
-                            <PageUrl>{data.url}</PageUrl>
-                            <Traffic>{data.traffic}</Traffic>
-                            <Facility>{data.facility}</Facility>
-                            {isView ? <DetailSee/> : null}
-                            <MoreBtn onClick={onClick}>{moreBtn}</MoreBtn>
-                    </PopupBoxRight>
-                    <CloseBtn onClick={onOpenPopup}>닫기</CloseBtn>
-                </PopupBox>
-            </Modal>
-        )
-    }
-
-
-    return(
-        <React.Fragment>
-            <OpenBtn onClick={onOpenPopup}>팝업창 오픈</OpenBtn>
-            {popupOn ? <Popup/> : ''}
-        </React.Fragment>
-    )
+  return (
+    <React.Fragment>
+      <OpenBtn onClick={onOpenPopup}>팝업창 오픈</OpenBtn>
+      {popupOn ? <Popup /> : ''}
+    </React.Fragment>
+  );
 }
 
-const Modal = styled.div`
-    position: fixed;
-    width: 100%;
-    height: 100%;
-    display: flex;
-    justify-content: center;
-    align-items: center;
+const Span = styled.span`
+  color:#808080a6;
 `
+const Modal = styled.div`
+  position: fixed;
+  width: 100%;
+  height: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+`;
 
 const PopupBg = styled.div`
-    width: 1200px;
+    width: 100%;
     height: 100%;
     background-color: rgba(0, 0, 0, 0.6);
-`
+`;
+
+const CloseBox = styled.div`
+    display: flex;
+    justify-content: center;
+    padding-top: 19px;
+    padding-left: 500px;
+`;
 
 const PopupBox = styled.div`
     position: absolute;
     background-color: white;
-    width: 900px;
-    height: 550px;
+    width: 600px;
+    height: 870px;
     font-size: 14px;
-`
+`;
 
 const CloseBtn = styled.button`
     display: block;
     width: 100px;
     color: violet;
-`
+`;
 const OpenBtn = styled(CloseBtn)`
     width: 200px;
-`
-
-
-const PopupBoxLeft = styled.div`
-    
-    width: 350px;
-    height: 550px;
-    float: left;
-`
-
-const PopupBoxRight = styled.div`
-    
-    width: 550px;
-    height: 550px;
-    float: right;
-`
+`;
 
 const PlcaeImg = styled.div`
-    width: 350px;
-    height: 350px;
+    width: 600px;
+    height: 200px;
     /* background-image: url("./test.jpg");
     background-size: cover;
     background-position: center; */
-`
+`;
 
 const PlaceName = styled.div`
-    width: 350px;
-    height: 60px;
-`
+    width: 580px;
+    height: 35px;
+    font-size: 24px;
+    padding: 10px;
+`;
 
 const Pay = styled.div`
-    width: 350px;
-    height: 50px;
-`
-
-const Addr = styled(Pay)`
-`
-const Tel = styled.div`
-    width: 350px;
-    height: 40.5px;
-`
-
-const Box1 = styled.div`
-    width: 550px;
+    width: 600px;
     height: 40px;
-`
+`;
 
-const Open = styled.div`
-    float: left;
-    width: 275px;
-    height: 40.5px;
-`
+const Addr = styled(Pay)``;
 
-const Close = styled.div`
-    float: right;
-    width: 275px;
-    height: 35.5px;
-`
 
-const PageUrl = styled.div`
-    width: 550px;
-    height: 35.5px;
-`
+const Box = styled.div`
+  width:600px;
+  height: 80px;
+`;
+
+const LeftBox = styled.div`
+  float: left;
+`;
+
+const RightBox = styled.div`
+  float: right;
+`;
 
 const Traffic = styled.div`
     width: 550px;
     height: 80px;
-`
+`;
+
+const Tel = styled.div`
+    width: 350px;
+    height: 40px;
+`;
+
+const Open = styled.div`
+    width: 600px;
+    height: 40px;
+`;
+
+const Close = styled.div`
+    width: 600px;
+    height: 40px;
+`;
+
+const PageUrl = styled.div`
+    width: 600px;
+    height: 40px;
+`;
+
+const Box2 = styled.div`
+  width: 600px;
+  overflow-y: scroll;
+  height: 255px;
+`;
 
 const Facility = styled.div`
-    width: 550px;
+    width: 600px;
     height: 40px;
-`
+`;
 
 const Detail = styled.div`
-    width: 550px;
-    height: 310px;
-`
+  width: 520px;
+`;
 
-const MoreBtn = styled.button`
-
-`
 export default StampDetail;
