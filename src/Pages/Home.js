@@ -1,6 +1,7 @@
 import Header from '../Components/Header';
 import '../styles/main.css';
 import like from '../images/like.png';
+import { Link } from 'react-router-dom';
 
 const Home = () => {
   return (
@@ -18,7 +19,9 @@ const Home = () => {
           <div>
             <div className='stamp_book_img'></div>
             <div className='stamp_book_txt'>
-              <div className='stamp_book_title'>스탬프북1</div>
+              <div className='stamp_book_title'>
+                <Link to='/stampDetail'>스탬프북1</Link>
+              </div>
               <div className='stamp_book_like'>
                 <div className='like_btn'>
                   <img src={like} alt='좋아요' />
@@ -97,8 +100,6 @@ const Home = () => {
           </div>
         </section>
       </div>
-
-      <footer></footer>
     </div>
   );
 };
