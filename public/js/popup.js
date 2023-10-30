@@ -34,5 +34,5 @@ document.getElementById('downloadImage').addEventListener('click', function() {
             a.click();
         }
     });
-});
+}); 
 

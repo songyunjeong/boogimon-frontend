@@ -63,6 +63,7 @@
     transform: translate(-50%, -40%);
   
     white-space: normal;
+    border-radius: 5%;
   }
 
   .show .popup2 {
@@ -89,7 +90,16 @@ img {
 
 #mapclose{
   position: absolute;
+  width: 16px;
+  height: 16px;
+  top: 1%;
   left: 95%;
+  display: inline-block;
+  border: 2px solid var(--gray2);
+  border-radius: 4px;
+  background-color: #ffffff;
+  box-sizing: border-box;
+  
 }
 
 #searchBar{
@@ -106,7 +116,7 @@ img {
   position: absolute;
   top: 5%;
   left: 80%;
-
+  text-align: center;
   display: inline-block;
     border: 2px solid var(--gray2);
     border-radius: 4px;
@@ -140,9 +150,9 @@ img {
 .THUMBNAIL_BOX{
   width: 150px;
   height: 100px;
-  position: absolute;
-  top: 2%;
-  left: 100%;
+  position: relative;
+  top: -57%;
+  left: 35%;
   background-image: url(/public/img/다운로드.jpeg);
   background-size: cover; /* 이미지를 가능한 최대 크기로 채우기 */
   background-position: center; /* 이미지를 중앙에 위치시키기 */

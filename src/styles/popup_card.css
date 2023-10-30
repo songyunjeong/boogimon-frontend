@@ -83,6 +83,8 @@ a:hover{
   transform: translate(-50%, -40%);
 
   white-space: normal;
+
+  border-radius: 5%;
 }
 
 .show .popup {
@@ -105,7 +107,7 @@ a:hover{
   height: 25px;
   position: absolute;
   left: 27%;
-  top: 8%;
+  top: 7%;
   z-index: 2; /* 더 높은 z-index 값을 설정하여 앞으로 가져옵니다 */
 
 }
@@ -132,9 +134,15 @@ a:hover{
 #cardclose{
   
   position: absolute;
-  top: 23%;
-  left: 62%;
+  top: 22%;
+  left: 63%;
   z-index: 999;
+
+  display: inline-block;
+  border: 2px solid var(--gray2);
+  border-radius: 4px;
+  background-color: #ffffff;
+  box-sizing: border-box;
 
 }
 
