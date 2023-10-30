@@ -2,7 +2,6 @@
 <html lang="kr">
 <head>
   <meta charset="UTF-8">
-  <meta name="viewport" content="width=1280px, initial-scale=1.0">
   <link rel="stylesheet" href="./views/css/join.css">
   <title>회원가입</title>
 </head>
@@ -28,21 +27,19 @@
           <input type="text" class="form-control" name="nickname" id="nickname" placeholder="닉네임" required />
         </div>
         <div class="btn-container">
-          <button type="button" id="random_btn" class="btn btn-light btn-skew">
+          <button type="button" id="random" class="btn btn-light">
             <p>랜덤</p>
           </button>
         </div>
-        <div class="form-group">
-          <label for="profile_img" hidden>프로필 이미지</label>
-          <input type="text" class="form-control" name="profile_img" id="profile_img" placeholder="프로필 이미지" />
-        </div>
-        <div class="btn-container">
-          <button type="button" id="upload" class="btn btn-light btn-skew">
+        <form action="upload.php" method="post" enctype="multipart/form-data">
+          <label for="profile_img">프로필 이미지</label><br>
+          <input type="file"  name="profile_img" id="profile_img" accept="image/*">
+          <button type="submit" name="upload" id="upload" class="btn btn-light">
             <p>업로드</p>
           </button>
-        </div>
+        </form>
         <div class="btn-container">
-          <button type="submit" id="join_btn" class="btn btn-dark btn-skew">
+          <button type="submit" id="signup" class="btn btn-dark btn-skew">
             <p>회원가입 완료</p>
           </button>
         </div>
