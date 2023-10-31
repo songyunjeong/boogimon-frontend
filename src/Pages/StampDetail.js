@@ -3,14 +3,18 @@ import '../styles/stampDetail.css';
 import like from '../images/like.png';
 import avatar from '../images/avatar.png';
 import Map from '../Components/Map';
+import { useLocation } from 'react-router-dom';
+import Button from '../Components/Button';
 
 const StampDetail = () => {
+  const { state } = useLocation();
+
   return (
     <div>
       <Header />
 
       <div className='wrap'>
-        <div className='stamp_detail_title'>스탬프북1</div>
+        <div className='stamp_detail_title'>{state.title}</div>
 
         <div>
           <div className='stamp_box'>
@@ -133,13 +137,13 @@ const StampDetail = () => {
         </div>
 
         <div className='btn_bar'>
-          <button>공유</button>
-          <button>담기</button>
+          <Button children={'공유'} />
+          <Button children={'담기'} />
           <div className='stamp_book_like'>
             <div className='like_btn'>
               <img src={like} alt='좋아요' />
             </div>
-            <div>13</div>
+            <div>{state.like}</div>
           </div>
         </div>
 
@@ -148,7 +152,7 @@ const StampDetail = () => {
 
           <div className='comment_input'>
             <input type='text' placeholder='공백 불가, 최대 250자 작성 가능' />
-            <button>등록</button>
+            <Button children={'등록'} />
           </div>
 
           <div className='comment_list'>
@@ -185,7 +189,7 @@ const StampDetail = () => {
           </div>
 
           <div className='more_comment'>
-            <button>더보기</button>
+            <Button children={'더보기'} />
           </div>
         </section>
 

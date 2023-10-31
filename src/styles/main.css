@@ -55,21 +55,10 @@
   padding-right: 0;
 }
 
-.stamp_book .stamp_book_img {
-  height: 500px;
-  background-color: var(--gray1);
-}
-
 .stamp_book .stamp_book_txt {
+  text-align: center;
   position: relative;
   margin-top: 10px;
-}
-
-.stamp_book .stamp_book_txt .stamp_book_title {
-  height: 30px;
-  line-height: 30px;
-  text-align: center;
-  margin-bottom: 10px;
 }
 
 .stamp_book .stamp_book_txt .stamp_book_like {
@@ -89,23 +78,4 @@
 
 .stamp_book .stamp_book_btn {
   text-align: center;
-}
-
-.stamp_book .stamp_book_btn > button {
-  display: inline-block;
-  border: 2px solid var(--gray2);
-  border-radius: 4px;
-  background-color: #ffffff;
-  padding: 8px 25px;
-  box-sizing: border-box;
-}
-
-.stamp_book .stamp_book_btn > button:hover {
-  cursor: pointer;
-  background-color: var(--yellow);
-  border: 2px solid var(--light-blue);
-}
-
-.stamp_book .stamp_book_btn .pick_btn {
-  margin-right: 5px;
 }
