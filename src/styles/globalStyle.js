@@ -42,45 +42,6 @@ const GlobalStyle = createGlobalStyle`
       color: black;
     }
   }
-
-  /* header */
-  .header {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    width: 100%;
-    height: 120px;
-    box-shadow: 1px 1px 5px var(--gray1);
-    padding: 0 50px;
-    box-sizing: border-box;
-  }
-
-  .logo {
-    width: 200px;
-  }
-
-  .gnb {
-    font-size: var(--small);
-    text-align: right;
-    padding-bottom: 10px;
-  }
-
-  .lnb {
-    display: flex;
-  }
-
-  .lnb li {
-    margin-right: 30px;
-  }
-
-  .lnb li:last-child {
-    margin-right: 0;
-  }
-
-  /* footer */
-  footer {
-    height: 100px;
-  }
 `;
 
 export default GlobalStyle;

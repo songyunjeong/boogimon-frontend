@@ -2,6 +2,7 @@ import Header from '../Components/Header';
 import '../styles/stampDetail.css';
 import like from '../images/like.png';
 import avatar from '../images/avatar.png';
+import Map from '../Components/Map';
 
 const StampDetail = () => {
   return (
@@ -126,7 +127,9 @@ const StampDetail = () => {
             </div>
           </div>
 
-          <div className='stamp_map'></div>
+          <div className='stamp_map'>
+            <Map />
+          </div>
         </div>
 
         <div className='btn_bar'>
