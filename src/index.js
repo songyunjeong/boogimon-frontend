@@ -1,13 +1,15 @@
 import React from 'react';
 import ReactDOM from 'react-dom/client';
-import MyComponent from './Pages/my';
-
+import App from './App';
+import { BrowserRouter } from 'react-router-dom';
+import GlobalStyle from './styles/globalStyle';
 
 const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(
-  <React.StrictMode>
-  <MyComponent /> {/* MyComponent를 렌더링합니다. */}
-</React.StrictMode>
+  <BrowserRouter>
+    <GlobalStyle />
+    <App />
+  </BrowserRouter>
 );
 
 

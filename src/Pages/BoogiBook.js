@@ -1,6 +1,6 @@
 import Header from '../Components/Header';
 
-const My = () => {
+const BoogiBook = () => {
   return (
     <div>
       <Header />
@@ -8,4 +8,4 @@ const My = () => {
   );
 };
 
-export default My;
+export default BoogiBook;
