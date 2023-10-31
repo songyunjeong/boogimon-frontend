@@ -1,7 +1,12 @@
 import Header from '../Components/Header';
-import '../styles/makeStampBook.css';
 import '../styles/stampDetail.css';
 import Map from '../Components/Map';
+import styled from 'styled-components';
+
+const StampDetailTxt = styled.div`
+  clear: both;
+  padding: 20px 0;
+`;
 
 const MakeStampBook = () => {
   return (
@@ -29,7 +34,7 @@ const MakeStampBook = () => {
           </div>
         </div>
 
-        <div className='stamp_detail_txt'>상세설명 작성</div>
+        <StampDetailTxt>상세설명 작성</StampDetailTxt>
       </div>
     </div>
   );

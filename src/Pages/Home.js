@@ -1,7 +1,6 @@
+import StampBook from '../Components/StampBook';
 import Header from '../Components/Header';
 import '../styles/main.css';
-import like from '../images/like.png';
-import { Link } from 'react-router-dom';
 
 const Home = () => {
   return (
@@ -16,88 +15,11 @@ const Home = () => {
         </select>
 
         <section className='stamp_book'>
-          <div>
-            <div className='stamp_book_img'></div>
-            <div className='stamp_book_txt'>
-              <div className='stamp_book_title'>
-                <Link to='/stampDetail'>스탬프북1</Link>
-              </div>
-              <div className='stamp_book_like'>
-                <div className='like_btn'>
-                  <img src={like} alt='좋아요' />
-                </div>
-                <div>30</div>
-              </div>
-              <div className='stamp_book_btn'>
-                <button className='pick_btn'>담기</button>
-                <button className='delete_btn'>삭제</button>
-              </div>
-            </div>
-          </div>
-          <div>
-            <div className='stamp_book_img'></div>
-            <div className='stamp_book_txt'>
-              <div className='stamp_book_title'>스탬프북2</div>
-              <div className='stamp_book_like'>
-                <div className='like_btn'>
-                  <img src={like} alt='좋아요' />
-                </div>
-                <div>22</div>
-              </div>
-              <div className='stamp_book_btn'>
-                <button className='pick_btn'>담기</button>
-                <button className='delete_btn'>삭제</button>
-              </div>
-            </div>
-          </div>
-          <div>
-            <div className='stamp_book_img'></div>
-            <div className='stamp_book_txt'>
-              <div className='stamp_book_title'>스탬프북3</div>
-              <div className='stamp_book_like'>
-                <div className='like_btn'>
-                  <img src={like} alt='좋아요' />
-                </div>
-                <div>20</div>
-              </div>
-              <div className='stamp_book_btn'>
-                <button className='pick_btn'>담기</button>
-                <button className='delete_btn'>삭제</button>
-              </div>
-            </div>
-          </div>
-          <div>
-            <div className='stamp_book_img'></div>
-            <div className='stamp_book_txt'>
-              <div className='stamp_book_title'>스탬프북4</div>
-              <div className='stamp_book_like'>
-                <div className='like_btn'>
-                  <img src={like} alt='좋아요' />
-                </div>
-                <div>13</div>
-              </div>
-              <div className='stamp_book_btn'>
-                <button className='pick_btn'>담기</button>
-                <button className='delete_btn'>삭제</button>
-              </div>
-            </div>
-          </div>
-          <div>
-            <div className='stamp_book_img'></div>
-            <div className='stamp_book_txt'>
-              <div className='stamp_book_title'>스탬프북5</div>
-              <div className='stamp_book_like'>
-                <div className='like_btn'>
-                  <img src={like} alt='좋아요' />
-                </div>
-                <div>5</div>
-              </div>
-              <div className='stamp_book_btn'>
-                <button className='pick_btn'>담기</button>
-                <button className='delete_btn'>삭제</button>
-              </div>
-            </div>
-          </div>
+          <StampBook title={'스탬프북1'} like={'30'} />
+          <StampBook title={'스탬프북2'} like={'22'} />
+          <StampBook title={'스탬프북3'} like={'20'} />
+          <StampBook title={'스탬프북4'} like={'13'} />
+          <StampBook title={'스탬프북5'} like={'5'} />
         </section>
       </div>
     </div>
