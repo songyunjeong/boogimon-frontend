@@ -1,45 +1,4 @@
-:root {
-    /* color */
-    --magenta: #e6007e;
-    --blue: #0e4194;
-    --yellow: #ffcc03;
-    --light-blue: #0188cc;
-    --gray1: #eeeeee;
-    --gray2: #d9d9d9;
-    --gray3: #b5b5b5;
-    --gray4: #999999;
-    --black: #000000;
-  
-    /* font-size */
-    --big: 24px;
-    --regular: 16px;
-    --small: 14px;
-  }
 
-
-
-  * {
-    padding: 0;
-    margin: 0;
-  }
-
-  body {
-    font-family: 'Noto Sans KR', sans-serif;
-    font-size: var(--regular);
-  }
-
-  li {
-    list-style: none;
-  }
-
-  a {
-    color: var(--black);
-    text-decoration: none;
-    
-  }
-  a:hover{
-    color: var(--black);
-  }
 
   .window2 {
     position: relative;
@@ -49,8 +8,8 @@
   
   .popup2 {
     position: absolute;
-    top: 50%;
-    left: 50%;
+    top: 5%;
+    left: 25%;
     transform: translate(-50%, -50%);
     background-color: #ffffff;
     box-shadow: 0 2px 7px rgba(0, 0, 0, 0.3);
@@ -71,40 +30,10 @@
     transition: all 0.5s;
   }
 
-.card{
-    width: 400px;
-    height: 500px;
-    position: absolute;
-    top: 10%;/* 원하는 위쪽 위치 (예: 100px) */
-    left: 10%; /* 원하는 왼쪽 위치 (예: 200px) */
-    overflow: hidden; /* 내용이 원 모양을 벗어나지 않도록 함 */
-    border: 2px solid black;/* 테두리 추가 및 색상 설정 */
-
-  
-  }
-img {
-    width: 400px; /* 원하는 가로 크기로 조정합니다. */
-    height: 500px; /* 원하는 세로 크기로 조정합니다. */
-    object-fit: cover; /* 이미지 크기를 조정하여 원 안에 맞춥니다. */
-}
-
-#mapclose{
-  position: absolute;
-  width: 16px;
-  height: 16px;
-  top: 1%;
-  left: 95%;
-  display: inline-block;
-  border: 2px solid var(--gray2);
-  border-radius: 4px;
-  background-color: #ffffff;
-  box-sizing: border-box;
-  
-}
 
 #searchBar{
-  width: 300px;
-  height: 30px;
+  width: 400px;
+  height: 40px;
   position: absolute;
   top: 5%;
   left: 5%;
@@ -112,7 +41,7 @@ img {
 
 #search{
   width: 80px;
-  height: 30px;
+  height: 40px;
   position: absolute;
   top: 5%;
   left: 80%;
@@ -151,8 +80,8 @@ img {
   width: 150px;
   height: 100px;
   position: relative;
-  top: -57%;
-  left: 35%;
+  top: -71%;
+  left: 71%;
   background-image: url(/public/img/다운로드.jpeg);
   background-size: cover; /* 이미지를 가능한 최대 크기로 채우기 */
   background-position: center; /* 이미지를 중앙에 위치시키기 */
@@ -189,6 +118,7 @@ img {
   padding: 10px; /* 각 아이템의 패딩 설정 */
   border: 1px solid #ddd; /* 각 아이템 테두리 설정 */
   margin: 5px 0; /* 각 아이템의 상단 및 하단 마진 설정 */
+  text-align: left;
   
   }
 
@@ -210,7 +140,13 @@ img {
   
 }
 
-.submit > button:hover {
+.submit:hover {
+  cursor: pointer;
+  background-color: var(--yellow);
+  border: 2px solid var(--light-blue);
+}
+
+#search:hover{
   cursor: pointer;
   background-color: var(--yellow);
   border: 2px solid var(--light-blue);
