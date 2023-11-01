@@ -1,4 +1,3 @@
-
 :root {
   /* color */
   --magenta: #e6007e;
@@ -17,7 +16,6 @@
   --small: 14px;
 }
 
-
 * {
   padding: 0;
   margin: 0;
@@ -35,12 +33,10 @@ li {
 a {
   color: var(--black);
   text-decoration: none;
-  
 }
-a:hover{
+a:hover {
   color: var(--black);
 }
-
 
 .background {
   position: fixed;
@@ -84,7 +80,7 @@ a:hover{
 
   white-space: normal;
 
-  border-radius: 5%;
+  border-radius: 10px;
 }
 
 .show .popup {
@@ -92,7 +88,7 @@ a:hover{
   transition: all 0.5s;
 }
 
-#boogicard_img{
+#boogicard_img {
   width: 300px;
   height: 400px;
   position: absolute;
@@ -101,18 +97,16 @@ a:hover{
   z-index: 1; /* 보다 낮은 z-index 값을 설정 */
 }
 
-
-.card_name{
+.card_name {
   width: 130px;
   height: 25px;
   position: absolute;
   left: 27%;
   top: 7%;
   z-index: 2; /* 더 높은 z-index 값을 설정하여 앞으로 가져옵니다 */
-
 }
 
-.random_img{
+.random_img {
   width: 240px;
   height: 150px;
   position: absolute;
@@ -121,18 +115,17 @@ a:hover{
   z-index: 2; /* 더 높은 z-index 값을 설정하여 앞으로 가져옵니다 */
 }
 
-.card_content{
+.card_content {
   width: 240px;
   height: 180px;
- 
+
   position: absolute;
   left: 20%;
   top: 47%;
   z-index: 2; /* 더 높은 z-index 값을 설정하여 앞으로 가져옵니다 */
 }
 
-#cardclose{
-  
+#cardclose {
   position: absolute;
   top: 22%;
   left: 63%;
@@ -143,11 +136,9 @@ a:hover{
   border-radius: 4px;
   background-color: #ffffff;
   box-sizing: border-box;
-
 }
 
-
-.download{
+.download {
   position: absolute;
   top: 85%;
   left: 40%;
@@ -155,9 +146,7 @@ a:hover{
   height: 30px;
 }
 
-
-
-.downloadbtn{
+.downloadbtn {
   width: 100px;
   height: 40px;
   position: absolute;
@@ -166,14 +155,14 @@ a:hover{
   background-color: transparent;
   color: var(--black); /* 텍스트 색상 설정 */
   font-size: var(--small);
-  text-decoration: none solid rgb(21,23, 26);
+  text-decoration: none solid rgb(21, 23, 26);
   vertical-align: middle;
   padding: 10px 20px;
   cursor: pointer;
   outline: none;
   filter: drop-shadow(0px 4px 4px rgba(0, 0, 0, 0.25)); /* 그림자 효과 추가 */
   border: 3px solid transparent; /* 테두리 색상 초기화 */
-  border-image: linear-gradient(45deg, #72BAB3, #ECCF63) 1; /* 그라데이션 테두리 추가 */
+  border-image: linear-gradient(45deg, #72bab3, #eccf63) 1; /* 그라데이션 테두리 추가 */
   border-image-slice: 1;
   transform: skew(-20deg);
 }
@@ -183,8 +172,3 @@ a:hover{
   display: block;
   transform: skewX(20deg); /* 텍스트를 반대로 기울이지 않습니다 */
 }
-
-
-
-
-

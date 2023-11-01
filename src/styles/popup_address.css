@@ -1,45 +1,43 @@
+.window2 {
+  position: relative;
+  width: 100%;
+  height: 100%;
+}
 
+.popup2 {
+  position: absolute;
+  top: 5%;
+  left: 25%;
+  transform: translate(-50%, -50%);
+  background-color: #ffffff;
+  box-shadow: 0 2px 7px rgba(0, 0, 0, 0.3);
 
-  .window2 {
-    position: relative;
-    width: 100%;
-    height: 100%;
-  }
-  
-  .popup2 {
-    position: absolute;
-    top: 5%;
-    left: 25%;
-    transform: translate(-50%, -50%);
-    background-color: #ffffff;
-    box-shadow: 0 2px 7px rgba(0, 0, 0, 0.3);
-  
-    /* 임시 지정 */
-    width: 600px;
-    height: 700px;
-  
-    /* 초기에 약간 아래에 배치 */
-    transform: translate(-50%, -40%);
-  
-    white-space: normal;
-    border-radius: 5%;
-  }
+  /* 임시 지정 */
+  width: 600px;
+  height: 700px;
 
-  .show .popup2 {
-    transform: translate(-50%, -50%);
-    transition: all 0.5s;
-  }
+  /* 초기에 약간 아래에 배치 */
+  transform: translate(-50%, -40%);
 
+  white-space: normal;
+  border-radius: 10px;
+}
 
-#searchBar{
+.show .popup2 {
+  transform: translate(-50%, -50%);
+  transition: all 0.5s;
+}
+
+#searchBar {
   width: 400px;
   height: 40px;
   position: absolute;
   top: 5%;
   left: 5%;
+  border-radius: 10px;
 }
 
-#search{
+#search {
   width: 80px;
   height: 40px;
   position: absolute;
@@ -47,14 +45,14 @@
   left: 80%;
   text-align: center;
   display: inline-block;
-    border: 2px solid var(--gray2);
-    border-radius: 4px;
-    background-color: #ffffff;
-    padding: 8px 25px;
-    box-sizing: border-box;
+  border: 2px solid var(--gray2);
+  border-radius: 10px;
+  background-color: #ffffff;
+  padding: 8px 25px;
+  box-sizing: border-box;
 }
 
-.zip{
+.zip {
   width: 350px;
   height: 350px;
   position: absolute;
@@ -62,21 +60,20 @@
   left: 5%;
 }
 
-.NAME{
+.NAME {
   font-size: var(--small);
   position: absolute;
   width: 200px;
-  
 }
 
-.ADDR{
+.ADDR {
   font-size: var(--small);
   position: absolute;
   top: 12%;
   width: 200px;
 }
 
-.THUMBNAIL_BOX{
+.THUMBNAIL_BOX {
   width: 150px;
   height: 100px;
   position: relative;
@@ -86,10 +83,10 @@
   background-size: cover; /* 이미지를 가능한 최대 크기로 채우기 */
   background-position: center; /* 이미지를 중앙에 위치시키기 */
   background-repeat: no-repeat; /* 이미지 반복 방지 */
+  border-radius: 10px;
 }
 
-
-.address{
+.address {
   position: absolute;
   width: 350px;
   height: 70px;
@@ -103,41 +100,38 @@
   border: 1px solid #ccc;
   display: flex;
   flex-direction: column; /* 아이템들을 수직으로 배치합니다. */
-  
-  }
+  border-radius: 10px;
+}
 
-  .content {
-    height: 530px; /* .container와 같은 높이로 설정하여 수직 스크롤만 유지합니다. */
-    width: 500px;
+.content {
+  height: 530px; /* .container와 같은 높이로 설정하여 수직 스크롤만 유지합니다. */
+  width: 500px;
   /* 내용 및 스타일 설정 */
-  }
+  border-radius: 10px;
+}
 
-  .item {
-    width: 480px;
-    height: 80px;
+.item {
+  width: 480px;
+  height: 80px;
   padding: 10px; /* 각 아이템의 패딩 설정 */
-  border: 1px solid #ddd; /* 각 아이템 테두리 설정 */
+  /* border: 1px solid #ddd;  각 아이템 테두리 설정 */
   margin: 5px 0; /* 각 아이템의 상단 및 하단 마진 설정 */
   text-align: left;
-  
-  }
+}
 
-
-
-.submit{
+.submit {
   width: 200px;
   height: 40px;
   position: absolute;
   left: 35%;
   top: 90%;
 
-    display: inline-block;
-    border: 2px solid var(--gray2);
-    border-radius: 4px;
-    background-color: #ffffff;
-    padding: 8px 25px;
-    box-sizing: border-box;
-  
+  display: inline-block;
+  border: 2px solid var(--gray2);
+  border-radius: 4px;
+  background-color: #ffffff;
+  padding: 8px 25px;
+  box-sizing: border-box;
 }
 
 .submit:hover {
@@ -146,10 +140,8 @@
   border: 2px solid var(--light-blue);
 }
 
-#search:hover{
+#search:hover {
   cursor: pointer;
   background-color: var(--yellow);
   border: 2px solid var(--light-blue);
 }
-
-
