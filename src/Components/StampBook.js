@@ -7,6 +7,15 @@ import styled from 'styled-components';
 const StampBookImg = styled.div`
   height: 500px;
   background-color: var(--gray1);
+  &:hover {
+    cursor: pointer;
+  }
+`;
+
+const StampBookTxt = styled.div`
+  text-align: center;
+  position: relative;
+  margin-top: 10px;
 `;
 
 const StampBookTitle = styled.button`
@@ -17,6 +26,27 @@ const StampBookTitle = styled.button`
   &:hover {
     cursor: pointer;
   }
+`;
+
+const StampBookLike = styled.div`
+  display: flex;
+  position: absolute;
+  top: 2px;
+  right: 0;
+  > div:first-child {
+    margin-right: 10px;
+  }
+}
+`;
+
+const StampBookLikeBtn = styled.div`
+  &:hover {
+    cursor: pointer;
+  }
+`;
+
+const StampBookBtnBox = styled.div`
+  text-align: center;
 `;
 
 const StampBook = (props) => {
@@ -30,19 +60,19 @@ const StampBook = (props) => {
   return (
     <div>
       <StampBookImg onClick={goToStampDetail} />
-      <div className='stamp_book_txt'>
+      <StampBookTxt>
         <StampBookTitle onClick={goToStampDetail}>{props.title}</StampBookTitle>
-        <div className='stamp_book_like'>
-          <div className='like_btn'>
+        <StampBookLike>
+          <StampBookLikeBtn>
             <img src={like} alt='좋아요' />
-          </div>
+          </StampBookLikeBtn>
           <div>{props.like}</div>
-        </div>
-        <div className='stamp_book_btn'>
+        </StampBookLike>
+        <StampBookBtnBox>
           <Button children={'담기'} marginright='true' />
           <Button children={'삭제'} />
-        </div>
-      </div>
+        </StampBookBtnBox>
+      </StampBookTxt>
     </div>
   );
 };
