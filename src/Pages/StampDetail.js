@@ -72,12 +72,13 @@ const InputBox = styled.div`
   justify-content: space-between;
   margin-bottom: 50px;
   > input {
-    width: 1050px;
+    width: 1195px;
     height: 50px;
     border: 2px solid var(--gray2);
     border-radius: 5px;
     text-align: start;
     padding: 0 20px;
+    box-sizing: border-box;
     &:focus {
       outline: none;
     }
