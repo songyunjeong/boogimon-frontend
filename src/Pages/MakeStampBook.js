@@ -1,8 +1,8 @@
 import Header from '../Components/Header';
 import React, { useState } from 'react';
-import '../styles/makeStampBook.css';
+
 import '../styles/popup_address.css';
-import '../styles/stampDetail.css';
+
 import Map from '../Components/Map';
 import styled from 'styled-components';
 
@@ -37,6 +37,42 @@ const StampBoard = styled.div`
 const StampDetailTxt = styled.div`
   clear: both;
   padding: 20px 0;
+`;
+const Modal = styled.div`
+  position: fixed;
+  width: 100%;
+  height: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 1000; /* 모달을 최상위로 올림 */
+`;
+const PopupBg = styled.div`
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.6);
+`;
+
+const CloseBtn = styled.button`
+  position: absolute;
+  width: 20px;
+  height: 20px;
+  top: 1%;
+  left: 93%;
+  display: inline-block;
+  border: 2px solid var(--gray2);
+  border-radius: 4px;
+  background-color: #ffffff;
+  box-sizing: border-box;
+  &:hover {
+    cursor: pointer;
+    background-color: var(--yellow);
+    border: 2px solid var(--light-blue);
+  }
+  z-index: 1001; /* X 버튼을 모달과 배경 위로 올림 */
 `;
 
 const MakeStampBook = () => {
@@ -127,42 +163,5 @@ const MakeStampBook = () => {
     </div>
   );
 };
-
-const Modal = styled.div`
-  position: fixed;
-  width: 100%;
-  height: 100%;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  z-index: 1000; /* 모달을 최상위로 올림 */
-`;
-const PopupBg = styled.div`
-  position: fixed;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  background-color: rgba(0, 0, 0, 0.6);
-`;
-
-const CloseBtn = styled.button`
-  position: absolute;
-  width: 20px;
-  height: 20px;
-  top: 1%;
-  left: 93%;
-  display: inline-block;
-  border: 2px solid var(--gray2);
-  border-radius: 4px;
-  background-color: #ffffff;
-  box-sizing: border-box;
-  &:hover {
-    cursor: pointer;
-    background-color: var(--yellow);
-    border: 2px solid var(--light-blue);
-  }
-  z-index: 1001; /* X 버튼을 모달과 배경 위로 올림 */
-`;
 
 export default MakeStampBook;
