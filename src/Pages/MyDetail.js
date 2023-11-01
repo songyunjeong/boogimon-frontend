@@ -172,7 +172,7 @@ const My = () => {
               </div>
               {/* <div className='stamp_book_btn'> */}
               <CompleteBtn>
-                <OpenBtn onClick={onOpenCard}>인증서</OpenBtn>
+                <OpenBtn onClick={onOpenCard}>부기몬 카드</OpenBtn>
                 {openCard ? <Popup /> : ''}
                 <button className='delete_btn'>삭제</button>
               </CompleteBtn>

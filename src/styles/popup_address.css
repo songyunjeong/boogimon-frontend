@@ -79,7 +79,7 @@
   position: relative;
   top: -71%;
   left: 71%;
-  background-image: url(/public/img/다운로드.jpeg);
+  background-image: url('https://www.visitbusan.net/uploadImgs/files/cntnts/20191222164810529_thumbL');
   background-size: cover; /* 이미지를 가능한 최대 크기로 채우기 */
   background-position: center; /* 이미지를 중앙에 위치시키기 */
   background-repeat: no-repeat; /* 이미지 반복 방지 */
