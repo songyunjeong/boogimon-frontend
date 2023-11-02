@@ -150,7 +150,7 @@ const ThumnailBOX = styled.div`
 `;
 
 const MakeStampBook = () => {
-  const [openMap, closeMap] = useState(false);
+  const [MapPlace, setMapPlace] = useState(false);
 
   const [apiData, setApiData] = useState([]);
   const [selectedItem, setSelectedItem] = useState(null);
@@ -220,12 +220,12 @@ const MakeStampBook = () => {
   }, []);
 
   const onOpenMap = () => {
-    closeMap(!openMap);
+    setMapPlace(!MapPlace);
   };
   const Popup = () => {
     const closeModal = () => {
       clearSelectedItem();
-      closeMap(false); // 팝업을 닫음
+      setMapPlace(false); // 팝업을 닫음
     };
     return (
       <Modal>
@@ -253,9 +253,7 @@ const MakeStampBook = () => {
                     onClick={() => handleItemClick(index)}
                     style={{
                       border:
-                        selectedItem === index
-                          ? '2px solid var(--yellow)'
-                          : '2px solid transparent',
+                        selectedItem === index && '2px solid var(--yellow)',
                     }}
                   >
                     <p>장소: {item.placeName}</p>
@@ -303,7 +301,7 @@ const MakeStampBook = () => {
               <div className='stamp_txt' onClick={onOpenMap}>
                 흰여울문화마을
               </div>
-              {openMap ? <Popup /> : ''}
+              {MapPlace ? <Popup /> : ''}
             </div>
           </StampBoard>
 
