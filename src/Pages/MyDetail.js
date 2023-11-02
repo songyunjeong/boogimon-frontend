@@ -1,6 +1,5 @@
 import React, { useState } from 'react';
 import styled from 'styled-components';
-import '../styles/popup_card.css';
 import '../globalStyle';
 import boogicard from '../images/bogimon_card_b.png';
 import profile from '../images/머리만(색깔).png';
@@ -53,7 +52,7 @@ const OpenBtn = styled.button`
   }
 `;
 
-const Popup = styled.div`
+const CardPopup = styled.div`
   position: absolute;
   top: 50%;
   left: 50%;
@@ -201,7 +200,7 @@ const StampBookBox = styled.section`
   }
 `;
 
-const ProfileImg = styled.div`
+const MyImg = styled.div`
   width: 120px;
   height: 120px;
   background-color: white;
@@ -211,7 +210,12 @@ const ProfileImg = styled.div`
   left: 80px;
   overflow: hidden;
   border: 2px solid black;
-  background-image: url(${profile});
+`;
+
+const MyProfileImg = styled.img`
+  width: 120px;
+  height: 120px;
+  object-fit: cover;
 `;
 
 const MyproFile = styled.div`
@@ -363,7 +367,7 @@ const My = () => {
   };
   const Popup = () => {
     const saveAsImage = () => {
-      const cardElement = document.querySelector('.popup');
+      const cardElement = document.querySelector('.CardPopup');
       html2canvas(cardElement).then((canvas) => {
         // 사용자로부터 파일 이름을 입력받기 위한 프롬프트 다이얼로그
         const filename = window.prompt(
@@ -384,7 +388,7 @@ const My = () => {
     return (
       <Modal>
         <PopupBg />
-        <div className='popup'>
+        <CardPopup className='CardPopup'>
           <CloseBtn onClick={onOpenCard}> x</CloseBtn>
           <CardName>광안리</CardName>
           <RandomImg>랜덤이미지</RandomImg>
@@ -393,7 +397,7 @@ const My = () => {
           <Download>
             <DownloadBtn onClick={saveAsImage}></DownloadBtn>
           </Download>
-        </div>
+        </CardPopup>
       </Modal>
     );
   };
@@ -401,7 +405,9 @@ const My = () => {
   const View = () => {
     return (
       <Mypage>
-        <ProfileImg />
+        <MyImg>
+          <MyProfileImg src={profile} alt='프로필이미지' />
+        </MyImg>
         <MyproFile>
           <NickName>부기몬하이</NickName>
           <ColorBtn />
