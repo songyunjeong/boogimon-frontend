@@ -1,6 +1,7 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import like from '../images/like.png';
+import likeFullImg from '../images/like_full.png';
+import likeImg from '../images/like.png';
 import Button from './Button';
 import styled from 'styled-components';
 
@@ -51,11 +52,16 @@ const StampBookBtnBox = styled.div`
 
 const StampBook = (props) => {
   const navigate = useNavigate();
+  const [likeBtn, setLikeBtn] = useState(false);
 
   const goToStampDetail = () =>
     navigate('/stampDetail', {
       state: { title: props.title, like: props.like },
     });
+
+  const likeHandler = () => {
+    setLikeBtn(!likeBtn);
+  };
 
   return (
     <div>
@@ -63,10 +69,10 @@ const StampBook = (props) => {
       <StampBookTxt>
         <StampBookTitle onClick={goToStampDetail}>{props.title}</StampBookTitle>
         <StampBookLike>
-          <StampBookLikeBtn>
-            <img src={like} alt='좋아요' />
+          <StampBookLikeBtn onClick={likeHandler}>
+            <img src={likeBtn ? likeFullImg : likeImg} alt='좋아요' />
           </StampBookLikeBtn>
-          <div>{props.like}</div>
+          <div>{likeBtn ? props.like * 1 + 1 : props.like}</div>
         </StampBookLike>
         <StampBookBtnBox>
           <Button children={'담기'} marginright='true' />

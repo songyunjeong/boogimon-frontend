@@ -1,6 +1,10 @@
+import { useRef, useState } from 'react';
+import Button from '../Components/Button';
 import Header from '../Components/Header';
 import Map from '../Components/Map';
 import styled from 'styled-components';
+import html2canvas from 'html2canvas';
+import { saveAs } from 'file-saver';
 
 const Wrap = styled.div`
   width: 1280px;
@@ -10,10 +14,27 @@ const Wrap = styled.div`
   }
 `;
 
-const StampBookTitle = styled.div`
-  font-size: var(--big);
-  font-weight: bold;
+const TitleBox = styled.div`
+  display: flex;
+  justify-content: space-between;
   margin: 50px 0 20px;
+`;
+
+const StampBookTitle = styled.input`
+  width: 300px;
+  height: 50px;
+  border: 2px solid var(--gray2);
+  border-radius: 5px;
+  text-align: start;
+  padding: 0 20px;
+  box-sizing: border-box;
+  &:focus {
+    outline: none;
+  }
+`;
+
+const TitleButtonBox = styled.div`
+  display: flex;
 `;
 
 const StampBoard = styled.div`
@@ -22,7 +43,7 @@ const StampBoard = styled.div`
   width: 700px;
   background-color: var(--gray1);
   border-radius: 10px;
-  padding: 50px 80px 20px;
+  padding: 50px 80px 40px;
   box-sizing: border-box;
   margin-right: 30px;
   > div:nth-child(3n) {
@@ -30,38 +51,141 @@ const StampBoard = styled.div`
   }
 `;
 
-const StampDetailTxt = styled.div`
+const NewStamp = styled.div`
+  margin-right: 45px;
+  margin-bottom: 30px;
+`;
+
+const NewStampImgBox = styled.div`
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background-color: var(--gray3);
+  width: 150px;
+  height: 150px;
+  border-radius: 50%;
+  margin-bottom: 10px;
+  overflow: hidden;
+  > button {
+    width: 150px;
+    height: 150px;
+    border: none;
+    background-color: transparent;
+    font-size: var(--big);
+    color: white;
+  }
+  > button:hover {
+    cursor: pointer;
+  }
+`;
+
+const NewStampBtnBox = styled.div`
+  display: flex;
+  flex-direction: column;
+  padding-top: 10px;
+  > button:first-child {
+    margin-bottom: 5px;
+  }
+`;
+
+const MapBox = styled.div`
+  width: 550px;
+  border-radius: 12px;
+  overflow: hidden;
+`;
+
+const StampDetailTxt = styled.textarea`
   clear: both;
-  padding: 20px 0;
+  width: 1280px;
+  height: 200px;
+  border: 2px solid var(--gray2);
+  border-radius: 5px;
+  text-align: start;
+  padding: 20px;
+  box-sizing: border-box;
+  margin: 30px 0;
+  resize: none;
+  &:focus {
+    outline: none;
+  }
 `;
 
 const MakeStampBook = () => {
+  const divRef = useRef();
+  let [screenShot, setScreenShot] = useState(false);
+
+  const downloadHandler = async (e) => {
+    if (!divRef.current) return;
+
+    try {
+      const div = divRef.current;
+      const canvas = await html2canvas(div, { scale: 1 });
+      canvas.toBlob((blob) => {
+        if (blob != null && screenShot) {
+          saveAs(blob, 'stampBook.png');
+        }
+      });
+    } catch (error) {
+      console.error('Error converting div to image:', error);
+    }
+  };
+
   return (
     <div>
       <Header />
 
       <Wrap>
-        <StampBookTitle>타이틀을 작성하세요</StampBookTitle>
+        <TitleBox>
+          <StampBookTitle placeholder='타이틀을 작성해주세요.' />
+
+          <TitleButtonBox>
+            <Button children={'등록'} marginright='true' />
+            <Button children={'취소'} />
+          </TitleButtonBox>
+        </TitleBox>
 
         <div>
-          <StampBoard>
-            <div className='stamp'>
-              <div className='stamp_img'>
-                <img
-                  src='https://www.visitbusan.net/uploadImgs/files/cntnts/20191222164810529_thumbL'
-                  alt='스탬프 이미지1'
-                />
-              </div>
-              <div className='stamp_txt'>흰여울문화마을</div>
-            </div>
+          <StampBoard ref={divRef}>
+            {!screenShot && (
+              <NewStamp>
+                <NewStampImgBox>
+                  <button>+</button>
+                </NewStampImgBox>
+                <NewStampBtnBox>
+                  <Button children={'장소등록'} />
+                  <Button children={'삭제'} />
+                </NewStampBtnBox>
+              </NewStamp>
+            )}
           </StampBoard>
 
-          <div className='stamp_map'>
+          <MapBox>
             <Map />
-          </div>
+          </MapBox>
         </div>
 
-        <StampDetailTxt>상세설명 작성</StampDetailTxt>
+        <StampDetailTxt placeholder='상세설명을 작성해주세요.' />
+
+        <p>스탬프북 이미지를 업로드 해주세요.</p>
+        <p
+          style={{
+            marginBottom: '10px',
+            color: 'var(--gray4)',
+            fontSize: 'var(--small)',
+          }}
+        >
+          ⬇︎ 아래에서 스탬프북 이미지를 다운로드 후 업로드 해주세요.
+        </p>
+
+        <Button
+          children={'스탬프북 이미지 다운로드'}
+          marginright='true'
+          onClick={() => {
+            setScreenShot(!screenShot);
+            downloadHandler();
+          }}
+        />
+        <Button children={'스탬프북 이미지 업로드'} />
       </Wrap>
     </div>
   );
