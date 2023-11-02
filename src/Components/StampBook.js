@@ -37,7 +37,6 @@ const StampBookLike = styled.div`
   > div:first-child {
     margin-right: 10px;
   }
-}
 `;
 
 const StampBookLikeBtn = styled.div`

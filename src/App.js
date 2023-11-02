@@ -2,8 +2,8 @@ import { Route, Routes } from 'react-router-dom';
 import StampDetail from './Pages/StampDetail';
 import MakeStampBook from './Pages/MakeStampBook';
 import BoogiBook from './Pages/BoogiBook';
-import My from './Pages/My';
 import Home from './Pages/Home';
+import My from './Pages/MyDetail';
 
 function App() {
   return (
