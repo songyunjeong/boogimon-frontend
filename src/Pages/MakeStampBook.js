@@ -1,7 +1,10 @@
+import { useRef, useState } from 'react';
 import Button from '../Components/Button';
 import Header from '../Components/Header';
 import Map from '../Components/Map';
 import styled from 'styled-components';
+import html2canvas from 'html2canvas';
+import { saveAs } from 'file-saver';
 
 const Wrap = styled.div`
   width: 1280px;
@@ -48,12 +51,12 @@ const StampBoard = styled.div`
   }
 `;
 
-const Stamp = styled.div`
+const NewStamp = styled.div`
   margin-right: 45px;
   margin-bottom: 30px;
 `;
 
-const StampImgBox = styled.div`
+const NewStampImgBox = styled.div`
   display: flex;
   justify-content: center;
   align-items: center;
@@ -76,7 +79,7 @@ const StampImgBox = styled.div`
   }
 `;
 
-const StampBtnBox = styled.div`
+const NewStampBtnBox = styled.div`
   display: flex;
   flex-direction: column;
   padding-top: 10px;
@@ -85,59 +88,104 @@ const StampBtnBox = styled.div`
   }
 `;
 
-const StampDetailTxt = styled.div`
+const MapBox = styled.div`
+  width: 550px;
+  border-radius: 12px;
+  overflow: hidden;
+`;
+
+const StampDetailTxt = styled.textarea`
   clear: both;
-  > textarea {
-    width: 1280px;
-    height: 200px;
-    border: 2px solid var(--gray2);
-    border-radius: 5px;
-    text-align: start;
-    padding: 20px;
-    box-sizing: border-box;
-    margin: 30px 0;
-    resize: none;
-    &:focus {
-      outline: none;
-    }
+  width: 1280px;
+  height: 200px;
+  border: 2px solid var(--gray2);
+  border-radius: 5px;
+  text-align: start;
+  padding: 20px;
+  box-sizing: border-box;
+  margin: 30px 0;
+  resize: none;
+  &:focus {
+    outline: none;
+  }
 `;
 
 const MakeStampBook = () => {
+  const divRef = useRef();
+  let [screenShot, setScreenShot] = useState(false);
+
+  const downloadHandler = async (e) => {
+    if (!divRef.current) return;
+
+    try {
+      const div = divRef.current;
+      const canvas = await html2canvas(div, { scale: 1 });
+      canvas.toBlob((blob) => {
+        if (blob != null && screenShot) {
+          saveAs(blob, 'stampBook.png');
+        }
+      });
+    } catch (error) {
+      console.error('Error converting div to image:', error);
+    }
+  };
+
   return (
     <div>
       <Header />
 
       <Wrap>
         <TitleBox>
-          <StampBookTitle placeholder='타이틀을 작성하세요.' />
+          <StampBookTitle placeholder='타이틀을 작성해주세요.' />
 
           <TitleButtonBox>
-            <Button children={'등록'} marginright />
+            <Button children={'등록'} marginright='true' />
             <Button children={'취소'} />
           </TitleButtonBox>
         </TitleBox>
 
         <div>
-          <StampBoard>
-            <Stamp>
-              <StampImgBox>
-                <button>+</button>
-              </StampImgBox>
-              <StampBtnBox>
-                <Button children={'장소등록'} />
-                <Button children={'삭제'} />
-              </StampBtnBox>
-            </Stamp>
+          <StampBoard ref={divRef}>
+            {!screenShot && (
+              <NewStamp>
+                <NewStampImgBox>
+                  <button>+</button>
+                </NewStampImgBox>
+                <NewStampBtnBox>
+                  <Button children={'장소등록'} />
+                  <Button children={'삭제'} />
+                </NewStampBtnBox>
+              </NewStamp>
+            )}
           </StampBoard>
 
-          <div className='stamp_map'>
+          <MapBox>
             <Map />
-          </div>
+          </MapBox>
         </div>
 
-        <StampDetailTxt>
-          <textarea placeholder='상세설명을 작성하세요.' />
-        </StampDetailTxt>
+        <StampDetailTxt placeholder='상세설명을 작성해주세요.' />
+
+        <p>스탬프북 이미지를 업로드 해주세요.</p>
+        <p
+          style={{
+            marginBottom: '10px',
+            color: 'var(--gray4)',
+            fontSize: 'var(--small)',
+          }}
+        >
+          ⬇︎ 아래에서 스탬프북 이미지를 다운로드 후 업로드 해주세요.
+        </p>
+
+        <Button
+          children={'스탬프북 이미지 다운로드'}
+          marginright='true'
+          onClick={() => {
+            setScreenShot(!screenShot);
+            downloadHandler();
+          }}
+        />
+        <Button children={'스탬프북 이미지 업로드'} />
       </Wrap>
     </div>
   );
