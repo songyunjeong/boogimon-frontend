@@ -32,7 +32,6 @@ const StampBookBox = styled.section`
   > div:nth-child(3n) {
     padding-right: 0;
   }
-}
 `;
 
 const Home = () => {
