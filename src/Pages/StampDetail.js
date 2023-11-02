@@ -7,6 +7,9 @@ import Button from '../Components/Button';
 import styled from 'styled-components';
 import Stamp from '../Components/Stamp';
 import TalkBox from '../Components/TalkBox';
+import { useRef } from 'react';
+import html2canvas from 'html2canvas';
+import { saveAs } from 'file-saver';
 
 const Wrap = styled.div`
   width: 1280px;
@@ -54,7 +57,7 @@ const StampBookLike = styled.div`
   display: flex;
   position: absolute;
   top: 25px;
-  left: 200px;
+  right: 600px;
   > div:first-child {
     margin-right: 10px;
   }
@@ -96,7 +99,24 @@ const CreateUserBox = styled.div`
 `;
 
 const StampDetail = () => {
+  const divRef = useRef();
   const { state } = useLocation();
+
+  const downloadHandler = async (e) => {
+    if (!divRef.current) return;
+
+    try {
+      const div = divRef.current;
+      const canvas = await html2canvas(div, { scale: 1 });
+      canvas.toBlob((blob) => {
+        if (blob != null) {
+          saveAs(blob, 'stampBook.png');
+        }
+      });
+    } catch (error) {
+      console.error('Error converting div to image:', error);
+    }
+  };
 
   const stampList = [
     {
@@ -185,7 +205,7 @@ const StampDetail = () => {
         <Title>{state.title}</Title>
 
         <div>
-          <StampBoardBox>
+          <StampBoardBox ref={divRef}>
             {stampList.map((stamp, i) => {
               return (
                 <Stamp
@@ -205,7 +225,13 @@ const StampDetail = () => {
 
         <ButtonBar>
           <Button children={'공유'} marginright='true' />
-          <Button children={'담기'} />
+          <Button children={'담기'} marginright='true' />
+          <Button
+            children={'스탬프북 이미지 다운로드'}
+            onClick={() => {
+              downloadHandler();
+            }}
+          />
           <StampBookLike>
             <StampBookLikeBtn>
               <img src={like} alt='좋아요' />

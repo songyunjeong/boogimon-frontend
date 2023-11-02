@@ -75,7 +75,7 @@ const Home = () => {
             return (
               <StampBook
                 title={stampBook.title}
-                like={stampBook.like}
+                like={StampBook.like}
                 key={i}
               />
             );
