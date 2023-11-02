@@ -1,8 +1,8 @@
 import React, { useState } from 'react';
 import styled from 'styled-components';
 import '../globalStyle';
-import boogicard from '../images/bogimon_card_b.png';
 import profile from '../images/머리만(색깔).png';
+import boogicard from '../images/bogimon_card_b.png';
 import Header from '../Components/Header';
 import StampBook from '../Components/StampBook';
 import html2canvas from 'html2canvas';
@@ -52,11 +52,24 @@ const OpenBtn = styled.button`
   }
 `;
 
-const CardPopup = styled.div`
+const BoogiCardContainer = styled.div`
+  width: 300px;
+  height: 400px;
   position: absolute;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%);
+  left: 12%;
+  top: 5%;
+  z-index: 2; /* 보다 낮은 z-index 값을 설정 */
+  background-color: pink;
+  background-image: url(${boogicard});
+  background-size: cover; /* 이미지를 컨테이너에 맞게 조절 */
+  background-position: center; /* 이미지를 가운데 정렬 */
+`;
+
+const CardPopup = styled.div`
+  position: fixed; /* 화면 크기에 관계없이 위치 고정 */
+  top: 50%; /* 화면 상단에서 50% 위치에 배치 */
+  left: 50%; /* 화면 왼쪽에서 50% 위치에 배치 */
+  transform: translate(-50%, -50%); /* 중앙 정렬을 위한 변환 */
   background-color: #ffffff;
   box-shadow: 0 2px 7px rgba(0, 0, 0, 0.3);
 
@@ -70,15 +83,6 @@ const CardPopup = styled.div`
   white-space: normal;
 
   border-radius: 10px;
-`;
-
-const BoogiCardImg = styled.img`
-  width: 300px;
-  height: 400px;
-  position: absolute;
-  left: 12%;
-  top: 5%;
-  z-index: 1; /* 보다 낮은 z-index 값을 설정 */
 `;
 
 const Download = styled.div`
@@ -119,28 +123,30 @@ const CardName = styled.p`
   width: 130px;
   height: 25px;
   position: absolute;
-  left: 27%;
-  top: 7%;
+  left: 10%;
+  top: 2%;
   z-index: 2; /* 더 높은 z-index 값을 설정하여 앞으로 가져옵니다 */
 `;
 
-const RandomImg = styled.p`
+const RandomImg = styled.div`
   width: 240px;
   height: 150px;
   position: absolute;
-  left: 20%;
-  top: 14%;
-  z-index: 2; /* 더 높은 z-index 값을 설정하여 앞으로 가져옵니다 */
+  left: 10%;
+  top: 9%;
+  z-index: 3; /* 더 높은 z-index 값을 설정하여 앞으로 가져옵니다 */
+  background-color: yellow;
 `;
 
 const CardContent = styled.p`
-  width: 240px;
+  width: 260px;
   height: 180px;
 
   position: absolute;
-  left: 20%;
-  top: 47%;
-  z-index: 2; /* 더 높은 z-index 값을 설정하여 앞으로 가져옵니다 */
+  left: 7%;
+  top: 52%;
+  z-index: 3; /* 더 높은 z-index 값을 설정하여 앞으로 가져옵니다 */
+  background-color: blue;
 `;
 
 const Mypage = styled.div`
@@ -388,14 +394,21 @@ const My = () => {
     return (
       <Modal>
         <PopupBg />
-        <CardPopup className='CardPopup'>
-          <CloseBtn onClick={onOpenCard}> x</CloseBtn>
-          <CardName>광안리</CardName>
-          <RandomImg>랜덤이미지</RandomImg>
-          <CardContent>카드내용? 축하드립니다~</CardContent>
-          <BoogiCardImg src={boogicard} alt='부기카드' />
+        <CardPopup>
+          <CloseBtn onClick={onOpenCard} data-html2canvas-ignore='true'>
+            {' '}
+            x
+          </CloseBtn>
+          <BoogiCardContainer className='CardPopup'>
+            <CardName>광안리</CardName>
+            <RandomImg>랜덤이미지</RandomImg>
+            <CardContent>카드내용? 축하드립니다~</CardContent>
+          </BoogiCardContainer>
           <Download>
-            <DownloadBtn onClick={saveAsImage}></DownloadBtn>
+            <DownloadBtn
+              onClick={saveAsImage}
+              data-html2canvas-ignore='true'
+            ></DownloadBtn>
           </Download>
         </CardPopup>
       </Modal>
