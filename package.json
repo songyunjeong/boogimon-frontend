@@ -2,6 +2,7 @@
   "name": "boogimon-frontend",
   "version": "0.1.0",
   "private": true,
+  "proxy": "http://localhost:8080",
   "dependencies": {
     "@react-navigation/native": "^6.1.9",
     "@testing-library/jest-dom": "^5.17.0",

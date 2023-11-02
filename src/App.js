@@ -4,6 +4,7 @@ import MakeStampBook from './Pages/MakeStampBook';
 import BoogiBook from './Pages/BoogiBook';
 import My from './Pages/My';
 import Home from './Pages/Home';
+import TestPage from './Pages/Test';
 
 function App() {
   return (
@@ -14,6 +15,7 @@ function App() {
         <Route path='/boogiBook' element={<BoogiBook />} />
         <Route path='/makeStampBook' element={<MakeStampBook />} />
         <Route path='/stampDetail' element={<StampDetail />} />
+        <Route path='/test' element={<TestPage />} />
       </Routes>
     </div>
   );
