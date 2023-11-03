@@ -37,9 +37,9 @@ const StampBookBox = styled.section`
 `;
 
 const Home = () => {
-  const [data, setData] = useState(null);
+  const [data, setData] = useState();
 
-  const onLoad = () => {
+  useEffect(() => {
     axios
       .get(
         'http://localhost:8080/boogimon/stampbook/stampbook.jsp?command=list'
@@ -47,35 +47,7 @@ const Home = () => {
       .then((response) => {
         setData(response.data);
       });
-  };
-
-  useEffect(() => {
-    onLoad();
-    console.log(data);
-  }, [data]);
-
-  const stampBookList = [
-    {
-      title: '스탬프북1',
-      like: '30',
-    },
-    {
-      title: '스탬프북2',
-      like: '22',
-    },
-    {
-      title: '스탬프북3',
-      like: '20',
-    },
-    {
-      title: '스탬프북4',
-      like: '13',
-    },
-    {
-      title: '스탬프북5',
-      like: '5',
-    },
-  ];
+  }, []);
 
   return (
     <div>
@@ -89,13 +61,9 @@ const Home = () => {
         </Sort>
 
         <StampBookBox>
-          {stampBookList.map((stampBook, i) => {
+          {data?.stampbookList.map((book, i) => {
             return (
-              <StampBook
-                title={stampBook.title}
-                like={stampBook.likeCount}
-                key={i}
-              />
+              <StampBook title={book.title} like={book.likeCount} key={i} />
             );
           })}
         </StampBookBox>
