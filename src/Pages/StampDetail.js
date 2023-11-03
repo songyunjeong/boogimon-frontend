@@ -235,7 +235,7 @@ const StampDetail = () => {
             <StampBookLikeBtn>
               <img src={like} alt='좋아요' />
             </StampBookLikeBtn>
-            <div>{state.like}</div>
+            <div>{state.likeCount}</div>
           </StampBookLike>
         </ButtonBar>
 
@@ -276,11 +276,9 @@ const StampDetail = () => {
 
           <TalkBox
             profileImg={avatar}
-            id={'부기몬 크리에이터'}
-            txt={
-              '이 스탬프북을 다 모으신다면 당신은 진정한 부기몬 마스터가 된답니다'
-            }
-            writeDate={'2023-10-27 11:13:12'}
+            nickname={state.nickname}
+            description={state.description}
+            stampbookRegdate={state.stampbookRegdate}
             margin={'20px 0'}
           />
         </CreateUserBox>
