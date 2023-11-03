@@ -3,7 +3,7 @@ import StampDetail from './Pages/StampDetail';
 import MakeStampBook from './Pages/MakeStampBook';
 import BoogiBook from './Pages/BoogiBook';
 import Home from './Pages/Home';
-import My from './Pages/MyDetail';
+import My from './Pages/My';
 
 function App() {
   return (
