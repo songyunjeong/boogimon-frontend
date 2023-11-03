@@ -357,7 +357,8 @@ const MakeStampBook = () => {
   };
 
   const divRef = useRef();
-  let [screenShot, setScreenShot] = useState(false);
+  const [screenShot, setScreenShot] = useState(false);
+  const [imgUpload, setImgUpload] = useState(null);
 
   const downloadHandler = async (e) => {
     if (!divRef.current) return;
@@ -373,6 +374,19 @@ const MakeStampBook = () => {
     } catch (error) {
       console.error('Error converting div to image:', error);
     }
+  };
+
+  const imgUploadHandler = (e) => {
+    const file = e.target.files[0];
+    const reader = new FileReader();
+    reader.readAsDataURL(file);
+
+    return new Promise((resolve) => {
+      reader.onload = () => {
+        setImgUpload(reader.result);
+        resolve();
+      };
+    });
   };
 
   return (
@@ -430,8 +444,18 @@ const MakeStampBook = () => {
             setScreenShot(!screenShot);
             downloadHandler();
           }}
+          style={{ display: 'block' }}
         />
-        <Button children={'스탬프북 이미지 업로드'} />
+
+        <input
+          accept='image/*'
+          multiple
+          type='file'
+          onChange={(e) => imgUploadHandler(e)}
+          name='upload'
+          style={{ display: 'block', margin: '30px 0 10px' }}
+        />
+        <img src={imgUpload} alt='' style={{ width: '300px' }} />
       </Wrap>
     </div>
   );
