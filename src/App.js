@@ -6,8 +6,8 @@ import FindPassword from './Pages/FindPassword';
 import EditUserInfo from './Pages/EditUserInfo';
 import MakeStampBook from './Pages/MakeStampBook';
 import BoogiBook from './Pages/BoogiBook';
-import My from './Pages/My';
 import Home from './Pages/Home';
+import My from './Pages/My';
 
 function App() {
   return (

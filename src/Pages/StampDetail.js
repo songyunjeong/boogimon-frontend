@@ -7,6 +7,9 @@ import Button from '../Components/Button';
 import styled from 'styled-components';
 import Stamp from '../Components/Stamp';
 import TalkBox from '../Components/TalkBox';
+import { useRef } from 'react';
+import html2canvas from 'html2canvas';
+import { saveAs } from 'file-saver';
 
 const Wrap = styled.div`
   width: 1280px;
@@ -54,7 +57,7 @@ const StampBookLike = styled.div`
   display: flex;
   position: absolute;
   top: 25px;
-  left: 200px;
+  right: 600px;
   > div:first-child {
     margin-right: 10px;
   }
@@ -71,12 +74,13 @@ const InputBox = styled.div`
   justify-content: space-between;
   margin-bottom: 50px;
   > input {
-    width: 1050px;
+    width: 1195px;
     height: 50px;
     border: 2px solid var(--gray2);
     border-radius: 5px;
     text-align: start;
     padding: 0 20px;
+    box-sizing: border-box;
     &:focus {
       outline: none;
     }
@@ -94,73 +98,79 @@ const CreateUserBox = styled.div`
 `;
 
 const StampDetail = () => {
+  const divRef = useRef();
   const { state } = useLocation();
+
+  const downloadHandler = async (e) => {
+    if (!divRef.current) return;
+
+    try {
+      const div = divRef.current;
+      const canvas = await html2canvas(div, { scale: 1 });
+      canvas.toBlob((blob) => {
+        if (blob != null) {
+          saveAs(blob, 'stampBook.png');
+        }
+      });
+    } catch (error) {
+      console.error('Error converting div to image:', error);
+    }
+  };
 
   const stampList = [
     {
       imgSrc:
         'https://www.visitbusan.net/uploadImgs/files/cntnts/20191222164810529_thumbL',
-      imgAlt: '스탬프 이미지1',
       title: '흰여울문화마을',
     },
     {
       imgSrc:
         'https://www.visitbusan.net/uploadImgs/files/cntnts/20191222171209005_thumbL',
-      imgAlt: '스탬프 이미지2',
       title: '깡깡이 예술마을',
     },
     {
       imgSrc:
         'https://www.visitbusan.net/uploadImgs/files/cntnts/20191222175627506_thumbL',
-      imgAlt: '스탬프 이미지3',
       title: '국립해양박물관',
     },
     {
       imgSrc:
         'https://www.visitbusan.net/uploadImgs/files/cntnts/20191222180829962_thumbL',
-      imgAlt: '스탬프 이미지4',
       title: '태종대',
     },
     {
       imgSrc:
         'https://www.visitbusan.net/uploadImgs/files/cntnts/20191222181829937_thumbL',
-      imgAlt: '스탬프 이미지5',
       title: '죽성성당',
     },
     {
       imgSrc:
         'https://www.visitbusan.net/uploadImgs/files/cntnts/20191222185645736_thumbL',
-      imgAlt: '스탬프 이미지6',
       title: '아홉산 숲',
     },
     {
       imgSrc:
         'https://www.visitbusan.net/uploadImgs/files/cntnts/20191222190823385_thumbL',
-      imgAlt: '스탬프 이미지7',
       title: '해동용궁사',
     },
     {
       imgSrc:
         'https://www.visitbusan.net/uploadImgs/files/cntnts/20191224093809621_thumbL',
-      imgAlt: '스탬프 이미지8',
       title: '임랑해수욕장',
     },
     {
       imgSrc:
         'https://www.visitbusan.net/uploadImgs/files/cntnts/20191224171115847_thumbL',
-      imgAlt: '스탬프 이미지9',
       title: '문화공감 수정, 초량1941',
     },
     {
       imgSrc:
         'https://www.visitbusan.net/uploadImgs/files/cntnts/20230525134753245_thumbL',
-      imgAlt: '스탬프 이미지10',
       title: '영도, 태종대, 자동차극장, 흰여울문화마을, 깡깡이예술마을',
     },
     {
       imgSrc:
         'https://www.visitbusan.net/uploadImgs/files/cntnts/20191225145805369_thumbL',
-      imgAlt: '스탬프 이미지11',
       title: '구 백제병원',
     },
   ];
@@ -194,12 +204,12 @@ const StampDetail = () => {
         <Title>{state.title}</Title>
 
         <div>
-          <StampBoardBox>
+          <StampBoardBox ref={divRef}>
             {stampList.map((stamp, i) => {
               return (
                 <Stamp
                   imgSrc={stamp.imgSrc}
-                  imgAlt={stamp.imgAlt}
+                  imgAlt={stamp.title + ' 이미지'}
                   title={stamp.title}
                   key={i}
                 />
@@ -214,12 +224,18 @@ const StampDetail = () => {
 
         <ButtonBar>
           <Button children={'공유'} marginright='true' />
-          <Button children={'담기'} />
+          <Button children={'담기'} marginright='true' />
+          <Button
+            children={'스탬프북 이미지 다운로드'}
+            onClick={() => {
+              downloadHandler();
+            }}
+          />
           <StampBookLike>
             <StampBookLikeBtn>
               <img src={like} alt='좋아요' />
             </StampBookLikeBtn>
-            <div>{state.like}</div>
+            <div>{state.likeCount}</div>
           </StampBookLike>
         </ButtonBar>
 
@@ -260,11 +276,9 @@ const StampDetail = () => {
 
           <TalkBox
             profileImg={avatar}
-            id={'부기몬 크리에이터'}
-            txt={
-              '이 스탬프북을 다 모으신다면 당신은 진정한 부기몬 마스터가 된답니다'
-            }
-            writeDate={'2023-10-27 11:13:12'}
+            nickname={state.nickname}
+            description={state.description}
+            stampbookRegdate={state.stampbookRegdate}
             margin={'20px 0'}
           />
         </CreateUserBox>
