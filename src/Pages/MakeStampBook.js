@@ -398,7 +398,7 @@ const MakeStampBook = () => {
           <StampBookTitle placeholder='타이틀을 작성해주세요.' />
 
           <TitleButtonBox>
-            <Button children={'등록'} marginright='true' />
+            <Button children={'등록'} $marginright />
             <Button children={'취소'} />
           </TitleButtonBox>
           {MapPlace ? <Popup /> : ''}
@@ -439,7 +439,7 @@ const MakeStampBook = () => {
 
         <Button
           children={'스탬프북 이미지 다운로드'}
-          marginright='true'
+          marginright
           onClick={() => {
             setScreenShot(!screenShot);
             downloadHandler();

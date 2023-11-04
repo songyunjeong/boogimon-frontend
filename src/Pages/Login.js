@@ -39,14 +39,14 @@ const InputBox = styled.div`
 const FindPassword = styled.div`
   padding: 20px 0;
   > a {
-  color: var(--gray4)
+    color: var(--gray4);
   }
 `;
 
 const Error = styled.div`
   color: var(--magenta);
   padding: 20px;
-`
+`;
 const Login = () => {
   return (
     <div>
@@ -54,17 +54,30 @@ const Login = () => {
 
       <Wrap>
         <Title>로그인</Title>
-        
+
         <InputBox>
-          <input type='email' name="user_id" id="user_id" placeholder='가입한 이메일' required />
-          <input type="password" name="passwd" id="passwd" placeholder="비밀번호" required />
+          <input
+            type='email'
+            name='user_id'
+            id='user_id'
+            placeholder='가입한 이메일'
+            required
+          />
+          <input
+            type='password'
+            name='passwd'
+            id='passwd'
+            placeholder='비밀번호'
+            required
+          />
           <Error></Error>
           <Button children={'로그인'} />
           <FindPassword>
-          <a href="./findPassword" id="find_pw">비밀번호를 잊으셨나요</a>
+            <a href='./findPassword' id='find_pw'>
+              비밀번호를 잊으셨나요
+            </a>
           </FindPassword>
         </InputBox>
-        
       </Wrap>
     </div>
   );

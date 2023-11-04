@@ -215,6 +215,7 @@ const EditUserInfo = () => {
       </ModelBox>
     );
   };
+
   return (
     <>
       <Header />
@@ -229,7 +230,12 @@ const EditUserInfo = () => {
           <br />
           <img src={avatar} alt='' />
           <br />
-          {/* <input type="file"  name="profile_img" id="profile_img" accept="image/*" /> */}
+          <input
+            type='file'
+            name='profile_img'
+            id='profile_img'
+            accept='image/*'
+          />
         </Profile>
 
         <Form>
@@ -248,7 +254,7 @@ const EditUserInfo = () => {
 
           <Adiv>
             <Edit onClick={onOpenPopup}>회원을 탈퇴하시겠습니까?</Edit>
-            {popupOn ? <Popup /> : ''}
+            {popupOn && <Popup />}
           </Adiv>
         </Form>
       </Warp>
