@@ -4,10 +4,10 @@ import avatar from '../images/avatar.png';
 import styled from 'styled-components';
 
 const Warp = styled.div`
-  width: 1280px;
+  width: 100vw;
   height: 70vh;
   position: relative;
-  left: calc(50% - 1280px / 2);
+  left: calc(50% - 100vw / 2);
   margin-top: 128px;
 `;
 
@@ -74,7 +74,9 @@ const PwdConfirm = styled(Input).attrs({
   id: 'passwdConfirm',
   placeholder: '비밀번호 변경 확인',
   maxlength: '20',
-})``;
+})`
+  margin-bottom: 10px;
+`;
 
 const Id = styled.div`
   width: 438px;
@@ -97,9 +99,11 @@ const Adiv = styled.div`
 
 const Edit = styled.span`
   color: var(--gray2);
+  text-decoration-line: underline;
   &:hover,
   &:focus {
-    color: blue;
+    cursor: pointer;
+    color: var(--black);
   }
 `;
 
