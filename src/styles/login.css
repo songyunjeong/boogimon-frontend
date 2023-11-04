@@ -1,0 +1,108 @@
+@import url('https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@400;700&display=swap');
+
+:root {
+  /* color */
+  --magenta: #e6007e;
+  --blue: #0e4194;
+  --yellow: #ffcc03;
+  --light-blue: #0188cc;
+  --gray1: #eeeeee;
+  --gray2: #d9d9d9;
+  --gray3: #b5b5b5;
+  --gray4: #999999;
+  --black: #000000;
+
+  /* font-size */
+  --big: 24px;
+  --regular: 16px;
+  --small: 14px;
+}
+
+/* wrap */
+.wrap {
+  width: 1280px;
+  margin: 0 auto;
+}
+
+/* login_area */
+.login_area .title {
+  font-size: var(--big);
+  font-weight: bold;
+  margin: 100px 0 20px;
+}
+
+.login_area .login_input {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-bottom: 50px;
+}
+
+.login_area .login_input > input {
+  width: 525px;
+  height: 50px;
+  border: 1px solid var(--gray1);
+  border-radius: 5px;
+  text-align: start;
+  padding: 0 20px;
+}
+
+.login_area .login_input > input:focus {
+  outline: none;
+}
+
+.login_area .login_input > button {
+  display: block;
+  border: 2px solid var(--gray2);
+  border-radius: 4px;
+  background-color: #ffffff;
+  padding: 8px 25px;
+  box-sizing: border-box;
+  margin-left: 10px;
+}
+
+.login_area .login_input > button:hover {
+  cursor: pointer;
+  background-color: var(--yellow);
+  border: 2px solid var(--light-blue);
+}
+
+.login_area .login_list .login {
+  display: flex;
+  border: 1px solid var(--gray1);
+  border-radius: 8px;
+  margin: 15px 0;
+}
+
+.btn-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin-bottom: 20px;
+}
+
+.btn {
+  padding: 20px 125px;
+  border-radius: 0;
+  font-size: var(--regular);
+  font-weight: 700;
+}
+
+.btn-dark {
+  border-color: var(--black);
+  background-color: var(--black);
+  color: var(--gray1);
+}
+
+.btn-skew {
+  border-radius: 0;
+  transform: skew(-20deg)
+}
+
+.btn-skew>p,
+.btn-skew>a {
+  position: relative;
+  transform: skew(20deg);
+  text-align: center;
+  z-index: 2
+}
