@@ -1,6 +1,8 @@
 import StampBook from '../Components/StampBook';
 import Header from '../Components/Header';
 import styled from 'styled-components';
+import axios from 'axios';
+import { useEffect, useState } from 'react';
 
 const Wrap = styled.div`
   width: 1280px;
@@ -35,28 +37,17 @@ const StampBookBox = styled.section`
 `;
 
 const Home = () => {
-  const stampBookList = [
-    {
-      title: '스탬프북1',
-      like: '30',
-    },
-    {
-      title: '스탬프북2',
-      like: '22',
-    },
-    {
-      title: '스탬프북3',
-      like: '20',
-    },
-    {
-      title: '스탬프북4',
-      like: '13',
-    },
-    {
-      title: '스탬프북5',
-      like: '5',
-    },
-  ];
+  const [data, setData] = useState();
+
+  useEffect(() => {
+    axios
+      .get(
+        'http://localhost:8080/boogimon/stampbook/stampbook.jsp?command=list'
+      )
+      .then((response) => {
+        setData(response.data);
+      });
+  }, []);
 
   return (
     <div>
@@ -70,11 +61,14 @@ const Home = () => {
         </Sort>
 
         <StampBookBox>
-          {stampBookList.map((stampBook, i) => {
+          {data?.stampbookList.map((book, i) => {
             return (
               <StampBook
-                title={stampBook.title}
-                like={stampBook.like}
+                nickname={book.nickname}
+                description={book.description}
+                regdate={book.stampbookRegdate}
+                likeCount={book.likeCount}
+                title={book.title}
                 key={i}
               />
             );

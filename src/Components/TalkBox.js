@@ -40,13 +40,13 @@ const TalkBox = (props) => {
   return (
     <Talk>
       <Profile>
-        <img src={props.profileImg} alt={props.id} />
+        <img src={props.profileImg} alt={props.nickname} />
       </Profile>
       <Contents>
-        <Id>{props.id}</Id>
-        <div className='comment_txt'>{props.txt}</div>
+        <Id>{props.nickname}</Id>
+        <div className='comment_txt'>{props.description}</div>
       </Contents>
-      <Date>{props.writeDate}</Date>
+      <Date>{props.stampbookRegdate}</Date>
     </Talk>
   );
 };

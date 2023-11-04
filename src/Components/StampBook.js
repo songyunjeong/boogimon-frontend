@@ -55,7 +55,13 @@ const StampBook = (props) => {
 
   const goToStampDetail = () =>
     navigate('/stampDetail', {
-      state: { title: props.title, like: props.like },
+      state: {
+        nickname: props.nickname,
+        description: props.description,
+        regdate: props.regdate,
+        likeCount: props.likeCount,
+        title: props.title,
+      },
     });
 
   const likeHandler = () => {

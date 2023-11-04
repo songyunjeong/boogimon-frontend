@@ -1,36 +1,103 @@
-import React, { useState } from 'react';
-import { Link } from 'react-router-dom';
-import styled from 'styled-components';
 import Header from '../Components/Header';
 import like from '../images/like.png';
 import avatar from '../images/avatar.png';
 import Map from '../Components/Map';
-import data from '../data.json';
-import images from '../images/test.jpg';
-import { useLocation } from 'react-router-dom';
+import { Link, useLocation } from 'react-router-dom';
 import Button from '../Components/Button';
+import styled from 'styled-components';
 import Stamp from '../Components/Stamp';
 import TalkBox from '../Components/TalkBox';
+import { useRef, useState } from 'react';
+import html2canvas from 'html2canvas';
+import { saveAs } from 'file-saver';
+import images from '../images/test.jpg';
+import data from '../data.json';
 
-// const Stamp = styled.div`
-//   width: 150px;
-//   margin-right: 45px;
-//   margin-bottom: 30px;
-//   & > .stamp_img {
-//     background-color: var(--gray3);
-//     width: 150px;
-//     height: 150px;
-//     border-radius: 50%;
-//     margin-bottom: 10px;
-//     overflow: hidden;
-//   }
-//   & > .stamp_imp > img {
-//     width: 200px;
-//   }
-//   & > .stamp_txt {
-//     text-align: center;
-//   }
-// `;
+const Wrap = styled.div`
+  width: 1280px;
+  margin: 0 auto;
+  > div > div {
+    float: left;
+  }
+`;
+
+const Title = styled.div`
+  width: 100%;
+  font-size: var(--big);
+  font-weight: bold;
+  margin: 50px 0 20px;
+`;
+
+const StampBoardBox = styled.div`
+  display: flex;
+  flex-wrap: wrap;
+  width: 700px;
+  background-color: var(--gray1);
+  border-radius: 10px;
+  padding: 50px 80px 20px;
+  box-sizing: border-box;
+  margin-right: 30px;
+  > div:nth-child(3n) {
+    margin-right: 0;
+  }
+`;
+
+const MapBox = styled.div`
+  width: 550px;
+  border-radius: 12px;
+  overflow: hidden;
+`;
+
+const ButtonBar = styled.div`
+  clear: both;
+  position: relative;
+  padding: 20px 0;
+  box-sizing: border-box;
+`;
+
+const StampBookLike = styled.div`
+  display: flex;
+  position: absolute;
+  top: 25px;
+  right: 600px;
+  > div:first-child {
+    margin-right: 10px;
+  }
+`;
+
+const StampBookLikeBtn = styled.div`
+  &:hover {
+    cursor: pointer;
+  }
+`;
+
+const InputBox = styled.div`
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 50px;
+  > input {
+    width: 1195px;
+    height: 50px;
+    border: 2px solid var(--gray2);
+    border-radius: 5px;
+    text-align: start;
+    padding: 0 20px;
+    box-sizing: border-box;
+    &:focus {
+      outline: none;
+    }
+  }
+`;
+
+const CommentBox = styled.div``;
+
+const MoreBtn = styled.div`
+  text-align: center;
+`;
+
+const CreateUserBox = styled.div`
+  height: 320px;
+`;
 
 const Span = styled.span`
   color: var(--gray3);
@@ -179,96 +246,27 @@ const LinkUrl = styled(Link)`
   }
 `;
 
-const Wrap = styled.div`
-  width: 1280px;
-  margin: 0 auto;
-  > div > div {
-    float: left;
-  }
-`;
-
-const Title = styled.div`
-  width: 100%;
-  font-size: var(--big);
-  font-weight: bold;
-  margin: 50px 0 20px;
-`;
-
-const StampBoardBox = styled.div`
-  display: flex;
-  flex-wrap: wrap;
-  width: 700px;
-  background-color: var(--gray1);
-  border-radius: 10px;
-  padding: 50px 80px 20px;
-  box-sizing: border-box;
-  margin-right: 30px;
-  > div:nth-child(3n) {
-    margin-right: 0;
-  }
-`;
-
-const MapBox = styled.div`
-  width: 550px;
-  border-radius: 12px;
-  overflow: hidden;
-`;
-
-const ButtonBar = styled.div`
-  clear: both;
-  position: relative;
-  padding: 20px 0;
-  box-sizing: border-box;
-`;
-
-const StampBookLike = styled.div`
-  display: flex;
-  position: absolute;
-  top: 25px;
-  left: 200px;
-  > div:first-child {
-    margin-right: 10px;
-  }
-`;
-
-const StampBookLikeBtn = styled.div`
-  &:hover {
-    cursor: pointer;
-  }
-`;
-
-const InputBox = styled.div`
-  display: flex;
-  justify-content: space-between;
-  margin-bottom: 50px;
-  > input {
-    width: 1195px;
-    height: 50px;
-    border: 2px solid var(--gray2);
-    border-radius: 5px;
-    text-align: start;
-    padding: 0 20px;
-    box-sizing: border-box;
-    &:focus {
-      outline: none;
-    }
-  }
-`;
-
-const CommentBox = styled.div``;
-
-const MoreBtn = styled.div`
-  text-align: center;
-`;
-
-const CreateUserBox = styled.div`
-  height: 320px;
-`;
-
 const StampDetail = () => {
+  const divRef = useRef();
   const { state } = useLocation();
-
   const [popupOn, setPopupOn] = useState(false);
+
+  const downloadHandler = async (e) => {
+    if (!divRef.current) return;
+
+    try {
+      const div = divRef.current;
+      const canvas = await html2canvas(div, { scale: 1 });
+      canvas.toBlob((blob) => {
+        if (blob != null) {
+          saveAs(blob, 'stampBook.png');
+        }
+      });
+    } catch (error) {
+      console.error('Error converting div to image:', error);
+    }
+  };
+
   const onOpenPopup = () => {
     setPopupOn(!popupOn);
   };
@@ -420,7 +418,7 @@ const StampDetail = () => {
         <Title>{state.title}</Title>
 
         <div>
-          <StampBoardBox>
+          <StampBoardBox ref={divRef}>
             {stampList.map((stamp, i) => {
               return (
                 <Stamp
@@ -432,7 +430,7 @@ const StampDetail = () => {
                 />
               );
             })}
-            {popupOn ? <Popup /> : ''}
+            {popupOn && <Popup />}
           </StampBoardBox>
 
           <MapBox>
@@ -442,12 +440,18 @@ const StampDetail = () => {
 
         <ButtonBar>
           <Button children={'공유'} marginright='true' />
-          <Button children={'담기'} />
+          <Button children={'담기'} marginright='true' />
+          <Button
+            children={'스탬프북 이미지 다운로드'}
+            onClick={() => {
+              downloadHandler();
+            }}
+          />
           <StampBookLike>
             <StampBookLikeBtn>
               <img src={like} alt='좋아요' />
             </StampBookLikeBtn>
-            <div>{state.like}</div>
+            <div>{state.likeCount}</div>
           </StampBookLike>
         </ButtonBar>
 
@@ -488,11 +492,9 @@ const StampDetail = () => {
 
           <TalkBox
             profileImg={avatar}
-            id={'부기몬 크리에이터'}
-            txt={
-              '이 스탬프북을 다 모으신다면 당신은 진정한 부기몬 마스터가 된답니다'
-            }
-            writeDate={'2023-10-27 11:13:12'}
+            nickname={state.nickname}
+            description={state.description}
+            stampbookRegdate={state.stampbookRegdate}
             margin={'20px 0'}
           />
         </CreateUserBox>
@@ -500,4 +502,5 @@ const StampDetail = () => {
     </div>
   );
 };
+
 export default StampDetail;
