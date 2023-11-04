@@ -439,8 +439,8 @@ const StampDetail = () => {
         </div>
 
         <ButtonBar>
-          <Button children={'공유'} marginright='true' />
-          <Button children={'담기'} marginright='true' />
+          <Button children={'공유'} $marginright />
+          <Button children={'담기'} $marginright />
           <Button
             children={'스탬프북 이미지 다운로드'}
             onClick={() => {

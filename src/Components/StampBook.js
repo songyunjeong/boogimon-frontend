@@ -77,10 +77,10 @@ const StampBook = (props) => {
           <StampBookLikeBtn onClick={likeHandler}>
             <img src={likeBtn ? likeFullImg : likeImg} alt='좋아요' />
           </StampBookLikeBtn>
-          <div>{likeBtn ? props.like * 1 + 1 : props.like}</div>
+          <div>{likeBtn ? props.likeCount * 1 + 1 : props.likeCount}</div>
         </StampBookLike>
         <StampBookBtnBox>
-          <Button children={'담기'} marginright='true' />
+          <Button children={'담기'} $marginright />
           <Button children={'삭제'} />
         </StampBookBtnBox>
       </StampBookTxt>
