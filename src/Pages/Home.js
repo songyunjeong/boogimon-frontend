@@ -63,7 +63,14 @@ const Home = () => {
         <StampBookBox>
           {data?.stampbookList.map((book, i) => {
             return (
-              <StampBook title={book.title} like={book.likeCount} key={i} />
+              <StampBook
+                nickname={book.nickname}
+                description={book.description}
+                regdate={book.stampbookRegdate}
+                likeCount={book.likeCount}
+                title={book.title}
+                key={i}
+              />
             );
           })}
         </StampBookBox>
