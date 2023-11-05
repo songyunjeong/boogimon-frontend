@@ -1,9 +1,9 @@
 import React, { useState } from 'react';
 import Header from '../Components/Header';
 import styled from 'styled-components';
-import { Link, Navigate } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import axios from 'axios';
-import { useNavigate } from 'react-router-dom';
+
 const Wrap = styled.div`
   width: 1280px;
   margin: 0 auto;
