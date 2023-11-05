@@ -2,6 +2,7 @@ import React from 'react';
 import Header from '../Components/Header';
 import Button from '../Components/Button';
 import styled from 'styled-components';
+import { Link } from 'react-router-dom';
 
 const Wrap = styled.div`
   width: 1280px;
@@ -13,7 +14,7 @@ const Title = styled.div`
   font-weight: bold;
   margin: 100px 0 50px;
   text-align: center;
-  color: var(--gray4);
+  color: var(--black);
 `;
 
 const InputBox = styled.div`
@@ -37,9 +38,13 @@ const InputBox = styled.div`
 `;
 
 const FindPassword = styled.div`
+  color: var(--gray4);
   padding: 20px 0;
-  > a {
-  color: var(--gray4)
+  text-decoration: underline var(--gray4);
+  &:hover,
+  &:focus {
+    cursor: pointer;
+    color: var(--gray4);
   }
 `;
 
@@ -47,6 +52,11 @@ const Error = styled.div`
   color: var(--magenta);
   padding: 20px;
 `
+
+const FindPWLink = styled(Link)`
+  color: var(--gray);
+`
+
 const Login = () => {
   return (
     <div>
@@ -61,7 +71,7 @@ const Login = () => {
           <Error></Error>
           <Button children={'로그인'} />
           <FindPassword>
-          <a href="./findPassword" id="find_pw">비밀번호를 잊으셨나요</a>
+          <FindPWLink to="/findPassword">비밀번호를 잊으셨나요</FindPWLink>
           </FindPassword>
         </InputBox>
         
