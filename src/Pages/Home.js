@@ -26,13 +26,11 @@ const StampBookBox = styled.section`
   flex-wrap: wrap;
   margin-top: 20px;
   > div {
-    width: calc(100% / 3);
-    padding-right: 25px;
-    box-sizing: border-box;
+    margin-right: 25px;
     margin-bottom: 30px;
   }
   > div:nth-child(3n) {
-    padding-right: 0;
+    margin-right: 0;
   }
 `;
 
@@ -64,6 +62,7 @@ const Home = () => {
           {data?.stampbookList.map((book, i) => {
             return (
               <StampBook
+                id={book.stampbookId}
                 nickname={book.nickname}
                 description={book.description}
                 regdate={book.stampbookRegdate}

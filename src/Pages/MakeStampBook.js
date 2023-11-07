@@ -439,7 +439,7 @@ const MakeStampBook = () => {
 
         <Button
           children={'스탬프북 이미지 다운로드'}
-          marginright
+          $marginright
           onClick={() => {
             setScreenShot(!screenShot);
             downloadHandler();

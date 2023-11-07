@@ -6,6 +6,7 @@ import Button from './Button';
 import styled from 'styled-components';
 
 const StampBookImg = styled.div`
+  width: 410px;
   height: 500px;
   background-color: var(--gray1);
   &:hover {
