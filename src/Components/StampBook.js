@@ -49,6 +49,7 @@ const StampBook = (props) => {
   const goToStampDetail = () =>
     navigate('/stampDetail', {
       state: {
+        id: props.id,
         nickname: props.nickname,
         description: props.description,
         regdate: props.regdate,
@@ -63,7 +64,7 @@ const StampBook = (props) => {
 
   return (
     <div>
-      <StampBoard onClick={goToStampDetail} />
+      <StampBoard id={props.id} />
       <StampBookTxt>
         <StampBookTitle onClick={goToStampDetail}>{props.title}</StampBookTitle>
         <StampBookLike>

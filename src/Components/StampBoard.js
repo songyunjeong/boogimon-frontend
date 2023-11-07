@@ -24,7 +24,7 @@ const StampBoard = (props) => {
   useEffect(() => {
     axios
       .get(
-        `http://localhost:8080/boogimon/stampbook/stampbook.jsp?stampbookId=0`
+        `http://localhost:8080/boogimon/stampbook/stampbook.jsp?stampbookId=${props.id}`
       )
       .then((response) => {
         setData(response.data);
@@ -36,8 +36,8 @@ const StampBoard = (props) => {
       {data?.stampbook.stampList.map((stamp, i) => {
         return (
           <Stamp
-            imgSrc={stamp.thumbnail}
-            imgAlt={stamp.placeName + ' 이미지'}
+            imgsrc={stamp.thumbnail}
+            imgalt={stamp.placeName + ' 이미지'}
             title={stamp.placeName}
             key={i}
             $small

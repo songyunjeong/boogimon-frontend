@@ -31,7 +31,7 @@ const Stamp = (props) => {
   return (
     <StampBox {...props}>
       <StampImgBox {...props}>
-        <img src={props.imgSrc} alt={props.imgAlt} />
+        <img src={props.imgsrc} alt={props.imgalt} />
       </StampImgBox>
       <StampTitle {...props}>
         {props.$small && props.title.length > 8
