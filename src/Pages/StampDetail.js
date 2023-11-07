@@ -2,12 +2,12 @@ import Header from '../Components/Header';
 import like from '../images/like.png';
 import avatar from '../images/avatar.png';
 import Map from '../Components/Map';
-import { Link, useLocation } from 'react-router-dom';
+import { useLocation } from 'react-router-dom';
 import Button from '../Components/Button';
 import styled from 'styled-components';
 import Stamp from '../Components/Stamp';
 import TalkBox from '../Components/TalkBox';
-import { useRef, useState } from 'react';
+import { useRef } from 'react';
 import html2canvas from 'html2canvas';
 import { saveAs } from 'file-saver';
 

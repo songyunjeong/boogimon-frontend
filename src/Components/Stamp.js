@@ -1,8 +1,9 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
 import styled from 'styled-components';
 import images from '../images/test.jpg';
-import data from '../data.json';
+// import data from '../data.json';
+import axios from 'axios';
 
 const StampBox = styled.div`
   width: 150px;
@@ -179,7 +180,36 @@ const Stamp = (props) => {
     setPopupOn(!popupOn);
   };
 
+  // useEffect(() => {
+  //   axios
+  //     .get('http://localhost:8080/boogimon/place.jsp', )
+  //     .then((res) => {
+  //       console.log(res);
+  //       setData(res.data);
+  //     })
+  //     .catch((error) => {
+  //       console.log(error);
+  //     });
+  // }, []);
+
   const Popup = () => {
+    const [data, setData] = useState(false);
+
+    axios
+      .get('http://localhost:8080/boogimon/place.jsp', {
+        params: {
+          placeId: 2,
+        },
+      })
+      .then((res) => {
+        setData(res.data);
+
+        console.log('ajax data', data);
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+
     return (
       <Modal>
         <PopupBg />
@@ -212,7 +242,7 @@ const Stamp = (props) => {
             </GrayBox>
 
             <Pay>
-              <Span>💵</Span> {data.money}
+              <Span>💵</Span> {data.pay}
             </Pay>
             <Facility>
               <Span>시설</Span> {data.facility}
@@ -225,6 +255,7 @@ const Stamp = (props) => {
             </Close>
             <PageUrl>
               <Span>🌐</Span>
+              {/* <LinkUrl to='/{data.url}'>{data.homepage}</LinkUrl> */}
               <LinkUrl to='/{data.url}'>{data.url}</LinkUrl>
               {/* <a href='{data.url}'>{data.url}</a> */}
             </PageUrl>
