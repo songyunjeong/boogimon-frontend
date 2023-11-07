@@ -150,7 +150,7 @@ const PopupBg = styled.div`
 
 const CloseBtn = styled.button`
   position: absolute;
-  width: 20px;
+  width: 40px;
   height: 20px;
   top: 1%;
   left: 93%;
@@ -306,7 +306,7 @@ const MakeStampBook = () => {
         <PopupBg />
 
         <MapPopup>
-          <CloseBtn onClick={closeModal}> x</CloseBtn>
+          <CloseBtn onClick={closeModal}>닫기</CloseBtn>
           <SearchBar type='text' placeholder='주소 검색' />
           <Button
             style={{

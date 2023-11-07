@@ -5,6 +5,7 @@ import profile from '../images/머리만(색깔).png';
 import boogicard from '../images/bogimon_card_b.png';
 import Header from '../Components/Header';
 import StampBook from '../Components/StampBook';
+import Button from '../Components/Button';
 import html2canvas from 'html2canvas';
 
 const Modal = styled.div`
@@ -26,7 +27,7 @@ const PopupBg = styled.div`
 
 const CloseBtn = styled.button`
   position: absolute;
-  width: 20px;
+  width: 40px;
   height: 20px;
   left: 90%;
   border: 2px solid var(--gray2);
@@ -53,13 +54,12 @@ const OpenBtn = styled.button`
 `;
 
 const BoogiCardContainer = styled.div`
-  width: 300px;
+  width: 290px;
   height: 400px;
   position: absolute;
-  left: 12%;
+  left: 15%;
   top: 5%;
   z-index: 2; /* 보다 낮은 z-index 값을 설정 */
-  background-color: pink;
   background-image: url(${boogicard});
   background-size: cover; /* 이미지를 컨테이너에 맞게 조절 */
   background-position: center; /* 이미지를 가운데 정렬 */
@@ -135,7 +135,6 @@ const RandomImg = styled.div`
   left: 10%;
   top: 9%;
   z-index: 3; /* 더 높은 z-index 값을 설정하여 앞으로 가져옵니다 */
-  background-color: yellow;
 `;
 
 const CardContent = styled.p`
@@ -146,7 +145,6 @@ const CardContent = styled.p`
   left: 7%;
   top: 52%;
   z-index: 3; /* 더 높은 z-index 값을 설정하여 앞으로 가져옵니다 */
-  background-color: blue;
 `;
 
 const Mypage = styled.div`
@@ -154,7 +152,8 @@ const Mypage = styled.div`
   height: 250px;
   width: 1280px;
   margin: auto;
-  background-color: pink;
+  border-radius: 10px;
+  border: 1px solid var(--gray2);
 `;
 
 const CompleteBtn = styled.div`
@@ -215,7 +214,7 @@ const MyImg = styled.div`
   top: 25%;
   left: 80px;
   overflow: hidden;
-  border: 2px solid black;
+  background-color: var(--gray2);
 `;
 
 const MyProfileImg = styled.img`
@@ -240,33 +239,6 @@ const NickName = styled.p`
   position: absolute;
   font-size: var(--big);
   top: 20%;
-`;
-
-const ColorBtn = styled.button`
-  position: absolute;
-  top: 60%;
-  left: 20px;
-  height: 50px;
-  width: 200px;
-  background-color: transparent;
-  color: var(--black); /* 텍스트 색상 설정 */
-  font-size: var(--regular);
-  text-decoration: none solid rgb(21, 23, 26);
-  vertical-align: middle;
-  padding: 10px 20px;
-  cursor: pointer;
-  outline: none;
-  filter: drop-shadow(0px 4px 4px rgba(0, 0, 0, 0.25)); /* 그림자 효과 추가 */
-  border: 3px solid transparent; /* 테두리 색상 초기화 */
-  border-image: linear-gradient(45deg, #72bab3, #eccf63) 1; /* 그라데이션 테두리 추가 */
-  border-image-slice: 1;
-  transform: skew(-20deg);
-
-  &:before {
-    content: '회원정보 수정';
-    display: block;
-    transform: skewX(20deg); /* 텍스트를 반대로 기울이지 않습니다 */
-  }
 `;
 
 const MyProgress = styled.div`
@@ -329,8 +301,8 @@ const StampComplete = styled.p`
 const UserLike = styled.p`
   position: absolute;
   font-size: var(--regular);
-  top: 70%;
-  left: 15%;
+  top: 80%;
+  left: 5%;
   text-align: center; /* 텍스트를 가운데 정렬 */
 `;
 
@@ -397,7 +369,7 @@ const My = () => {
         <CardPopup>
           <CloseBtn onClick={onOpenCard} data-html2canvas-ignore='true'>
             {' '}
-            x
+            닫기
           </CloseBtn>
           <BoogiCardContainer className='CardPopup'>
             <CardName>광안리</CardName>
@@ -423,7 +395,16 @@ const My = () => {
         </MyImg>
         <MyproFile>
           <NickName>부기몬하이</NickName>
-          <ColorBtn />
+          <Button
+            style={{
+              position: 'absolute',
+              width: '130px',
+              top: '70%',
+              textAlign: 'center',
+            }}
+          >
+            회원정보 수정
+          </Button>
           <CompleteBtn>
             <OpenBtn onClick={onOpenCard}>부기몬 카드</OpenBtn>
             {openCard ? <Popup /> : ''}
@@ -433,8 +414,8 @@ const My = () => {
           <Rank>🏅1 th</Rank>
           <Level>LV.25</Level>
           <Progress value='70' min='0' max='100' />
-          <StampComplete>📍777</StampComplete>
-          <UserLike>❤️777</UserLike>
+          <StampComplete>모은 스탬프: 777</StampComplete>
+          <UserLike>받은 좋아요수: 777</UserLike>
           <Exp>EXP.7777</Exp>
         </MyProgress>
       </Mypage>
