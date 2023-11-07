@@ -65,7 +65,7 @@ const Home = () => {
                 id={book.stampbookId}
                 nickname={book.nickname}
                 description={book.description}
-                regdate={book.stampbookRegdate}
+                stampbookRegdate={book.stampbookRegdate}
                 likeCount={book.likeCount}
                 title={book.title}
                 key={i}
