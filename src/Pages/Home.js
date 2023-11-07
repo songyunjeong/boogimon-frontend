@@ -32,6 +32,9 @@ const StampBookBox = styled.section`
   > div:nth-child(3n) {
     margin-right: 0;
   }
+  &:hover {
+    cursor: pointer;
+  }
 `;
 
 const Home = () => {

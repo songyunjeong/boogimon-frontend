@@ -4,15 +4,7 @@ import likeFullImg from '../images/like_full.png';
 import likeImg from '../images/like.png';
 import Button from './Button';
 import styled from 'styled-components';
-
-const StampBookImg = styled.div`
-  width: 410px;
-  height: 500px;
-  background-color: var(--gray1);
-  &:hover {
-    cursor: pointer;
-  }
-`;
+import StampBoard from './StampBoard';
 
 const StampBookTxt = styled.div`
   text-align: center;
@@ -71,7 +63,7 @@ const StampBook = (props) => {
 
   return (
     <div>
-      <StampBookImg onClick={goToStampDetail} />
+      <StampBoard onClick={goToStampDetail} />
       <StampBookTxt>
         <StampBookTitle onClick={goToStampDetail}>{props.title}</StampBookTitle>
         <StampBookLike>
