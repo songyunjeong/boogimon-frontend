@@ -6,6 +6,7 @@ import boogicard from '../images/bogimon_card_b.png';
 import Header from '../Components/Header';
 import StampBook from '../Components/StampBook';
 import html2canvas from 'html2canvas';
+import { Link } from 'react-router-dom';
 
 const Modal = styled.div`
   position: fixed;
@@ -424,7 +425,9 @@ const My = () => {
         </MyImg>
         <MyproFile>
           <NickName>부기몬하이</NickName>
-          <ColorBtn />
+          <Link to='/editUserInfo'>
+            <ColorBtn />
+          </Link>
           <CompleteBtn>
             <OpenBtn onClick={onOpenCard}>부기몬 카드</OpenBtn>
             {openCard ? <Popup /> : ''}
