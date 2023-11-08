@@ -103,6 +103,7 @@ const StampDetail = () => {
   const divRef = useRef();
   const { state } = useLocation();
   const [bookData, setBookData] = useState();
+  const [comment, setComment] = useState('');
 
   useEffect(() => {
     boogi
@@ -126,6 +127,20 @@ const StampDetail = () => {
     } catch (error) {
       console.error('Error converting div to image:', error);
     }
+  };
+
+  const commentPost = () => {
+    boogi
+      .post('/boogimon/stampbook/comment.jsp', null, {
+        params: {
+          stampbookId: state.id,
+          userId: 'red@google.com',
+          comment: comment,
+        },
+      })
+      .then((response) => {
+        console.log(response.data);
+      });
   };
 
   return (
@@ -176,8 +191,14 @@ const StampDetail = () => {
           <Title>댓글</Title>
 
           <InputBox>
-            <input type='text' placeholder='공백 불가, 최대 250자 작성 가능' />
-            <Button children={'등록'} />
+            <input
+              type='text'
+              placeholder='공백 불가, 최대 250자 작성 가능'
+              onChange={(e) => {
+                setComment(e.target.value);
+              }}
+            />
+            <Button children={'등록'} onClick={commentPost} />
           </InputBox>
 
           <CommentListBox>
