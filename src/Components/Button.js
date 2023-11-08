@@ -8,7 +8,7 @@ const BasicButton = styled.button`
   padding: 8px 25px;
   box-sizing: border-box;
   ${(props) =>
-    props.marginright &&
+    props.$marginright &&
     css`
       margin-right: 5px;
     `};

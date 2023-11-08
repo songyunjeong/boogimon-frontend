@@ -1,30 +1,32 @@
-import React, { useEffect, useState } from 'react';
-import { Link } from 'react-router-dom';
-import styled from 'styled-components';
-import images from '../images/test.jpg';
-// import data from '../data.json';
+import styled, { css } from 'styled-components';
+import React, { useState } from 'react';
 import axios from 'axios';
 
 const StampBox = styled.div`
-  width: 150px;
-  margin-right: 45px;
-  margin-bottom: 30px;
+  width: ${(props) => (props.$small ? '110px' : '150px')};
+  margin-right: ${(props) => (props.$small ? '15px' : '45px')};
+  margin-bottom: ${(props) => (props.$small ? '15px' : '30px')};
 `;
 
 const StampImgBox = styled.div`
   background-color: var(--gray3);
-  width: 150px;
-  height: 150px;
+  width: ${(props) => (props.$small ? '110px' : '150px')};
+  height: ${(props) => (props.$small ? '110px' : '150px')};
   border-radius: 50%;
   margin-bottom: 10px;
   overflow: hidden;
   > img {
-    width: 200px;
+    width: ${(props) => (props.$small ? '150px' : '200px')};
   }
 `;
 
 const StampTitle = styled.div`
   text-align: center;
+  ${(props) =>
+    props.$small &&
+    css`
+      font-size: var(--small);
+    `};
 `;
 
 const Span = styled.span`
@@ -92,7 +94,7 @@ const PlcaeImg = styled.div`
 `;
 
 const Img = styled(PlcaeImg)`
-  background-image: url(${images});
+  background-image: url(${(props) => props.background});
   background-size: 100% 100%;
 `;
 
@@ -126,11 +128,23 @@ const LeftBox = styled.div`
 
 const RightBox = styled.div`
   float: right;
-  width: 673px;
+  width: 676px;
+`;
+
+const LeftBox2 = styled(LeftBox)`
+  width: 45px;
+`;
+
+const RightBox2 = styled(RightBox)`
+  width: 710px;
+`;
+
+const Facility = styled.div`
+  width: 710px;
 `;
 
 const Traffic = styled.div`
-  width: 690px;
+  width: 676px;
 `;
 
 const Tel = styled(Addr)`
@@ -145,7 +159,9 @@ const Pay = styled.div`
   padding-bottom: 13px;
 `;
 
-const Facility = styled(Pay)``;
+const FacilityBox = styled(Pay)`
+  height: 30px;
+`;
 
 const Open = styled(Pay)`
   color: rgb(54, 143, 255);
@@ -167,7 +183,7 @@ const Detail = styled.div`
   padding-top: 10px;
 `;
 
-const LinkUrl = styled(Link)`
+const Url = styled.div`
   &:hover,
   &:focus {
     color: blue;
@@ -176,93 +192,119 @@ const LinkUrl = styled(Link)`
 
 const Stamp = (props) => {
   const [popupOn, setPopupOn] = useState(false);
+  const [data, setData] = useState();
+  const [background, setBackground] = useState('');
+  const [url, setUrl] = useState('');
+
   const onOpenPopup = () => {
-    setPopupOn(!popupOn);
-  };
-
-  // useEffect(() => {
-  //   axios
-  //     .get('http://localhost:8080/boogimon/place.jsp', )
-  //     .then((res) => {
-  //       console.log(res);
-  //       setData(res.data);
-  //     })
-  //     .catch((error) => {
-  //       console.log(error);
-  //     });
-  // }, []);
-
-  const Popup = () => {
-    const [data, setData] = useState(false);
-
     axios
       .get('http://localhost:8080/boogimon/place.jsp', {
         params: {
-          placeId: 2,
+          placeId: props.id,
         },
       })
       .then((res) => {
         setData(res.data);
 
-        console.log('ajax data', data);
-      })
-      .catch((err) => {
-        console.log(err);
-      });
+        setBackground(data.placeDetail.img);
+        setUrl(data.placeDetail.homepage);
 
+        setPopupOn(!popupOn);
+      });
+  };
+
+  const onClosePopup = () => {
+    setPopupOn(!popupOn);
+  };
+
+  const Popup = () => {
     return (
       <Modal>
         <PopupBg />
         <PopupWarp>
           <CloseBox>
-            <CloseBtn onClick={onOpenPopup}>닫기</CloseBtn>
+            <CloseBtn onClick={onClosePopup}>닫기</CloseBtn>
           </CloseBox>
           <PopupBox>
             <PlcaeImg>
-              <Img />
+              <Img background={background} />
             </PlcaeImg>
 
-            <PlaceName> {data.name}</PlaceName>
+            <PlaceName>{data.placeDetail.name}</PlaceName>
 
             <GrayBox>
               <Addr>
-                <Span>주소</Span> {data.addr}
+                <Span>주소</Span>
+                {`${
+                  data.placeDetail.addr === '' ? '-' : data.placeDetail.addr
+                }`}
               </Addr>
               <TrafficBox>
                 <LeftBox>
                   <Span>교통</Span>
                 </LeftBox>
                 <RightBox>
-                  <Traffic>{data.traffic}</Traffic>
+                  <Traffic>
+                    {`${
+                      data.placeDetail.traffic === ''
+                        ? '-'
+                        : data.placeDetail.traffic
+                    }`}
+                  </Traffic>
                 </RightBox>
               </TrafficBox>
               <Tel>
-                <Span>전화</Span> {data.tel}
+                <Span>전화</Span>
+                {`${data.placeDetail.tel === '' ? '-' : data.placeDetail.tel}`}
               </Tel>
             </GrayBox>
 
             <Pay>
-              <Span>💵</Span> {data.pay}
+              <Span>💵</Span>
+              {`${data.placeDetail.pay === '' ? '-' : data.placeDetail.pay}`}
             </Pay>
-            <Facility>
-              <Span>시설</Span> {data.facility}
-            </Facility>
+            <FacilityBox>
+              <LeftBox2>
+                <Span>시설</Span>
+              </LeftBox2>
+              <RightBox2>
+                <Facility>
+                  {`${
+                    data.placeDetail.facility === ''
+                      ? '-'
+                      : data.placeDetail.facility
+                  }`}
+                </Facility>
+              </RightBox2>
+            </FacilityBox>
             <Open>
-              <Span>운영</Span> {data.open}
+              <Span>운영</Span>
+              {`${data.placeDetail.open === '' ? '-' : data.placeDetail.open}`}
             </Open>
             <Close>
-              <Span>휴무</Span> {data.close}
+              <Span>휴무</Span>
+              {`${
+                data.placeDetail.close === '' ? '-' : data.placeDetail.close
+              }`}
             </Close>
             <PageUrl>
               <Span>🌐</Span>
-              {/* <LinkUrl to='/{data.url}'>{data.homepage}</LinkUrl> */}
-              <LinkUrl to='/{data.url}'>{data.url}</LinkUrl>
-              {/* <a href='{data.url}'>{data.url}</a> */}
+              <Url as='a' href={url} target='_blank'>
+                {`${
+                  data.placeDetail.homepage === ''
+                    ? '-'
+                    : data.placeDetail.homepage
+                }`}
+              </Url>
             </PageUrl>
 
             <DetailBox>
               <Span>개요</Span>
-              <Detail>{data.detail}</Detail>
+              <Detail>
+                {`${
+                  data.placeDetail.detail === '' ? '-' : data.placeDetail.detail
+                }`}
+              </Detail>
             </DetailBox>
           </PopupBox>
         </PopupWarp>
@@ -270,15 +312,13 @@ const Stamp = (props) => {
     );
   };
   return (
-    <>
-      <StampBox onClick={onOpenPopup}>
-        <StampImgBox>
-          <img src={props.imgSrc} alt={props.imgAlt} />
-        </StampImgBox>
-        <StampTitle>{props.title}</StampTitle>
-      </StampBox>
+    <StampBox onClick={onOpenPopup} id={props.id}>
+      <StampImgBox>
+        <img src={props.imgSrc} alt={props.imgAlt} />
+      </StampImgBox>
+      <StampTitle>{props.title}</StampTitle>
       {popupOn ? <Popup /> : ''}
-    </>
+    </StampBox>
   );
 };
 

@@ -197,13 +197,14 @@ const StampBookBox = styled.section`
   flex-wrap: wrap;
   margin-top: 20px;
   > div {
-    width: calc(100% / 3);
-    padding-right: 25px;
-    box-sizing: border-box;
+    margin-right: 25px;
     margin-bottom: 30px;
   }
   > div:nth-child(3n) {
-    padding-right: 0;
+    margin-right: 0;
+  }
+  &:hover {
+    cursor: pointer;
   }
 `;
 
