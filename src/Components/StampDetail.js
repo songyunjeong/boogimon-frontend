@@ -353,7 +353,7 @@ const StampDetail = () => {
     );
   };
 
-  useEffect((state) => {
+  useEffect(() => {
     boogi
       .get(`/boogimon/stampbook/stampbook.jsp?stampbookId=${state.id}`)
       .then((response) => {

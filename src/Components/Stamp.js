@@ -61,8 +61,7 @@ const CloseBox = styled.div`
 const PopupWarp = styled.div`
   position: fixed;
   width: 800px;
-  height: 80vh;
-  top: calc(50% - 92vh / 2);
+  top: calc(50% - (80vh + 46px) / 2);
   left: calc(50% - 800px / 2);
 `;
 
@@ -70,8 +69,10 @@ const PopupBox = styled.div`
   position: absolute;
   background-color: white;
   width: 800px;
+  height: 80vh;
   font-size: var(--small);
   border-radius: 10px;
+  overflow: auto;
 `;
 
 const CloseBtn = styled.button`
@@ -204,7 +205,6 @@ const Stamp = (props) => {
     setData(ajax_data.data);
     setBackground(ajax_data.data.placeDetail.img);
     setUrl(ajax_data.data.placeDetail.homepage);
-
     setPopupOn(!popupOn);
   };
 
@@ -306,6 +306,7 @@ const Stamp = (props) => {
       </Modal>
     );
   };
+
   return (
     <StampBox {...props} onClick={onOpenPopup}>
       <StampImgBox {...props}>
