@@ -169,7 +169,7 @@ const Zip = styled.div`
 
 const Container = styled.div`
   width: 540px;
-  height: 530px;
+  height: 545px;
   overflow: auto; /* 좌우 스크롤을 제거합니다. */
   border: 1px solid var(--gray2);
   display: flex;
@@ -179,7 +179,6 @@ const Container = styled.div`
 `;
 
 const Content = styled.div`
-  height: 530px; /* .container와 같은 높이로 설정하여 수직 스크롤만 유지합니다. */
   border-radius: 8px;
   padding: 0 10px;
 `;
@@ -258,16 +257,6 @@ const MakeStampBook = () => {
         <PopupBg />
 
         <MapPopup>
-          <Button
-            style={{
-              position: 'absolute',
-              top: '0px',
-              right: '-100px',
-            }}
-            onClick={closeModal}
-          >
-            닫기
-          </Button>
           <SearchBar
             type='text'
             placeholder='주소 검색'
@@ -321,17 +310,18 @@ const MakeStampBook = () => {
               <p>데이터가 없습니다.</p>
             )}
           </Zip>
-          <Button
-            type='submit'
+          <div
             style={{
               position: 'absolute',
-              top: '90%',
-              left: '45%',
-              textAlign: 'center',
+              bottom: '20px',
+              left: 'calc(50% - 158px / 2)',
             }}
           >
-            등록
-          </Button>
+            <Button onClick={closeModal} $marginright>
+              닫기
+            </Button>
+            <Button type='submit'>등록</Button>
+          </div>
         </MapPopup>
       </Modal>
     );
@@ -365,8 +355,8 @@ const MakeStampBook = () => {
           <StampBookTitle placeholder='타이틀을 작성해주세요.' />
 
           <TitleButtonBox>
-            <Button children={'등록'} $marginright />
-            <Button children={'취소'} />
+            <Button children={'취소'} $marginright />
+            <Button children={'등록'} />
           </TitleButtonBox>
           {MapPlace ? <Popup /> : ''}
         </TitleBox>
