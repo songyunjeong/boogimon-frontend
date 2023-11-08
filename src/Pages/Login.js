@@ -90,20 +90,32 @@ const FindPWLink = styled(Link)`
 `;
 
 const Login = () => {
-  const [userId, setUserId] = useState('');
-  const [password, setPassword] = useState('');
+  const [userId, setUserId] = useState(''); 
+  const [passwd, setPasswd] = useState('');
   const [error, setError] = useState('');
 
   const handleLogin = async () => {
     try {
-        const response = await axios.post('http://localhost:8080/boogimon/user/user.jsp', {
-        command : 'login',
-        userId: userId,
-        password: password,
+      const response = await axios.post('/boogimon/user/user.jsp', null, {
+        params: {
+          command : 'login',
+          userId: userId,
+          passwd: passwd,   
+        }
       });
       
-      if(response.data) {
-        sessionStorage.setItem('userData', JSON.stringify(response.data.user));
+      if(response.data.resultCode === '00') {
+        let data = JSON.stringify(response.data);
+        console.log("json 데이터 출력 = " + data);
+
+        sessionStorage.setItem('userId', data.user.userId);
+        //sessionStorage.setItem('passwd', passwd);
+
+        sessionStorage.setItem('userData', data.user);
+        //console.log(response.data);
+        //console.log(response.data.user);
+        let userId = sessionStorage.getItem('userId'); 
+        console.log("userId = ", userId);
       }
       else {
         setError('로그인 실패');
@@ -126,8 +138,8 @@ const Login = () => {
                  onChange={(e) => setUserId(e.target.value)}
           />
           <input type="password" name="passwd" id="passwd" placeholder="비밀번호" required
-                 value={password} 
-                 onChange={(e) => setPassword(e.target.value)}
+                 value={passwd} 
+                 onChange={(e) => setPasswd(e.target.value)}
           />
           <Error>{error}</Error>
 
