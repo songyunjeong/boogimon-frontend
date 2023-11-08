@@ -15,6 +15,7 @@ const StampImgBox = styled.div`
   overflow: hidden;
   > img {
     width: ${(props) => (props.$small ? '150px' : '200px')};
+    opacity: ${(props) => (props.lastvisitdate ? '1' : '0.5')};
   }
 `;
 
@@ -31,7 +32,7 @@ const Stamp = (props) => {
   return (
     <StampBox {...props}>
       <StampImgBox {...props}>
-        <img src={props.imgsrc} alt={props.imgalt} />
+        <img src={props.src} alt={props.alt} />
       </StampImgBox>
       <StampTitle {...props}>
         {props.$small && props.title.length > 8

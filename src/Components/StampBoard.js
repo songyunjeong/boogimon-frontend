@@ -36,8 +36,8 @@ const StampBoard = (props) => {
       {data?.stampbook.stampList.map((stamp, i) => {
         return (
           <Stamp
-            imgsrc={stamp.thumbnail}
-            imgalt={stamp.placeName + ' 이미지'}
+            src={stamp.thumbnail}
+            alt={stamp.placeName + ' 이미지'}
             title={stamp.placeName}
             key={i}
             $small
