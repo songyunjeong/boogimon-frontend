@@ -125,18 +125,14 @@ const Modal = styled.div`
 
 const MapPopup = styled.div`
   position: fixed; /* 화면 크기에 관계없이 위치 고정 */
-  top: 50%; /* 화면 상단에서 50% 위치에 배치 */
-  left: 50%; /* 화면 왼쪽에서 50% 위치에 배치 */
-  transform: translate(-50%, -50%); /* 중앙 정렬을 위한 변환 */
+  top: calc(50% - 700px / 2);
+  left: calc(50% - 600px / 2);
   background-color: #ffffff;
   box-shadow: 0 2px 7px rgba(0, 0, 0, 0.3);
 
   /* 임시 지정 */
   width: 600px;
   height: 700px;
-
-  /* 초기에 약간 아래에 배치 */
-  transform: translate(-50%, -40%);
 
   white-space: normal;
   border-radius: 10px;
@@ -151,97 +147,75 @@ const PopupBg = styled.div`
   background-color: rgba(0, 0, 0, 0.6);
 `;
 
-const CloseBtn = styled.button`
-  position: absolute;
-  width: 40px;
-  height: 20px;
-  top: 1%;
-  left: 93%;
-  display: inline-block;
-  border: 2px solid var(--gray2);
-  border-radius: 4px;
-  background-color: #ffffff;
-  box-sizing: border-box;
-  &:hover {
-    cursor: pointer;
-    background-color: var(--yellow);
-    border: 2px solid var(--light-blue);
-  }
-  z-index: 1001; /* X 버튼을 모달과 배경 위로 올림 */
-`;
-
 const SearchBar = styled.input`
   width: 400px;
   height: 40px;
   position: absolute;
-  top: 5%;
-  left: 5%;
-  border-radius: 10px;
+  top: 20px;
+  left: 30px;
+  border-radius: 8px;
+  border: 1px solid var(--gray2);
+  padding: 20px;
+  box-sizing: border-box;
 `;
 
 const Zip = styled.div`
   width: 350px;
   height: 350px;
   position: absolute;
-  top: 15%;
-  left: 5%;
+  top: 80px;
+  left: 30px;
 `;
 
 const Container = styled.div`
-  width: 530px;
-  height: 500px;
+  width: 540px;
+  height: 530px;
   overflow: auto; /* 좌우 스크롤을 제거합니다. */
-  border: 1px solid #ccc;
+  border: 1px solid var(--gray2);
   display: flex;
   flex-direction: column; /* 아이템들을 수직으로 배치합니다. */
   border-radius: 10px;
+  box-sizing: border-box;
 `;
 
 const Content = styled.div`
   height: 530px; /* .container와 같은 높이로 설정하여 수직 스크롤만 유지합니다. */
-  width: 500px;
-  /* 내용 및 스타일 설정 */
-  border-radius: 10px;
+  border-radius: 8px;
+  padding: 0 10px;
 `;
 
 const Item = styled.div`
-  width: 490px;
-  height: 80px;
-  padding: 10px; /* 각 아이템의 패딩 설정 */
-  /* border: 1px solid #ddd;  각 아이템 테두리 설정 */
-  margin: 5px 0; /* 각 아이템의 상단 및 하단 마진 설정 */
-  text-align: left;
-  border-radius: 10px;
+  position: relative;
+  height: 120px;
+  border: 1px solid var(--gray1);
+  border-radius: 8px;
+  box-sizing: border-box;
+  margin: 10px 0; /* 각 아이템의 상단 및 하단 마진 설정 */
 `;
 
 const ItemDetail = styled.div`
-  width: 300px;
-  height: 80px;
-  padding: 10px; /* 각 아이템의 패딩 설정 */
-  /* border: 1px solid #ddd;  각 아이템 테두리 설정 */
-  margin: 5px 0; /* 각 아이템의 상단 및 하단 마진 설정 */
+  width: 350px;
+  padding: 15px; /* 각 아이템의 패딩 설정 */
+  box-sizing: border-box;
   text-align: left;
-  border-radius: 10px;
 `;
 
 const ThumnailBOX = styled.div`
   width: 150px;
   height: 100px;
-  position: relative;
-  top: -150%;
-  left: 71.5%;
+  position: absolute;
+  top: 8px;
+  right: 10px;
   /* background-image: url('https://www.visitbusan.net/uploadImgs/files/cntnts/20191222164810529_thumbL'); */
   background-size: cover; /* 이미지를 가능한 최대 크기로 채우기 */
   background-position: center; /* 이미지를 중앙에 위치시키기 */
   background-repeat: no-repeat; /* 이미지 반복 방지 */
-  border-radius: 10px;
+  border-radius: 8px;
 `;
 
 const MakeStampBook = () => {
   const [MapPlace, setMapPlace] = useState(false);
-
   const [apiData, setApiData] = useState([]);
-
   const [selectedItem, setSelectedItem] = useState(null);
 
   const handleItemClick = (index) => {
@@ -251,10 +225,6 @@ const MakeStampBook = () => {
     } else {
       setSelectedItem(index);
     }
-  };
-
-  const clearSelectedItem = () => {
-    setSelectedItem(null);
   };
 
   const onSearch = () => {
@@ -279,7 +249,7 @@ const MakeStampBook = () => {
 
   const Popup = () => {
     const closeModal = () => {
-      clearSelectedItem();
+      setSelectedItem(null);
       setMapPlace(false); // 팝업을 닫음
     };
 
@@ -288,7 +258,16 @@ const MakeStampBook = () => {
         <PopupBg />
 
         <MapPopup>
-          <CloseBtn onClick={closeModal}>닫기</CloseBtn>
+          <Button
+            style={{
+              position: 'absolute',
+              top: '0px',
+              right: '-100px',
+            }}
+            onClick={closeModal}
+          >
+            닫기
+          </Button>
           <SearchBar
             type='text'
             placeholder='주소 검색'
@@ -298,8 +277,8 @@ const MakeStampBook = () => {
           <Button
             style={{
               position: 'absolute',
-              top: '5%',
-              left: '80%',
+              top: '23px',
+              right: '30px',
               textAlign: 'center',
             }}
             onClick={onSearch}
@@ -316,14 +295,20 @@ const MakeStampBook = () => {
                       onClick={() => handleItemClick(index)}
                       style={{
                         border:
-                          selectedItem === index
-                            ? '2px solid var(--yellow)'
-                            : 'none',
+                          selectedItem === index && '2px solid var(--yellow)',
                       }}
                     >
                       <ItemDetail>
-                        <p>장소: {item.name}</p>
-                        <p>주소: {item.addr}</p>
+                        <p>{item.name}</p>
+                        <p
+                          style={{
+                            color: 'var(--gray4)',
+                            fontSize: 'var(--small)',
+                            marginTop: '5px',
+                          }}
+                        >
+                          {item.addr}
+                        </p>
                       </ItemDetail>
                       <ThumnailBOX
                         style={{ backgroundImage: `url(${item.thumbnail})` }}
@@ -425,7 +410,7 @@ const MakeStampBook = () => {
             setScreenShot(!screenShot);
             downloadHandler();
           }}
-          style={{ display: 'block' }}
+          style={{ display: 'block', marginBottom: '50px' }}
         />
       </Wrap>
     </div>
