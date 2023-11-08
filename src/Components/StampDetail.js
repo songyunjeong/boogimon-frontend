@@ -255,16 +255,6 @@ const StampDetail = () => {
   const [popupOn, setPopupOn] = useState(false);
   const [bookData, setBookData] = useState();
 
-  useEffect(() => {
-    axios
-      .get(
-        `http://localhost:8080/boogimon/stampbook/stampbook.jsp?stampbookId=${state.id}`
-      )
-      .then((response) => {
-        setBookData(response.data);
-      });
-  }, []);
-
   const downloadHandler = async (e) => {
     if (!divRef.current) return;
 
@@ -279,6 +269,14 @@ const StampDetail = () => {
     } catch (error) {
       console.error('Error converting div to image:', error);
     }
+  };
+
+  const commentPost = () => {
+    axios
+      .post('http://localhost:8080/boogimon/stampbook/comment.jsp')
+      .then((response) => {
+        console.log(response);
+      });
   };
 
   const onOpenPopup = () => {
@@ -345,6 +343,16 @@ const StampDetail = () => {
     );
   };
 
+  useEffect(() => {
+    axios
+      .get(
+        `http://localhost:8080/boogimon/stampbook/stampbook.jsp?stampbookId=${state.id}`
+      )
+      .then((response) => {
+        setBookData(response.data);
+      });
+  }, []);
+
   return (
     <div>
       <Header />
@@ -357,8 +365,8 @@ const StampDetail = () => {
             {bookData?.stampbook.stampList.map((stamp, i) => {
               return (
                 <Stamp
-                  imgsrc={stamp.thumbnail}
-                  imgalt={stamp.placeName + ' 이미지'}
+                  src={stamp.thumbnail}
+                  alt={stamp.placeName + ' 이미지'}
                   title={stamp.placeName}
                   key={i}
                   onClick={onOpenPopup}
@@ -415,6 +423,7 @@ const StampDetail = () => {
           <MoreBtn>
             <Button
               children={'더보기'}
+              onClick={commentPost}
               style={{
                 marginTop: '10px',
               }}

@@ -17,6 +17,7 @@ const StampImgBox = styled.div`
   overflow: hidden;
   > img {
     width: ${(props) => (props.$small ? '150px' : '200px')};
+    opacity: ${(props) => (props.lastvisitdate ? '1' : '0.5')};
   }
 `;
 
@@ -312,12 +313,16 @@ const Stamp = (props) => {
     );
   };
   return (
-    <StampBox onClick={onOpenPopup} id={props.id}>
-      <StampImgBox>
-        <img src={props.imgSrc} alt={props.imgAlt} />
+    <StampBox {...props} onClick={onOpenPopup}>
+      <StampImgBox {...props}>
+        <img src={props.src} alt={props.alt} />
       </StampImgBox>
-      <StampTitle>{props.title}</StampTitle>
-      {popupOn ? <Popup /> : ''}
+      <StampTitle {...props}>
+        {props.$small && props.title.length > 8
+          ? props.title.slice(0, 6) + '...'
+          : props.title}
+      </StampTitle>
+      {popupOn && <Popup />}
     </StampBox>
   );
 };
