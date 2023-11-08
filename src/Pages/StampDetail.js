@@ -10,8 +10,8 @@ import Stamp from '../Components/Stamp';
 import { useEffect, useRef, useState } from 'react';
 import html2canvas from 'html2canvas';
 import { saveAs } from 'file-saver';
-import axios from 'axios';
 import CreatorMsgBox from '../Components/CreatorMsgBox';
+import boogi from '../boogi';
 
 const Wrap = styled.div`
   width: 1280px;
@@ -105,10 +105,8 @@ const StampDetail = () => {
   const [bookData, setBookData] = useState();
 
   useEffect(() => {
-    axios
-      .get(
-        `http://localhost:8080/boogimon/stampbook/stampbook.jsp?stampbookId=${state.id}`
-      )
+    boogi
+      .get(`/boogimon/stampbook/stampbook.jsp?stampbookId=${state.id}`)
       .then((response) => {
         setBookData(response.data);
       });
@@ -146,7 +144,7 @@ const StampDetail = () => {
                   alt={stamp.placeName + ' 이미지'}
                   title={stamp.placeName}
                   key={i}
-                  placeId={stamp.placeId}
+                  placeid={stamp.placeId}
                 />
               );
             })}

@@ -1,6 +1,6 @@
 import styled, { css } from 'styled-components';
 import React, { useState } from 'react';
-import axios from 'axios';
+import boogi from '../boogi';
 
 const StampBox = styled.div`
   width: ${(props) => (props.$small ? '110px' : '150px')};
@@ -17,7 +17,6 @@ const StampImgBox = styled.div`
   overflow: hidden;
   > img {
     width: ${(props) => (props.$small ? '150px' : '200px')};
-    opacity: ${(props) => (props.lastvisitdate ? '1' : '0.5')};
   }
 `;
 
@@ -198,8 +197,8 @@ const Stamp = (props) => {
   const [url, setUrl] = useState('');
 
   const onOpenPopup = async () => {
-    const ajax_data = await axios.get(
-      `http://localhost:8080/boogimon/place.jsp?placeId=${props.placeId}`
+    const ajax_data = await boogi.get(
+      `/boogimon/place.jsp?placeId=${props.placeid}`
     );
 
     setData(ajax_data.data);

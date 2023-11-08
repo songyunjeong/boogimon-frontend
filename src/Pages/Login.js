@@ -2,8 +2,8 @@ import React, { useState } from 'react';
 import Header from '../Components/Header';
 import styled from 'styled-components';
 import { Link, useNavigate } from 'react-router-dom';
-import axios from 'axios';
 import { SHA256 } from 'crypto-js';
+import boogi from '../boogi';
 
 const Wrap = styled.div`
   width: 1280px;
@@ -115,23 +115,16 @@ const Login = () => {
       }  
       
     try {
-      const response = await axios.post('/boogimon/user/user.jsp', null, {
+      const response = await boogi.post('/boogimon/user/user.jsp', null, {
         params: {
-          command : 'login',
+          command: 'login',
           userId: userId,
           passwd: SHA256(passwd).toString(),   
         }
       });
       
       if(response.data.resultCode === '00') {
-        
-        // console.log("json 데이터 출력 = " + JSON.stringify(response.data));
-
-        sessionStorage.setItem('userId', response.data.user.userId);
-        
-        // let userId = sessionStorage.getItem('userId'); 
-        // console.log("userId = ", userId);
-
+        sessionStorage.setItem('userId', userId);
         navigate('/');
       }
       else {

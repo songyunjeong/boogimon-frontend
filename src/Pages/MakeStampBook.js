@@ -7,7 +7,7 @@ import styled from 'styled-components';
 import '../globalStyle';
 import html2canvas from 'html2canvas';
 import { saveAs } from 'file-saver';
-import axios from 'axios';
+import boogi from '../boogi';
 
 const Wrap = styled.div`
   width: 1280px;
@@ -112,6 +112,7 @@ const StampDetailTxt = styled.textarea`
     outline: none;
   }
 `;
+
 const Modal = styled.div`
   position: fixed;
   width: 100%;
@@ -140,6 +141,7 @@ const MapPopup = styled.div`
   white-space: normal;
   border-radius: 10px;
 `;
+
 const PopupBg = styled.div`
   position: fixed;
   top: 0;
@@ -184,6 +186,7 @@ const Zip = styled.div`
   top: 15%;
   left: 5%;
 `;
+
 const Container = styled.div`
   width: 530px;
   height: 500px;
@@ -257,7 +260,7 @@ const MakeStampBook = () => {
   const onSearch = () => {
     // 검색 버튼 클릭 시 API 요청 보내기
     const searchInput = document.querySelector('#searchInput').value;
-    axios
+    boogi
       .get(`/boogimon/place.jsp?command=list&keyword=` + searchInput)
       .then((response) => {
         const apiData = response.data; // API 응답에서 데이터를 가져옴
@@ -266,13 +269,14 @@ const MakeStampBook = () => {
   };
 
   const onOpenMap = () => {
-    axios.get('/boogimon/place.jsp?command=list&keyword').then((response) => {
+    boogi.get('/boogimon/place.jsp?command=list&keyword').then((response) => {
       const apiData = response.data; // API 응답에서 데이터를 가져옴
 
       setApiData(apiData);
       setMapPlace(!MapPlace);
     });
   };
+
   const Popup = () => {
     const closeModal = () => {
       clearSelectedItem();
@@ -376,7 +380,7 @@ const MakeStampBook = () => {
           <StampBookTitle placeholder='타이틀을 작성해주세요.' />
 
           <TitleButtonBox>
-            <Button children={'등록'} marginright='true' />
+            <Button children={'등록'} $marginright />
             <Button children={'취소'} />
           </TitleButtonBox>
           {MapPlace ? <Popup /> : ''}
@@ -417,7 +421,6 @@ const MakeStampBook = () => {
 
         <Button
           children={'스탬프북 이미지 다운로드'}
-          $marginright
           onClick={() => {
             setScreenShot(!screenShot);
             downloadHandler();
