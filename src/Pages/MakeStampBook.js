@@ -258,7 +258,10 @@ const MakeStampBook = () => {
     // 검색 버튼 클릭 시 API 요청 보내기
     const searchInput = document.querySelector('#searchInput').value;
     axios
-      .get(`/boogimon/place.jsp?command=list&keyword=` + searchInput)
+      .get(
+        `http://localhost:8080/boogimon/place.jsp?command=list&keyword=` +
+          searchInput
+      )
       .then((response) => {
         const apiData = response.data; // API 응답에서 데이터를 가져옴
         setApiData(apiData);
@@ -266,12 +269,14 @@ const MakeStampBook = () => {
   };
 
   const onOpenMap = () => {
-    axios.get('/boogimon/place.jsp?command=list&keyword').then((response) => {
-      const apiData = response.data; // API 응답에서 데이터를 가져옴
+    axios
+      .get('http://localhost:8080/boogimon/place.jsp?command=list&keyword')
+      .then((response) => {
+        const apiData = response.data; // API 응답에서 데이터를 가져옴
 
-      setApiData(apiData);
-      setMapPlace(!MapPlace);
-    });
+        setApiData(apiData);
+        setMapPlace(!MapPlace);
+      });
   };
   const Popup = () => {
     const closeModal = () => {

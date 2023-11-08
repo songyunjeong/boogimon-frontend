@@ -13,7 +13,6 @@ import { saveAs } from 'file-saver';
 import images from '../images/test.jpg';
 import data from '../data.json';
 import axios from 'axios';
-import MakerMsgBox from '../Components/makerMsgBox';
 import CreatorMsgBox from '../Components/CreatorMsgBox';
 
 const Wrap = styled.div`
@@ -91,6 +90,8 @@ const InputBox = styled.div`
     }
   }
 `;
+
+const CommentTxt = styled.div``;
 
 const CommentListBox = styled.div``;
 
@@ -273,9 +274,15 @@ const StampDetail = () => {
 
   const commentPost = () => {
     axios
-      .post('http://localhost:8080/boogimon/stampbook/comment.jsp')
+      .post('http://localhost:8080/boogimon/stampbook/comment.jsp', null, {
+        params: {
+          stampbookId: state.id,
+          userId: 'red@boogimon.com',
+          comment: 'hello',
+        },
+      })
       .then((response) => {
-        console.log(response);
+        console.log(response.data);
       });
   };
 
@@ -368,6 +375,7 @@ const StampDetail = () => {
                   src={stamp.thumbnail}
                   alt={stamp.placeName + ' 이미지'}
                   title={stamp.placeName}
+                  placeId={stamp.placeId}
                   key={i}
                   onClick={onOpenPopup}
                 />
@@ -402,8 +410,11 @@ const StampDetail = () => {
           <Title>댓글</Title>
 
           <InputBox>
-            <input type='text' placeholder='공백 불가, 최대 250자 작성 가능' />
-            <Button children={'등록'} />
+            <CommentTxt
+              type='text'
+              placeholder='공백 불가, 최대 250자 작성 가능'
+            />
+            <Button children={'등록'} onClick={() => commentPost()} />
           </InputBox>
 
           <CommentListBox>
@@ -423,7 +434,6 @@ const StampDetail = () => {
           <MoreBtn>
             <Button
               children={'더보기'}
-              onClick={commentPost}
               style={{
                 marginTop: '10px',
               }}

@@ -399,7 +399,7 @@ const My = () => {
   const admin = () => {
     const userSearch = document.querySelector('#userSearch').value;
     axios
-      .get('/boogimon/user/user.jsp?userId=' + userSearch)
+      .get('http://localhost:8080/boogimon/user/user.jsp?userId=' + userSearch)
       .then((response) => {
         const apiData = response.data; // API 응답에서 데이터를 가져옴
 

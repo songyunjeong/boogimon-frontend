@@ -17,7 +17,6 @@ const StampImgBox = styled.div`
   overflow: hidden;
   > img {
     width: ${(props) => (props.$small ? '150px' : '200px')};
-    opacity: ${(props) => (props.lastvisitdate ? '1' : '0.5')};
   }
 `;
 
@@ -199,17 +198,11 @@ const Stamp = (props) => {
 
   const onOpenPopup = () => {
     axios
-      .get('http://localhost:8080/boogimon/place.jsp', {
-        params: {
-          placeId: props.id,
-        },
-      })
+      .get(`http://localhost:8080/boogimon/place.jsp?placeId=${props.placeId}`)
       .then((res) => {
         setData(res.data);
-
         setBackground(data.placeDetail.img);
         setUrl(data.placeDetail.homepage);
-
         setPopupOn(!popupOn);
       });
   };
