@@ -1,8 +1,9 @@
 import React, { useState } from 'react';
 import Header from '../Components/Header';
 import styled from 'styled-components';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import axios from 'axios';
+import { SHA256 } from 'crypto-js';
 
 const Wrap = styled.div`
   width: 1280px;
@@ -94,28 +95,46 @@ const Login = () => {
   const [passwd, setPasswd] = useState('');
   const [error, setError] = useState('');
 
+  const navigate = useNavigate();
+
   const handleLogin = async () => {
+    if (userId.length < 1 || userId.length > 30) {
+      setError('아이디는 30자 이내여야 합니다.');
+      return;
+    }
+    const passwordRegex = /^[a-z\d!@*&-_]{4,20}$/;
+    if (passwd === '') {
+      setError('비밀번호를 입력해주세요.');
+      return false;
+      
+    } else if (!passwordRegex.test(passwd)) {
+      setError(
+        '비밀번호는 4~20자의 영소문자, 숫자, !@*&-_만 입력 가능합니다.'
+      );
+      return false;
+    } else {
+        setError('');
+      }  
+      
     try {
       const response = await axios.post('/boogimon/user/user.jsp', null, {
         params: {
           command : 'login',
           userId: userId,
-          passwd: passwd,   
+          passwd: SHA256(passwd).toString(),   
         }
       });
       
       if(response.data.resultCode === '00') {
-        let data = JSON.stringify(response.data);
-        console.log("json 데이터 출력 = " + data);
+        
+        // console.log("json 데이터 출력 = " + JSON.stringify(response.data));
 
-        sessionStorage.setItem('userId', data.user.userId);
-        //sessionStorage.setItem('passwd', passwd);
+        sessionStorage.setItem('userId', response.data.user.userId);
+        
+        // let userId = sessionStorage.getItem('userId'); 
+        // console.log("userId = ", userId);
 
-        sessionStorage.setItem('userData', data.user);
-        //console.log(response.data);
-        //console.log(response.data.user);
-        let userId = sessionStorage.getItem('userId'); 
-        console.log("userId = ", userId);
+        navigate('/');
       }
       else {
         setError('로그인 실패');
