@@ -1,9 +1,9 @@
 import React, { useState } from 'react';
 import Header from '../Components/Header';
 import styled from 'styled-components';
-import { Link, Navigate } from 'react-router-dom';
-import axios from 'axios';
+import { Link } from 'react-router-dom';
 import { useNavigate } from 'react-router-dom';
+import boogi from '../boogi';
 const Wrap = styled.div`
   width: 1280px;
   margin: 0 auto;
@@ -94,7 +94,7 @@ const Login = () => {
       return;
     }
     try {
-      const response = await axios.post('/boogimon/user/user.jsp', null, {
+      const response = await boogi.post('/boogimon/user/user.jsp', null, {
         params: {
           command: 'login',
           userId: userId,

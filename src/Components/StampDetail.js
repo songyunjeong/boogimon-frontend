@@ -12,8 +12,8 @@ import html2canvas from 'html2canvas';
 import { saveAs } from 'file-saver';
 import images from '../images/test.jpg';
 import data from '../data.json';
-import axios from 'axios';
 import CreatorMsgBox from '../Components/CreatorMsgBox';
+import boogi from '../boogi';
 
 const Wrap = styled.div`
   width: 1280px;
@@ -255,6 +255,8 @@ const StampDetail = () => {
   const { state } = useLocation();
   const [popupOn, setPopupOn] = useState(false);
   const [bookData, setBookData] = useState();
+  const [comment, setComment] = useState('');
+  const [isValid, setIsValid] = useState(false);
 
   const downloadHandler = async (e) => {
     if (!divRef.current) return;
@@ -273,16 +275,17 @@ const StampDetail = () => {
   };
 
   const commentPost = () => {
-    axios
-      .post('http://localhost:8080/boogimon/stampbook/comment.jsp', null, {
+    boogi
+      .post('/boogimon/stampbook/comment.jsp', {
         params: {
           stampbookId: state.id,
           userId: 'red@boogimon.com',
-          comment: 'hello',
+          comment: comment,
         },
       })
       .then((response) => {
         console.log(response.data);
+        setComment('');
       });
   };
 
@@ -350,11 +353,9 @@ const StampDetail = () => {
     );
   };
 
-  useEffect(() => {
-    axios
-      .get(
-        `http://localhost:8080/boogimon/stampbook/stampbook.jsp?stampbookId=${state.id}`
-      )
+  useEffect((state) => {
+    boogi
+      .get(`/boogimon/stampbook/stampbook.jsp?stampbookId=${state.id}`)
       .then((response) => {
         setBookData(response.data);
       });
@@ -375,7 +376,7 @@ const StampDetail = () => {
                   src={stamp.thumbnail}
                   alt={stamp.placeName + ' 이미지'}
                   title={stamp.placeName}
-                  placeId={stamp.placeId}
+                  placeid={stamp.placeId}
                   key={i}
                   onClick={onOpenPopup}
                 />
@@ -413,8 +414,18 @@ const StampDetail = () => {
             <CommentTxt
               type='text'
               placeholder='공백 불가, 최대 250자 작성 가능'
+              onChange={(e) => setComment(e.target.value)}
+              onKeyUp={(e) =>
+                e.target.value.length > 0 ? setIsValid(true) : setIsValid(false)
+              }
+              value={comment}
             />
-            <Button children={'등록'} onClick={() => commentPost()} />
+            <input
+              type='submit'
+              children={'등록'}
+              onClick={commentPost}
+              disabled={isValid ? false : true}
+            />
           </InputBox>
 
           <CommentListBox>

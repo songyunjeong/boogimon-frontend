@@ -2,7 +2,7 @@ import styled from 'styled-components';
 import Header from '../Components/Header';
 import Stamp from '../Components/Stamp';
 import { useEffect, useState } from 'react';
-import axios from 'axios';
+import boogi from '../boogi';
 
 const Wrap = styled.div`
   display: flex;
@@ -22,10 +22,8 @@ const BoogiBook = () => {
   const [data, setData] = useState();
 
   useEffect(() => {
-    axios
-      .get(
-        `http://localhost:8080/boogimon/place.jsp?command=boogibook&userId=red@google.com`
-      )
+    boogi
+      .get(`/boogimon/place.jsp?command=boogibook&userId=red@google.com`)
       .then((response) => {
         setData(response.data);
       });

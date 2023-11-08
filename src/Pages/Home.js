@@ -1,8 +1,8 @@
 import StampBook from '../Components/StampBook';
 import Header from '../Components/Header';
 import styled from 'styled-components';
-import axios from 'axios';
 import { useEffect, useState } from 'react';
+import boogi from '../boogi';
 
 const Wrap = styled.div`
   width: 1280px;
@@ -38,10 +38,8 @@ const Home = () => {
   const [data, setData] = useState();
 
   useEffect(() => {
-    axios
-      .get(
-        'http://localhost:8080/boogimon/stampbook/stampbook.jsp?command=list'
-      )
+    boogi
+      .get('/boogimon/stampbook/stampbook.jsp?command=list')
       .then((response) => {
         setData(response.data);
       });
