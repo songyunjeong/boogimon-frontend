@@ -146,7 +146,7 @@ const StampDetail = () => {
                   alt={stamp.placeName + ' 이미지'}
                   title={stamp.placeName}
                   key={i}
-                  id={i + 1}
+                  placeId={stamp.placeId}
                 />
               );
             })}

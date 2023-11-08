@@ -197,21 +197,16 @@ const Stamp = (props) => {
   const [background, setBackground] = useState('');
   const [url, setUrl] = useState('');
 
-  const onOpenPopup = () => {
-    axios
-      .get('http://localhost:8080/boogimon/place.jsp', {
-        params: {
-          placeId: props.id,
-        },
-      })
-      .then((res) => {
-        setData(res.data);
+  const onOpenPopup = async () => {
+    const ajax_data = await axios.get(
+      `http://localhost:8080/boogimon/place.jsp?placeId=${props.placeId}`
+    );
 
-        setBackground(data.placeDetail.img);
-        setUrl(data.placeDetail.homepage);
+    setData(ajax_data.data);
+    setBackground(ajax_data.data.placeDetail.img);
+    setUrl(ajax_data.data.placeDetail.homepage);
 
-        setPopupOn(!popupOn);
-      });
+    setPopupOn(!popupOn);
   };
 
   const onClosePopup = () => {
