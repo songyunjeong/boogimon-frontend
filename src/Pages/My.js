@@ -2,7 +2,6 @@ import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
 import styled from 'styled-components';
 import '../globalStyle';
-import profile from '../images/머리만(색깔).png';
 import boogicard from '../images/bogimon_card_b.png';
 import Header from '../Components/Header';
 import StampBook from '../Components/StampBook';
