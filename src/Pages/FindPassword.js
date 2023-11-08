@@ -13,7 +13,7 @@ const Title = styled.div`
   font-weight: bold;
   margin: 100px 0 50px;
   text-align: center;
-  color: var(--gray4);
+  color: var(--black);
 `;
 
 const InputBox = styled.div`
@@ -23,7 +23,7 @@ const InputBox = styled.div`
   justify-content: space-between;
   margin-bottom: 50px;
   > input {
-    width: 525px;
+    width: 438px;
     height: 50px;
     border: 2px solid var(--gray2);
     border-radius: 5px;
