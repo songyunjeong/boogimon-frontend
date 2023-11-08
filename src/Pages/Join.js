@@ -4,6 +4,8 @@ import Button from '../Components/Button';
 import styled from 'styled-components';
 import avatar from '../images/avatar.png';
 import axios from 'axios';
+import { SHA256 } from 'crypto-js';
+import { useNavigate } from 'react-router-dom';
 
 const Wrap = styled.div`
   width: 1280px;
@@ -103,80 +105,79 @@ const Label = styled.div`
   padding: 10px 0  0 35px;
 `
 
+const Error = styled.div`
+  color: var(--magenta);
+  padding: 10px;
+`
+
 const Join = () => {
-  const [formData, setFormData] = useState({
-    user_id: '',
-    passwd: '',
-    passwdConfirm: '',
-    nickname: '',
-    ProfileImg: null,
-  });
-  
-  const handleChange = (e) => {
-    const { name, value } = e.target;
-    setFormData({
-      ...formData,
-      [name]: value,
-    });
-  };
+  const [userId, setUserId] = useState(''); 
+  const [passwd, setPasswd] = useState('');
+  const [passwdConfirm, setPasswdConfirm] = useState('');
+  const [nickname, setNickname] = useState('');
+  const [profile_img, setProfile_img] = useState('');
+  const [error, setError] = useState('');
 
-  const handleImageChange = (e) => {
-    const file = e.target.files[0];
-    setFormData({
-      ...formData,
-      profile_img: file,
-    });
-  };
+  const navigate = useNavigate();
 
-  const handleSubmit = async (e) => {
-    e.preventDefault();
+  const handleSubmit = async () => {
+    
+    
+    if (userId.length < 1 || userId.length > 30) {
+      setError('아이디는 30자 이내여야 합니다.');
+      return;
+    }
+    const passwordRegex = /^[a-z\d!@*&-_]{4,20}$/;
+    if (passwd === '') {
+      setError('비밀번호를 입력해주세요.');
+      return false;
+      
+    } else if (!passwordRegex.test(passwd)) {
+      setError(
+        '비밀번호는 4~20자의 영소문자, 숫자, !@*&-_만 입력 가능합니다.'
+      );
+      return false;
+    } else {
+        setError('');
+      }  
 
     try {
-      const userData = {
-        user_id: formData.user_id,
-        passwd: formData.passwd,
-        nickname: formData.nickname,
-        profile_img: formData.profile_img ? formData.profile_img.name : null,
-      };
+      const response = await axios.post('/boogimon/user/userUpload.jsp', null, {
+        params: {
+          command : 'join',
+          userId: userId,
+          passwd: SHA256(passwd).toString(), 
+          nickname: nickname,
+          profile_img: profile_img,
+        }
+      });
 
-      sessionStorage.setItem('userData', JSON.stringify(userData));
-      console.log('User data stored in session storage:', userData);
-
-      const response = await axios.post('http://localhost:8080/boogimon/user/userUpload.jsp', userData);
-
-      console.log(response);
-      
+      if(response.data) {
+        sessionStorage.setItem('userId', JSON.stringify(response.data.user.userId));
+        sessionStorage.setItem('nickname', JSON.stringify(response.data.user.nickname));
+        sessionStorage.setItem('profile_img', JSON.stringify(response.data.user.profile_img));
+        navigate('login');
+      } else {
+        setError('회원가입 실패');
+      }
     } catch (error) {
       console.error(error);
     }
   };
-  
-  const userDataString = sessionStorage.getItem('userData');
-  if (userDataString) {
-    const userData = JSON.parse(userDataString);
-    // Now you can use userData in your application
-    console.log(userData);
-  } else {
-    console.log("No user data found in session storage");
-  }
 
   return (
     <>
       <Header />
       
-      <Wrap>
+      <Wrap> 
         <Title>회원가입</Title>
         
         <SignupForm id="signup-form" className="signup-form" encType="multipart/form-data" method="POST" onSubmit={handleSubmit}>
           
-          <Input type='email' name="user_id" id="user_id" placeholder='가입한 이메일' required value={formData.user_id}
-            onChange={handleChange}/>
-          <Input type="password" name="passwd" id="passwd" placeholder="비밀번호" required value={formData.passwd}
-            onChange={handleChange}/>
-          <Input type="password" name="passwdConfirm" id="passwdConfirm" placeholder="비밀번호 확인" required value={formData.passwdConfirm}
-            onChange={handleChange}/>
-          <Input type="text" name="nickname" id="nickname" placeholder="닉네임" required value={formData.nickname}
-            onChange={handleChange}/>
+          <Input type='email' name="user_id" id="user_id" placeholder='가입한 이메일' required value={userId} onChange={(e) => setUserId(e.target.value)}/>
+          <Input type="password" name="passwd" id="passwd" placeholder="비밀번호" required value={passwd} onChange={(e) => setPasswd(e.target.value)}/>
+          <Input type="password" name="passwdConfirm" id="passwdConfirm" placeholder="비밀번호 확인" required value={passwdConfirm} onChange={(e) => setPasswdConfirm(e.target.value)}/>
+          <Input type="text" name="nickname" id="nickname" placeholder="닉네임" required value={nickname} onChange={(e) => setNickname(e.target.value)}/>
           <Button children={'랜덤 버튼'} style={{position: "absolute", top: "245px", right: "-150px"}}/>
           
           <Label htmlFor="profile_img">
@@ -185,10 +186,11 @@ const Join = () => {
           <ImgBox>
             <ProfileImg>
               <img src={avatar} alt='' /><br/>
-              <input type="file"  name="profile_img" id="profile_img" accept="image/*"  onChange={handleImageChange} />
+              <input type="file"  name="profile_img" id="profile_img" accept="image/*" onChange={(e) => setProfile_img(e.target.value)}/>
             </ProfileImg>
             <Button children={'업로드 버튼'} id="upload" />
           </ImgBox>
+          <Error>{error}</Error>
 
           <ButtonContainer>
             <SignupBtn type="submit" id="signup">
