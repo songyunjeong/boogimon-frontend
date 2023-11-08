@@ -163,7 +163,7 @@ const CloseBtn = styled.button`
 
 const PlcaeImg = styled.div`
   width: 800px;
-  height: 17vh;
+  height: 300px;
   border-radius: 10px 10px 0 0;
 `;
 

@@ -90,13 +90,13 @@ const CloseBtn = styled.button`
 
 const PlcaeImg = styled.div`
   width: 800px;
-  height: 17vh;
+  height: 300px;
   border-radius: 10px 10px 0 0;
 `;
 
 const Img = styled(PlcaeImg)`
   background-image: url(${(props) => props.background});
-  background-size: 100% 100%;
+  background-size: cover;
 `;
 
 const PlaceName = styled.div`
