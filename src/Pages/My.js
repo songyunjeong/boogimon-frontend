@@ -8,6 +8,7 @@ import Header from '../Components/Header';
 import StampBook from '../Components/StampBook';
 import Button from '../Components/Button';
 import html2canvas from 'html2canvas';
+import axios from 'axios';
 
 const Modal = styled.div`
   position: fixed;
@@ -312,12 +313,19 @@ const Exp = styled.p`
   position: absolute;
   font-size: var(--regular);
   top: 70%;
-  left: 85%;
+  left: 82%;
   text-align: center; /* 텍스트를 가운데 정렬 */
+`;
+const SearchBar = styled.input`
+  width: 400px;
+  height: 40px;
+  position: absolute;
+  border-radius: 10px;
 `;
 
 const My = () => {
   const [openCard, closeCard] = useState(false);
+  const [apiData, setApiData] = useState({ user: [] });
 
   const stampBookList = [
     {
@@ -389,14 +397,41 @@ const My = () => {
     );
   };
 
+  const admin = () => {
+    const userSearch = document.querySelector('#userSearch').value;
+    axios
+      .get('/boogimon/user/user.jsp?userId=' + userSearch)
+      .then((response) => {
+        const apiData = response.data; // API 응답에서 데이터를 가져옴
+
+        setApiData(apiData);
+      });
+  };
+
   const View = () => {
     return (
       <Mypage>
+        <SearchBar
+          type='text'
+          placeholder='아이디 검색'
+          id='userSearch'
+          //onInput={(e) => setSearchText(e.target.value)}
+        />
+        <Button
+          style={{
+            position: 'absolute',
+            left: '32%',
+            textAlign: 'center',
+          }}
+          onClick={admin}
+        >
+          아이디검색
+        </Button>
         <MyImg>
-          <MyProfileImg src={profile} alt='프로필이미지' />
+          <MyProfileImg src={apiData.user.profileImg} alt='프로필이미지' />
         </MyImg>
         <MyproFile>
-          <NickName>부기몬하이</NickName>
+          <NickName>{apiData.user.nickname}</NickName>
           <Link to='/edituserinfo'>
             <Button
               style={{
@@ -415,11 +450,16 @@ const My = () => {
         </MyproFile>
         <MyProgress>
           <Rank>🏅1 th</Rank>
-          <Level>LV.25</Level>
-          <Progress value='70' min='0' max='100' />
+          <Level>
+            LV.
+            {apiData.user.exp < 100
+              ? 1
+              : Math.floor(apiData.user.exp / 100) + 1}
+          </Level>
+          <Progress value={apiData.user.exp % 100} min='0' max='100' />
           <StampComplete>모은 스탬프: 777</StampComplete>
           <UserLike>받은 좋아요수: 777</UserLike>
-          <Exp>EXP.7777</Exp>
+          <Exp>EXP.{apiData.user.exp % 100}/100</Exp>
         </MyProgress>
       </Mypage>
     );
