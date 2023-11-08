@@ -142,11 +142,11 @@ const StampDetail = () => {
             {bookData?.stampbook.stampList.map((stamp, i) => {
               return (
                 <Stamp
-                  imgsrc={stamp.thumbnail}
-                  imgalt={stamp.placeName + ' 이미지'}
+                  src={stamp.thumbnail}
+                  alt={stamp.placeName + ' 이미지'}
                   title={stamp.placeName}
                   key={i}
-                  id={i + 1}
+                  placeId={stamp.placeId}
                 />
               );
             })}
@@ -196,14 +196,16 @@ const StampDetail = () => {
             })}
           </CommentListBox>
 
-          <MoreBtn>
-            <Button
-              children={'더보기'}
-              style={{
-                marginTop: '10px',
-              }}
-            />
-          </MoreBtn>
+          {bookData?.stampbook.commentList.length > 5 && (
+            <MoreBtn>
+              <Button
+                children={'더보기'}
+                style={{
+                  marginTop: '10px',
+                }}
+              />
+            </MoreBtn>
+          )}
         </section>
 
         <CreateUserBox>
