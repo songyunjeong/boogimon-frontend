@@ -4,14 +4,7 @@ import likeFullImg from '../images/like_full.png';
 import likeImg from '../images/like.png';
 import Button from './Button';
 import styled from 'styled-components';
-
-const StampBookImg = styled.div`
-  height: 500px;
-  background-color: var(--gray1);
-  &:hover {
-    cursor: pointer;
-  }
-`;
+import StampBoard from './StampBoard';
 
 const StampBookTxt = styled.div`
   text-align: center;
@@ -56,9 +49,10 @@ const StampBook = (props) => {
   const goToStampDetail = () =>
     navigate('/stampDetail', {
       state: {
+        id: props.id,
         nickname: props.nickname,
         description: props.description,
-        regdate: props.regdate,
+        stampbookRegdate: props.stampbookRegdate,
         likeCount: props.likeCount,
         title: props.title,
       },
@@ -70,7 +64,7 @@ const StampBook = (props) => {
 
   return (
     <div>
-      <StampBookImg onClick={goToStampDetail} />
+      <StampBoard id={props.id} />
       <StampBookTxt>
         <StampBookTitle onClick={goToStampDetail}>{props.title}</StampBookTitle>
         <StampBookLike>

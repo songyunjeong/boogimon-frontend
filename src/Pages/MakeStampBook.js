@@ -350,7 +350,6 @@ const MakeStampBook = () => {
 
   const divRef = useRef();
   const [screenShot, setScreenShot] = useState(false);
-  const [imgUpload, setImgUpload] = useState(null);
 
   const downloadHandler = async (e) => {
     if (!divRef.current) return;
@@ -366,19 +365,6 @@ const MakeStampBook = () => {
     } catch (error) {
       console.error('Error converting div to image:', error);
     }
-  };
-
-  const imgUploadHandler = (e) => {
-    const file = e.target.files[0];
-    const reader = new FileReader();
-    reader.readAsDataURL(file);
-
-    return new Promise((resolve) => {
-      reader.onload = () => {
-        setImgUpload(reader.result);
-        resolve();
-      };
-    });
   };
 
   return (
@@ -418,7 +404,7 @@ const MakeStampBook = () => {
 
         <StampDetailTxt placeholder='상세설명을 작성해주세요.' />
 
-        <p>스탬프북 이미지를 업로드 해주세요.</p>
+        <p>스탬프북 이미지</p>
         <p
           style={{
             marginBottom: '10px',
@@ -426,28 +412,18 @@ const MakeStampBook = () => {
             fontSize: 'var(--small)',
           }}
         >
-          ⬇︎ 아래에서 스탬프북 이미지를 다운로드 후 업로드 해주세요.
+          ⬇︎ 아래에서 스탬프북 이미지를 다운로드 할 수 있습니다.
         </p>
 
         <Button
           children={'스탬프북 이미지 다운로드'}
-          marginright
+          $marginright
           onClick={() => {
             setScreenShot(!screenShot);
             downloadHandler();
           }}
           style={{ display: 'block' }}
         />
-
-        <input
-          accept='image/*'
-          multiple
-          type='file'
-          onChange={(e) => imgUploadHandler(e)}
-          name='upload'
-          style={{ display: 'block', margin: '30px 0 10px' }}
-        />
-        <img src={imgUpload} alt='' style={{ width: '300px' }} />
       </Wrap>
     </div>
   );

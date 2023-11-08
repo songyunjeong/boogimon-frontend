@@ -1,3 +1,4 @@
+import avatar from '../images/avatar.png';
 import styled from 'styled-components';
 
 const Talk = styled.div`
@@ -36,11 +37,14 @@ const Date = styled.div`
   padding: 10px;
 `;
 
-const TalkBox = (props) => {
+const CreatorMsgBox = (props) => {
   return (
     <Talk>
       <Profile>
-        <img src={props.profileImg} alt={props.nickname} />
+        <img
+          src={props.profileImg ? props.profileImg : avatar}
+          alt={props.nickname}
+        />
       </Profile>
       <Contents>
         <Id>{props.nickname}</Id>
@@ -51,4 +55,4 @@ const TalkBox = (props) => {
   );
 };
 
-export default TalkBox;
+export default CreatorMsgBox;

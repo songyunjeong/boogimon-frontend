@@ -13,6 +13,7 @@ import { saveAs } from 'file-saver';
 import images from '../images/test.jpg';
 import data from '../data.json';
 import axios from 'axios';
+import MakerMsgBox from '../Components/makerMsgBox';
 import CreatorMsgBox from '../Components/CreatorMsgBox';
 
 const Wrap = styled.div`
