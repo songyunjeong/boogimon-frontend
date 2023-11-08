@@ -205,7 +205,6 @@ const Stamp = (props) => {
       })
       .then((res) => {
         setData(res.data);
-
         setBackground(data.placeDetail.img);
         setUrl(data.placeDetail.homepage);
 
@@ -311,6 +310,7 @@ const Stamp = (props) => {
       </Modal>
     );
   };
+
   return (
     <StampBox onClick={onOpenPopup} id={props.id}>
       <StampImgBox>
