@@ -52,7 +52,7 @@ const StampBook = (props) => {
         id: props.id,
         nickname: props.nickname,
         description: props.description,
-        regdate: props.regdate,
+        stampbookRegdate: props.stampbookRegdate,
         likeCount: props.likeCount,
         title: props.title,
       },
