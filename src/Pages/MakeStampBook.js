@@ -1,12 +1,13 @@
 import { useRef } from 'react';
 import Button from '../Components/Button';
 import Header from '../Components/Header';
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import Map from '../Components/Map';
 import styled from 'styled-components';
 import '../globalStyle';
 import html2canvas from 'html2canvas';
 import { saveAs } from 'file-saver';
+import axios from 'axios';
 
 const Wrap = styled.div`
   width: 1280px;
@@ -210,13 +211,23 @@ const Item = styled.div`
   border-radius: 10px;
 `;
 
+const ItemDetail = styled.div`
+  width: 300px;
+  height: 80px;
+  padding: 10px; /* 각 아이템의 패딩 설정 */
+  /* border: 1px solid #ddd;  각 아이템 테두리 설정 */
+  margin: 5px 0; /* 각 아이템의 상단 및 하단 마진 설정 */
+  text-align: left;
+  border-radius: 10px;
+`;
+
 const ThumnailBOX = styled.div`
   width: 150px;
   height: 100px;
   position: relative;
-  top: -60%;
+  top: -150%;
   left: 71.5%;
-  background-image: url('https://www.visitbusan.net/uploadImgs/files/cntnts/20191222164810529_thumbL');
+  /* background-image: url('https://www.visitbusan.net/uploadImgs/files/cntnts/20191222164810529_thumbL'); */
   background-size: cover; /* 이미지를 가능한 최대 크기로 채우기 */
   background-position: center; /* 이미지를 중앙에 위치시키기 */
   background-repeat: no-repeat; /* 이미지 반복 방지 */
@@ -227,6 +238,9 @@ const MakeStampBook = () => {
   const [MapPlace, setMapPlace] = useState(false);
 
   const [apiData, setApiData] = useState([]);
+
+  const [searchText, setSearchText] = useState('');
+
   const [selectedItem, setSelectedItem] = useState(null);
 
   const handleItemClick = (index) => {
@@ -242,72 +256,43 @@ const MakeStampBook = () => {
     setSelectedItem(null);
   };
 
-  const dummyData = [
-    {
-      placeName: '흰여울문화마을',
-      address: '부산광역시 영도구 흰여울길',
-      thumbnailURL:
-        'https://www.visitbusan.net/uploadImgs/files/cntnts/20191222164810529_thumbL',
-    },
-    {
-      placeName: '깡깡이 예술마을',
-      address: '부산시 영도구 대평북로 36 깡깡이 안내센터',
-      thumbnailURL:
-        'https://www.visitbusan.net/uploadImgs/files/cntnts/20191222171209005_thumbL',
-    },
-    {
-      placeName: '국립해양박물관',
-      address: '부산시 영도구 해양로301번길 45',
-      thumbnailURL:
-        'https://www.visitbusan.net/uploadImgs/files/cntnts/20191222175627506_thumbL',
-    },
-    {
-      placeName: '태종대 유원지',
-      address: '부산광역시 영도구 전망로 24',
-      thumbnailURL:
-        'https://www.visitbusan.net/uploadImgs/files/cntnts/20191222180829962_thumbL',
-    },
-    {
-      placeName: '죽성성당',
-      address: '부산광역시 기장군 기장읍 죽성리 134-7',
-      thumbnailURL:
-        'https://www.visitbusan.net/uploadImgs/files/cntnts/20191222181829937_thumbL',
-    },
-    {
-      placeName: '아홉산 숲',
-      address: '부산광역시 기장군 철마면 미동길 37-1',
-      thumbnailURL:
-        'https://www.visitbusan.net/uploadImgs/files/cntnts/20191222185645736_thumbL',
-    },
-    {
-      placeName: '해동용궁사',
-      address: '부산광역시 기장군 기장읍 용궁길 86',
-      thumbnailURL:
-        'https://www.visitbusan.net/uploadImgs/files/cntnts/20191222190823385_thumbL',
-    },
-    // 추가 데이터 추가 가능
-  ];
-  useEffect(() => {
-    // API 데이터를 불러오는 로직 (실제 API 사용할 때 여기에 추가)
-    // 데이터를 가져오면 setApiData를 사용하여 상태 업데이트
-    setApiData(dummyData);
-  }, []);
+  const onSearch = () => {
+    // 검색 버튼 클릭 시 API 요청 보내기
+    const searchInput = document.querySelector('#searchInput').value;
+    axios
+      .get(`/boogimon/place.jsp?command=list&keyword=` + searchInput)
+      .then((response) => {
+        const apiData = response.data; // API 응답에서 데이터를 가져옴
+        setApiData(apiData);
+      });
+  };
 
   const onOpenMap = () => {
-    setMapPlace(!MapPlace);
+    axios.get('/boogimon/place.jsp?command=list&keyword').then((response) => {
+      const apiData = response.data; // API 응답에서 데이터를 가져옴
+
+      setApiData(apiData);
+      setMapPlace(!MapPlace);
+    });
   };
   const Popup = () => {
     const closeModal = () => {
       clearSelectedItem();
       setMapPlace(false); // 팝업을 닫음
     };
+
     return (
       <Modal>
         <PopupBg />
 
         <MapPopup>
           <CloseBtn onClick={closeModal}>닫기</CloseBtn>
-          <SearchBar type='text' placeholder='주소 검색' />
+          <SearchBar
+            type='text'
+            placeholder='주소 검색'
+            id='searchInput'
+            //onInput={(e) => setSearchText(e.target.value)}
+          />
           <Button
             style={{
               position: 'absolute',
@@ -315,30 +300,39 @@ const MakeStampBook = () => {
               left: '80%',
               textAlign: 'center',
             }}
+            onClick={onSearch}
           >
             찾기
           </Button>
           <Zip>
-            <Container>
-              <Content>
-                {apiData.map((item, index) => (
-                  <Item
-                    key={index}
-                    onClick={() => handleItemClick(index)}
-                    style={{
-                      border:
-                        selectedItem === index && '2px solid var(--yellow)',
-                    }}
-                  >
-                    <p>장소: {item.placeName}</p>
-                    <p>주소: {item.address}</p>
-                    <ThumnailBOX
-                      style={{ backgroundImage: `url(${item.thumbnailURL})` }}
-                    />
-                  </Item>
-                ))}
-              </Content>
-            </Container>
+            {apiData.searchList && apiData.searchList.length > 0 ? (
+              <Container>
+                <Content>
+                  {apiData.searchList.map((item, index) => (
+                    <Item
+                      key={index}
+                      onClick={() => handleItemClick(index)}
+                      style={{
+                        border:
+                          selectedItem === index
+                            ? '2px solid var(--yellow)'
+                            : 'none',
+                      }}
+                    >
+                      <ItemDetail>
+                        <p>장소: {item.name}</p>
+                        <p>주소: {item.addr}</p>
+                      </ItemDetail>
+                      <ThumnailBOX
+                        style={{ backgroundImage: `url(${item.thumbnail})` }}
+                      />
+                    </Item>
+                  ))}
+                </Content>
+              </Container>
+            ) : (
+              <p>데이터가 없습니다.</p>
+            )}
           </Zip>
           <Button
             type='submit'
@@ -398,7 +392,7 @@ const MakeStampBook = () => {
           <StampBookTitle placeholder='타이틀을 작성해주세요.' />
 
           <TitleButtonBox>
-            <Button children={'등록'} $marginright />
+            <Button children={'등록'} marginright='true' />
             <Button children={'취소'} />
           </TitleButtonBox>
           {MapPlace ? <Popup /> : ''}

@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import { Link } from 'react-router-dom';
 import styled from 'styled-components';
 import '../globalStyle';
 import profile from '../images/머리만(색깔).png';
@@ -395,16 +396,17 @@ const My = () => {
         </MyImg>
         <MyproFile>
           <NickName>부기몬하이</NickName>
-          <Button
-            style={{
-              position: 'absolute',
-              width: '130px',
-              top: '70%',
-              textAlign: 'center',
-            }}
-          >
-            회원정보 수정
-          </Button>
+          <Link to='/edituserinfo'>
+            <Button
+              style={{
+                position: 'absolute',
+                top: '70%',
+                textAlign: 'center',
+              }}
+            >
+              회원정보 수정
+            </Button>
+          </Link>
           <CompleteBtn>
             <OpenBtn onClick={onOpenCard}>부기몬 카드</OpenBtn>
             {openCard ? <Popup /> : ''}
