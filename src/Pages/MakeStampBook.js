@@ -239,8 +239,6 @@ const MakeStampBook = () => {
 
   const [apiData, setApiData] = useState([]);
 
-  const [searchText, setSearchText] = useState('');
-
   const [selectedItem, setSelectedItem] = useState(null);
 
   const handleItemClick = (index) => {
