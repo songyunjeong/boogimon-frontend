@@ -7,7 +7,7 @@ import Header from '../Components/Header';
 import StampBook from '../Components/StampBook';
 import Button from '../Components/Button';
 import html2canvas from 'html2canvas';
-import axios from 'axios';
+import boogi from '../boogi';
 
 const Modal = styled.div`
   position: fixed;
@@ -152,7 +152,7 @@ const Mypage = styled.div`
   position: relative;
   height: 250px;
   width: 1280px;
-  margin: 30px auto 0; /* 위에 20px의 margin 추가 */
+  margin: 30px auto 0; /* 위에 30px의 margin 추가 */
   border-radius: 10px;
   border: 1px solid var(--gray2);
 `;
@@ -398,7 +398,7 @@ const My = () => {
 
   const admin = () => {
     const userSearch = document.querySelector('#userSearch').value;
-    axios
+    boogi
       .get('/boogimon/user/user.jsp?userId=' + userSearch)
       .then((response) => {
         const apiData = response.data; // API 응답에서 데이터를 가져옴
@@ -448,16 +448,22 @@ const My = () => {
           </CompleteBtn>
         </MyproFile>
         <MyProgress>
-          <Rank>🏅1 th</Rank>
+          <Rank>랭킹: {apiData.user.ranking}th</Rank>
           <Level>
             LV.
             {apiData.user.exp < 100
               ? 1
               : Math.floor(apiData.user.exp / 100) + 1}
           </Level>
-          <Progress value={apiData.user.exp % 100} min='0' max='100' />
-          <StampComplete>모은 스탬프: 777</StampComplete>
-          <UserLike>받은 좋아요수: 777</UserLike>
+          <Progress
+            value={!isNaN(apiData.user.exp) ? apiData.user.exp % 100 : 0}
+            min='0'
+            max='100'
+          />
+          <StampComplete>
+            모은 스탬프: {apiData.user.userTotalVisit}
+          </StampComplete>
+          <UserLike>받은 좋아요수: {apiData.user.userLikeCount}</UserLike>
           <Exp>EXP.{apiData.user.exp % 100}/100</Exp>
         </MyProgress>
       </Mypage>

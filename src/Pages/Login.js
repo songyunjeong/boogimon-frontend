@@ -1,9 +1,10 @@
 import React, { useState } from 'react';
 import Header from '../Components/Header';
 import styled from 'styled-components';
-import { Link, Navigate } from 'react-router-dom';
-import axios from 'axios';
-import { useNavigate } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
+import { SHA256 } from 'crypto-js';
+import boogi from '../boogi';
+
 const Wrap = styled.div`
   width: 1280px;
   margin: 0 auto;
@@ -33,16 +34,19 @@ const InputBox = styled.div`
     }
   }
 `;
+
 const Error = styled.div`
   color: var(--magenta);
   padding: 20px;
-`;
+`
+
 const ButtonContainer = styled.div`
   display: flex;
   justify-content: center;
   align-items: center;
   margin-top: 20px;
-`;
+  `
+
 const LoginBtn = styled.div`
   display: block;
   background-color: var(--black);
@@ -53,19 +57,22 @@ const LoginBtn = styled.div`
   font-weight: 700;
   color: var(--gray1);
   transform: skew(-20deg);
-  > p {
+  
+  >p {
     position: relative;
     transform: skew(20deg);
     text-align: center;
     z-index: 2;
   }
+  
   &:hover {
     cursor: pointer;
     background-color: var(--yellow);
     border: 2px solid var(--light-blue);
     color: var(--black);
   }
-`;
+  `;
+
 const FindPassword = styled.div`
   color: var(--gray4);
   padding: 20px 0;
@@ -76,73 +83,83 @@ const FindPassword = styled.div`
     color: var(--gray4);
   }
 `;
+
 const FindPWLink = styled(Link)`
   color: var(--gray);
 `;
+
 const Login = () => {
-  const [userId, setUserId] = useState('');
+  const [userId, setUserId] = useState(''); 
   const [passwd, setPasswd] = useState('');
   const [error, setError] = useState('');
+
   const navigate = useNavigate();
+
   const handleLogin = async () => {
     if (userId.length < 1 || userId.length > 30) {
-      setError('아이디는 30자 이하여야 합니다.');
+      setError('아이디는 30자 이내여야 합니다.');
       return;
     }
-    if (passwd.length < 4 || passwd.length > 20) {
-      setError('비밀번호는 4자 이상 20자 이하여야 합니다.');
-      return;
-    }
+    const passwordRegex = /^[a-z\d!@*&-_]{4,20}$/;
+    if (passwd === '') {
+      setError('비밀번호를 입력해주세요.');
+      return false;
+      
+    } else if (!passwordRegex.test(passwd)) {
+      setError(
+        '비밀번호는 4~20자의 영소문자, 숫자, !@*&-_만 입력 가능합니다.'
+      );
+      return false;
+    } else {
+        setError('');
+      }  
+      
     try {
-      const response = await axios.post('/boogimon/user/user.jsp', null, {
+      const response = await boogi.post('/boogimon/user/user.jsp', null, {
         params: {
           command: 'login',
           userId: userId,
-          passwd: passwd,
-        },
+          passwd: SHA256(passwd).toString(),   
+        }
       });
-      if (response.data.resultCode === '00') {
-        sessionStorage.setItem('userId', response.data.user.userId);
+      
+      if(response.data.resultCode === '00') {
+        sessionStorage.setItem('userId', userId);
         navigate('/');
-      } else {
-        setError('로그인 실패');
       }
+      else {
+        setError('로그인 실패');
+      }  
     } catch (error) {
       setError('로그인 실패');
     }
   };
+
   return (
     <div>
       <Header />
-      <Wrap>
+
+      <Wrap> 
         <Title>로그인</Title>
         <InputBox>
-          <input
-            type='email'
-            name='user_id'
-            id='user_id'
-            placeholder='가입한 이메일'
-            required
-            value={userId}
-            onChange={(e) => setUserId(e.target.value)}
+          <input type='email' name="user_id" id="user_id" placeholder='가입한 이메일' required 
+                 value={userId} 
+                 onChange={(e) => setUserId(e.target.value)}
           />
-          <input
-            type='password'
-            name='passwd'
-            id='passwd'
-            placeholder='비밀번호'
-            required
-            value={passwd}
-            onChange={(e) => setPasswd(e.target.value)}
+          <input type="password" name="passwd" id="passwd" placeholder="비밀번호" required
+                 value={passwd} 
+                 onChange={(e) => setPasswd(e.target.value)}
           />
           <Error>{error}</Error>
+
           <ButtonContainer>
-            <LoginBtn type='submit' id='login' onClick={handleLogin}>
+            <LoginBtn type="submit" id="login" onClick={handleLogin}>
               <p>로그인</p>
             </LoginBtn>
           </ButtonContainer>
+          
           <FindPassword>
-            <FindPWLink to='/findPassword'>비밀번호를 잊으셨나요</FindPWLink>
+          <FindPWLink to="/findPassword">비밀번호를 잊으셨나요</FindPWLink>
           </FindPassword>
         </InputBox>
       </Wrap>

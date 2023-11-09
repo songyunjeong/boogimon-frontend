@@ -10,8 +10,8 @@ import Stamp from '../Components/Stamp';
 import { useEffect, useRef, useState } from 'react';
 import html2canvas from 'html2canvas';
 import { saveAs } from 'file-saver';
-import axios from 'axios';
 import CreatorMsgBox from '../Components/CreatorMsgBox';
+import boogi from '../boogi';
 
 const Wrap = styled.div`
   width: 1280px;
@@ -103,12 +103,11 @@ const StampDetail = () => {
   const divRef = useRef();
   const { state } = useLocation();
   const [bookData, setBookData] = useState();
+  const [comment, setComment] = useState('');
 
   useEffect(() => {
-    axios
-      .get(
-        `http://localhost:8080/boogimon/stampbook/stampbook.jsp?stampbookId=${state.id}`
-      )
+    boogi
+      .get(`/boogimon/stampbook/stampbook.jsp?stampbookId=${state.id}`)
       .then((response) => {
         setBookData(response.data);
       });
@@ -130,6 +129,20 @@ const StampDetail = () => {
     }
   };
 
+  const commentPost = () => {
+    boogi
+      .post('/boogimon/stampbook/comment.jsp', null, {
+        params: {
+          stampbookId: state.id,
+          userId: 'red@google.com',
+          comment: comment,
+        },
+      })
+      .then((response) => {
+        console.log(response.data);
+      });
+  };
+
   return (
     <div>
       <Header />
@@ -146,7 +159,7 @@ const StampDetail = () => {
                   alt={stamp.placeName + ' 이미지'}
                   title={stamp.placeName}
                   key={i}
-                  id={i + 1}
+                  placeid={stamp.placeId}
                 />
               );
             })}
@@ -178,8 +191,14 @@ const StampDetail = () => {
           <Title>댓글</Title>
 
           <InputBox>
-            <input type='text' placeholder='공백 불가, 최대 250자 작성 가능' />
-            <Button children={'등록'} />
+            <input
+              type='text'
+              placeholder='공백 불가, 최대 250자 작성 가능'
+              onChange={(e) => {
+                setComment(e.target.value);
+              }}
+            />
+            <Button children={'등록'} onClick={commentPost} />
           </InputBox>
 
           <CommentListBox>

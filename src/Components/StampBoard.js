@@ -1,7 +1,7 @@
 import styled from 'styled-components';
 import Stamp from './Stamp';
 import { useEffect, useState } from 'react';
-import axios from 'axios';
+import boogi from '../boogi';
 
 const StampBoardBox = styled.div`
   display: flex;
@@ -22,10 +22,8 @@ const StampBoard = (props) => {
   const [data, setData] = useState();
 
   useEffect(() => {
-    axios
-      .get(
-        `http://localhost:8080/boogimon/stampbook/stampbook.jsp?stampbookId=${props.id}`
-      )
+    boogi
+      .get(`/boogimon/stampbook/stampbook.jsp?stampbookId=${props.id}`)
       .then((response) => {
         setData(response.data);
       });

@@ -1,6 +1,6 @@
 import styled, { css } from 'styled-components';
 import React, { useState } from 'react';
-import axios from 'axios';
+import boogi from '../boogi';
 
 const StampBox = styled.div`
   width: ${(props) => (props.$small ? '110px' : '150px')};
@@ -17,7 +17,6 @@ const StampImgBox = styled.div`
   overflow: hidden;
   > img {
     width: ${(props) => (props.$small ? '150px' : '200px')};
-    opacity: ${(props) => (props.lastvisitdate ? '1' : '0.5')};
   }
 `;
 
@@ -62,8 +61,7 @@ const CloseBox = styled.div`
 const PopupWarp = styled.div`
   position: fixed;
   width: 800px;
-  height: 80vh;
-  top: calc(50% - 92vh / 2);
+  top: calc(50% - (80vh + 46px) / 2);
   left: calc(50% - 800px / 2);
 `;
 
@@ -71,8 +69,10 @@ const PopupBox = styled.div`
   position: absolute;
   background-color: white;
   width: 800px;
+  height: 80vh;
   font-size: var(--small);
   border-radius: 10px;
+  overflow: auto;
 `;
 
 const CloseBtn = styled.button`
@@ -90,13 +90,13 @@ const CloseBtn = styled.button`
 
 const PlcaeImg = styled.div`
   width: 800px;
-  height: 17vh;
+  height: 300px;
   border-radius: 10px 10px 0 0;
 `;
 
 const Img = styled(PlcaeImg)`
   background-image: url(${(props) => props.background});
-  background-size: 100% 100%;
+  background-size: cover;
 `;
 
 const PlaceName = styled.div`
@@ -197,21 +197,15 @@ const Stamp = (props) => {
   const [background, setBackground] = useState('');
   const [url, setUrl] = useState('');
 
-  const onOpenPopup = () => {
-    axios
-      .get('http://localhost:8080/boogimon/place.jsp', {
-        params: {
-          placeId: props.id,
-        },
-      })
-      .then((res) => {
-        setData(res.data);
+  const onOpenPopup = async () => {
+    const ajax_data = await boogi.get(
+      `/boogimon/place.jsp?placeId=${props.placeid}`
+    );
 
-        setBackground(data.placeDetail.img);
-        setUrl(data.placeDetail.homepage);
-
-        setPopupOn(!popupOn);
-      });
+    setData(ajax_data.data);
+    setBackground(ajax_data.data.placeDetail.img);
+    setUrl(ajax_data.data.placeDetail.homepage);
+    setPopupOn(!popupOn);
   };
 
   const onClosePopup = () => {
@@ -312,6 +306,7 @@ const Stamp = (props) => {
       </Modal>
     );
   };
+
   return (
     <StampBox {...props} onClick={onOpenPopup}>
       <StampImgBox {...props}>
