@@ -115,13 +115,17 @@ const Join = () => {
   const [passwd, setPasswd] = useState('');
   const [passwdConfirm, setPasswdConfirm] = useState('');
   const [nickname, setNickname] = useState('');
-  const [profile_img, setProfile_img] = useState('');
+  const [profileImg, setProfileImg] = useState('');
   const [error, setError] = useState('');
 
   const navigate = useNavigate();
 
+  const handleImageChange = (e) => {
+    const file = e.target.files[0];
+    setProfileImg(file);
+  };
+  
   const handleSubmit = async () => {
-    
     
     if (userId.length < 1 || userId.length > 30) {
       setError('아이디는 30자 이내여야 합니다.');
@@ -137,31 +141,40 @@ const Join = () => {
         '비밀번호는 4~20자의 영소문자, 숫자, !@*&-_만 입력 가능합니다.'
       );
       return false;
+    } else if (passwd !== passwdConfirm) {
+      setError('비밀번호가 일치하지 않습니다.');
+      return false;
     } else {
         setError('');
       }  
 
+    const formData = new FormData();
+    formData.append('userId', userId);
+    formData.append('passwd', SHA256(passwd).toString());
+    formData.append('nickname', nickname);
+    formData.append('profileImg', profileImg);
+    
     try {
-      const response = await axios.post('/boogimon/user/userUpload.jsp', null, {
+      const response = await axios.post('/boogimon/user/userUpload.jsp', formData, {
         params: {
-          command : 'join',
-          userId: userId,
-          passwd: SHA256(passwd).toString(), 
-          nickname: nickname,
-          profile_img: profile_img,
-        }
+          command: 'join',
+        },
       });
-
-      if(response.data) {
-        sessionStorage.setItem('userId', JSON.stringify(response.data.user.userId));
-        sessionStorage.setItem('nickname', JSON.stringify(response.data.user.nickname));
-        sessionStorage.setItem('profile_img', JSON.stringify(response.data.user.profile_img));
-        navigate('login');
+      
+      // Handle response here...
+      if(response.data.resultCode === '00') {
+        navigate('/login');
       } else {
-        setError('회원가입 실패');
+        if (response.data.resultCode === '22'){
+          setError('중복된 사용자ID 입니다.');
+        } else if (response.data.resultCode === '23'){
+          setError('중복된 닉네임 입니다.');
+        } else {
+          setError('기타 이유로 가입에 실패하셨습니다.');
+        }
       }
     } catch (error) {
-      console.error(error);
+      console.log(error);
     }
   };
 
@@ -172,7 +185,7 @@ const Join = () => {
       <Wrap> 
         <Title>회원가입</Title>
         
-        <SignupForm id="signup-form" className="signup-form" encType="multipart/form-data" method="POST" onSubmit={handleSubmit}>
+        <SignupForm id="signup-form" className="signup-form" encType="multipart/form-data" method="POST">
           
           <Input type='email' name="user_id" id="user_id" placeholder='가입한 이메일' required value={userId} onChange={(e) => setUserId(e.target.value)}/>
           <Input type="password" name="passwd" id="passwd" placeholder="비밀번호" required value={passwd} onChange={(e) => setPasswd(e.target.value)}/>
@@ -180,20 +193,20 @@ const Join = () => {
           <Input type="text" name="nickname" id="nickname" placeholder="닉네임" required value={nickname} onChange={(e) => setNickname(e.target.value)}/>
           <Button children={'랜덤 버튼'} style={{position: "absolute", top: "245px", right: "-150px"}}/>
           
-          <Label htmlFor="profile_img">
+          <Label htmlFor="profileImg">
             프로필 이미지
           </Label>
           <ImgBox>
             <ProfileImg>
               <img src={avatar} alt='' /><br/>
-              <input type="file"  name="profile_img" id="profile_img" accept="image/*" onChange={(e) => setProfile_img(e.target.value)}/>
+              <input type="file"  name="profileImg" id="profileImg" accept="image/*" onChange={(e) => setProfileImg(e.target.value)}/>
             </ProfileImg>
-            <Button children={'업로드 버튼'} id="upload" />
+            <Button children={'업로드 버튼'} id="upload" onClick={handleImageChange}/>
           </ImgBox>
           <Error>{error}</Error>
 
           <ButtonContainer>
-            <SignupBtn type="submit" id="signup">
+            <SignupBtn type="submit" id="signup" onClick={handleSubmit}>
               <p>회원가입 완료</p>
             </SignupBtn>
           </ButtonContainer>
