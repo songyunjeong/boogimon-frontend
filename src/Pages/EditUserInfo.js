@@ -1,7 +1,8 @@
-import React, { useState } from 'react';
+import React, { useRef, useState } from 'react';
 import Header from '../Components/Header';
 import avatar from '../images/avatar.png';
 import styled from 'styled-components';
+import { useNavigate } from 'react-router-dom';
 
 const Warp = styled.div`
   width: 100vw;
@@ -130,10 +131,10 @@ const Model = styled.div`
 `;
 
 const DeleteBox = styled.div`
-  width: 193px;
+  width: 195px;
   position: relative;
-  top: 22%;
-  left: 19%;
+  top: 12%;
+  left: 15%;
 `;
 const DeleteMsg = styled.span`
   font-size: var(--regular);
@@ -168,6 +169,12 @@ const EditUserInfo = () => {
 
   const [passwordError, setPasswordError] = useState('');
   const [confirmError, setConfirmError] = useState('');
+
+  const [Image, setImage] = useState(avatar);
+  const fileInput = useRef(null);
+
+  const navigate = useNavigate();
+  const goHome = () => navigate('/', {});
 
   const passwordCheckHandler = (password, confirm) => {
     //정규표현식
@@ -209,8 +216,12 @@ const EditUserInfo = () => {
         <PopupBg />
         <Model>
           <DeleteBox>
-            <DeleteMsg>정말 탈퇴하시겠습니까?</DeleteMsg>
-            <DeleteButton>예</DeleteButton>
+            <DeleteMsg>
+              정말 탈퇴하시겠습니까?
+              <br />
+              (탈퇴한 아이디로는 가입안됨)
+            </DeleteMsg>
+            <DeleteButton onClick={goHome}>예</DeleteButton>
             <DeleteButton onClick={onOpenPopup}>아니요</DeleteButton>
           </DeleteBox>
         </Model>
@@ -225,15 +236,20 @@ const EditUserInfo = () => {
         <Title>회원정보수정</Title>
 
         <Form>
-          <Profile>
-            <label for='profile_img' hidden>
-              프로필 이미지
-            </label>
-            <br />
-            <img src={avatar} alt='' />
-            <br />
-            {/* <input type="file"  name="profile_img" id="profile_img" accept="image/*" /> */}
-          </Profile>
+          <Profile
+            src={Image}
+            onClick={() => {
+              fileInput.current.click();
+            }}
+          />
+          <input
+            type='file'
+            style={{ display: 'none' }}
+            accept='image/jpg,impge/png,image/jpeg'
+            name='profile_img'
+            // onChange={onChange}
+            ref={fileInput}
+          />
           <Id>boogi@boogimon.com</Id>
 
           <Nickname />
