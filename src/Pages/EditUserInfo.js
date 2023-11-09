@@ -4,20 +4,17 @@ import avatar from '../images/avatar.png';
 import styled from 'styled-components';
 
 const Warp = styled.div`
-  width: 1280px;
-  height: 70vh;
+  width: 100vw;
+  height: 100vh;
   position: relative;
-  left: calc(50% - 1280px / 2);
-  margin-top: 128px;
 `;
 
 const Title = styled.span`
   font-size: var(--big);
   font-weight: bold;
-  position: relative;
-  left: 38%;
-  top: 6%;
-  text-align: center;
+  position: absolute;
+  left: 44%;
+  top: -14%;
 `;
 
 const Button = styled.button`
@@ -25,6 +22,7 @@ const Button = styled.button`
   border-radius: 4px;
   background-color: #ffffff;
   padding: 15px 25px;
+  width: 138px;
   box-sizing: border-box;
   margin-left: 10px;
   &:hover {
@@ -38,14 +36,14 @@ const Form = styled.form.attrs({
   enctype: 'multipart/form-data',
   method: 'POST',
 })`
-  width: 700px;
-  margin: 0 auto;
+  width: 735px;
+  margin: 15% 38%;
 `;
 
 const Input = styled.input.attrs({ required: true })`
   width: 438px;
   height: 50px;
-  border: 1px solid var(--gray1);
+  border: 1px solid var(--gray2);
   border-radius: 5px;
   margin-top: 16px;
   box-sizing: border-box;
@@ -74,7 +72,9 @@ const PwdConfirm = styled(Input).attrs({
   id: 'passwdConfirm',
   placeholder: '비밀번호 변경 확인',
   maxlength: '20',
-})``;
+})`
+  margin-bottom: 10px;
+`;
 
 const Id = styled.div`
   width: 438px;
@@ -86,9 +86,9 @@ const Id = styled.div`
 `;
 
 const Profile = styled.div`
-  position: relative;
-  top: 10%;
-  left: 15%;
+  position: absolute;
+  top: -10%;
+  left: 44%;
 `;
 
 const Adiv = styled.div`
@@ -97,9 +97,11 @@ const Adiv = styled.div`
 
 const Edit = styled.span`
   color: var(--gray2);
+  text-decoration-line: underline;
   &:hover,
   &:focus {
-    color: blue;
+    cursor: pointer;
+    color: var(--black);
   }
 `;
 
@@ -222,17 +224,16 @@ const EditUserInfo = () => {
       <Warp>
         <Title>회원정보수정</Title>
 
-        <Profile>
-          <label for='profile_img' hidden>
-            프로필 이미지
-          </label>
-          <br />
-          <img src={avatar} alt='' />
-          <br />
-          {/* <input type="file"  name="profile_img" id="profile_img" accept="image/*" /> */}
-        </Profile>
-
         <Form>
+          <Profile>
+            <label for='profile_img' hidden>
+              프로필 이미지
+            </label>
+            <br />
+            <img src={avatar} alt='' />
+            <br />
+            {/* <input type="file"  name="profile_img" id="profile_img" accept="image/*" /> */}
+          </Profile>
           <Id>boogi@boogimon.com</Id>
 
           <Nickname />

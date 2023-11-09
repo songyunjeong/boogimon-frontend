@@ -9,14 +9,12 @@ const Wrap = styled.div`
   width: 1280px;
   margin: 0 auto;
 `;
-
 const Title = styled.div`
   font-size: var(--big);
   font-weight: bold;
   margin: 100px 0 50px;
   text-align: center;
 `;
-
 const InputBox = styled.div`
   display: flex;
   flex-direction: column;
@@ -40,15 +38,14 @@ const InputBox = styled.div`
 const Error = styled.div`
   color: var(--magenta);
   padding: 20px;
-`
+`;
 
 const ButtonContainer = styled.div`
   display: flex;
   justify-content: center;
   align-items: center;
   margin-top: 20px;
-  `
-
+`;
 const LoginBtn = styled.div`
   display: block;
   background-color: var(--black);
@@ -59,37 +56,35 @@ const LoginBtn = styled.div`
   font-weight: 700;
   color: var(--gray1);
   transform: skew(-20deg);
-  
-  >p {
+  > p {
     position: relative;
     transform: skew(20deg);
     text-align: center;
     z-index: 2;
   }
-  
   &:hover {
     cursor: pointer;
     background-color: var(--yellow);
     border: 2px solid var(--light-blue);
     color: var(--black);
   }
-  `;
-
+`;
 const FindPassword = styled.div`
   color: var(--gray4);
   padding: 20px 0;
   text-decoration: underline var(--gray4);
+  a {
+  color: var(--gray4)
+  }
   &:hover,
   &:focus {
     cursor: pointer;
     color: var(--gray4);
   }
 `;
-
 const FindPWLink = styled(Link)`
   color: var(--gray);
 `;
-
 const Login = () => {
   const [userId, setUserId] = useState(''); 
   const [passwd, setPasswd] = useState('');
@@ -147,10 +142,8 @@ const Login = () => {
   return (
     <div>
       <Header />
-
       <Wrap> 
         <Title>로그인</Title>
-        
         <InputBox>
           <input type='email' name="user_id" id="user_id" placeholder='가입한 이메일' required 
                  value={userId} 
@@ -172,10 +165,8 @@ const Login = () => {
           <FindPWLink to="/findPassword">비밀번호를 잊으셨나요</FindPWLink>
           </FindPassword>
         </InputBox>
-        
       </Wrap>
     </div>
   );
 };
-
 export default Login;
