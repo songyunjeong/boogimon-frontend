@@ -152,7 +152,7 @@ const Mypage = styled.div`
   position: relative;
   height: 250px;
   width: 1280px;
-  margin: auto;
+  margin: 30px auto 0; /* 위에 20px의 margin 추가 */
   border-radius: 10px;
   border: 1px solid var(--gray2);
 `;
