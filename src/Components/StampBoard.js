@@ -1,7 +1,8 @@
 import styled from 'styled-components';
 import Stamp from './Stamp';
 import { useEffect, useState } from 'react';
-import axios from 'axios';
+import boogi from '../boogi';
+import { useNavigate } from 'react-router-dom';
 
 const StampBoardBox = styled.div`
   display: flex;
@@ -22,17 +23,28 @@ const StampBoard = (props) => {
   const [data, setData] = useState();
 
   useEffect(() => {
-    axios
-      .get(
-        `http://localhost:8080/boogimon/stampbook/stampbook.jsp?stampbookId=${props.id}`
-      )
+    boogi
+      .get(`/boogimon/stampbook/stampbook.jsp?stampbookId=${props.id}`)
       .then((response) => {
         setData(response.data);
       });
   }, []);
 
+  const navigate = useNavigate();
+
+  const goToStampDetail = () =>
+    navigate('/stampDetail', {
+      state: {
+        id: props.id,
+        nickname: props.nickname,
+        description: props.description,
+        stampbookRegdate: props.stampbookRegdate,
+        likeCount: props.likeCount,
+        title: props.title,
+      },
+    });
   return (
-    <StampBoardBox>
+    <StampBoardBox onClick={goToStampDetail}>
       {data?.stampbook.stampList.map((stamp, i) => {
         return (
           <Stamp
