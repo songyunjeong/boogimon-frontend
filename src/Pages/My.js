@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useContext, useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
 import styled from 'styled-components';
 import '../globalStyle';
@@ -8,6 +8,8 @@ import StampBook from '../Components/StampBook';
 import Button from '../Components/Button';
 import html2canvas from 'html2canvas';
 import boogi from '../boogi';
+import avatar from '../images/avatar.png';
+import { AppContext } from '../App';
 
 const Modal = styled.div`
   position: fixed;
@@ -315,16 +317,12 @@ const Exp = styled.p`
   left: 82%;
   text-align: center; /* 텍스트를 가운데 정렬 */
 `;
-const SearchBar = styled.input`
-  width: 400px;
-  height: 40px;
-  position: absolute;
-  border-radius: 10px;
-`;
 
 const My = () => {
   const [openCard, closeCard] = useState(false);
   const [apiData, setApiData] = useState({ user: [] });
+
+  const { isLogin } = useContext(AppContext);
 
   const stampBookList = [
     {
@@ -352,6 +350,7 @@ const My = () => {
   const onOpenCard = () => {
     closeCard(!openCard);
   };
+
   const Popup = () => {
     const saveAsImage = () => {
       const cardElement = document.querySelector('.CardPopup');
@@ -396,41 +395,29 @@ const My = () => {
     );
   };
 
-  const admin = () => {
-    const userSearch = document.querySelector('#userSearch').value;
+  useEffect(() => {
     boogi
-      .get('/boogimon/user/user.jsp?userId=' + userSearch)
+      .get(
+        `/boogimon/user/user.jsp?userId=${window.sessionStorage?.getItem(
+          'userId'
+        )}`
+      )
       .then((response) => {
-        const apiData = response.data; // API 응답에서 데이터를 가져옴
-
-        setApiData(apiData);
+        setApiData(response.data);
+        console.log(response.data);
       });
-  };
+  }, [isLogin]);
 
   const View = () => {
     return (
       <Mypage>
-        <SearchBar
-          type='text'
-          placeholder='아이디 검색'
-          id='userSearch'
-          //onInput={(e) => setSearchText(e.target.value)}
-        />
-        <Button
-          style={{
-            position: 'absolute',
-            left: '32%',
-            textAlign: 'center',
-          }}
-          onClick={admin}
-        >
-          아이디검색
-        </Button>
         <MyImg>
-          <MyProfileImg src={apiData.user.profileImg} alt='프로필이미지' />
+          <MyProfileImg src={apiData.user.profilImg} alt='프로필이미지' />
         </MyImg>
         <MyproFile>
-          <NickName>{apiData.user.nickname}</NickName>
+          <NickName>
+            {apiData.user.nickname ? apiData.user.nickname : '-'}
+          </NickName>
           <Link to='/edituserinfo'>
             <Button
               style={{
@@ -444,7 +431,7 @@ const My = () => {
           </Link>
           <CompleteBtn>
             <OpenBtn onClick={onOpenCard}>부기몬 카드</OpenBtn>
-            {openCard ? <Popup /> : ''}
+            {openCard && <Popup />}
           </CompleteBtn>
         </MyproFile>
         <MyProgress>
@@ -481,17 +468,7 @@ const My = () => {
           <option>가나다순</option>
         </Sort>
 
-        <StampBookBox>
-          {stampBookList.map((stampBook, i) => {
-            return (
-              <StampBook
-                title={stampBook.title}
-                like={stampBook.like}
-                key={i}
-              />
-            );
-          })}
-        </StampBookBox>
+        <StampBookBox></StampBookBox>
       </Wrap>
     </div>
   );
