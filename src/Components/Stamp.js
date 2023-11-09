@@ -1,6 +1,6 @@
 import styled, { css } from 'styled-components';
 import React, { useState } from 'react';
-import boogi from '../boogi';
+import axios from 'axios';
 
 const StampBox = styled.div`
   width: ${(props) => (props.$small ? '110px' : '150px')};
@@ -63,6 +63,9 @@ const PopupWarp = styled.div`
   width: 800px;
   top: calc(50% - (80vh + 46px) / 2);
   left: calc(50% - 800px / 2);
+  ::-webkit-scrollbar {
+    display: none;
+  }
 `;
 
 const PopupBox = styled.div`
@@ -95,7 +98,7 @@ const PlcaeImg = styled.div`
 `;
 
 const Img = styled(PlcaeImg)`
-  background-image: url(${(props) => props.background});
+  background-image: url(${(props) => props.$background});
   background-size: cover;
 `;
 
@@ -137,11 +140,19 @@ const LeftBox2 = styled(LeftBox)`
 `;
 
 const RightBox2 = styled(RightBox)`
-  width: 710px;
+  width: 715px;
+`;
+
+const UrlRight = styled(RightBox)`
+  width: 715px;
+`;
+
+const PayRight = styled(RightBox)`
+  width: 715px;
 `;
 
 const Facility = styled.div`
-  width: 710px;
+  width: 715px;
 `;
 
 const Traffic = styled.div`
@@ -152,26 +163,29 @@ const Tel = styled(Addr)`
   clear: both;
   padding-top: 10px;
 `;
-
-const Pay = styled.div`
+const Close = styled.div`
   width: 760px;
   margin: 13px 20px 0px 20px;
   border-bottom: 1px solid rgb(239, 239, 239);
   padding-bottom: 13px;
 `;
 
-const FacilityBox = styled(Pay)`
+const Pay = styled(Close)`
   height: 30px;
 `;
 
-const Open = styled(Pay)`
-  color: rgb(54, 143, 255);
+const FacilityBox = styled(Close)`
+  height: 30px;
+`;
+
+const Open = styled(Close)`
+  /* color: rgb(54, 143, 255); */
   font-weight: bold;
 `;
 
-const Close = styled(Pay)``;
-
-const PageUrl = styled(Pay)``;
+const PageUrl = styled(Close)`
+  height: 35px;
+`;
 
 const DetailBox = styled.div`
   margin: 20px 20px 20px 20px;
@@ -179,9 +193,8 @@ const DetailBox = styled.div`
 `;
 
 const Detail = styled.div`
-  height: 255px;
-  overflow-y: scroll;
   padding-top: 10px;
+  text-align: justify;
 `;
 
 const Url = styled.div`
@@ -198,14 +211,17 @@ const Stamp = (props) => {
   const [url, setUrl] = useState('');
 
   const onOpenPopup = async () => {
-    const ajax_data = await boogi.get(
-      `/boogimon/place.jsp?placeId=${props.placeid}`
-    );
+    if (window.location.pathname === '/stampDetail') {
+      // console.log('pathname: ', window.location.pathname);
+      const ajax_data = await axios.get(
+        `http://localhost:8080/boogimon/place.jsp?placeId=${props.placeid}`
+      );
 
-    setData(ajax_data.data);
-    setBackground(ajax_data.data.placeDetail.img);
-    setUrl(ajax_data.data.placeDetail.homepage);
-    setPopupOn(!popupOn);
+      setData(ajax_data.data);
+      setBackground(ajax_data.data.placeDetail.img);
+      setUrl(ajax_data.data.placeDetail.homepage);
+      setPopupOn(!popupOn);
+    }
   };
 
   const onClosePopup = () => {
@@ -213,6 +229,9 @@ const Stamp = (props) => {
   };
 
   const Popup = () => {
+    const apiText = data.placeDetail.detail;
+    const text = apiText.replace(/(<([^>]+)>)/gi, '');
+
     return (
       <Modal>
         <PopupBg />
@@ -222,7 +241,7 @@ const Stamp = (props) => {
           </CloseBox>
           <PopupBox>
             <PlcaeImg>
-              <Img background={background} />
+              <Img $background={background} />
             </PlcaeImg>
 
             <PlaceName>{data.placeDetail.name}</PlaceName>
@@ -255,8 +274,12 @@ const Stamp = (props) => {
             </GrayBox>
 
             <Pay>
-              <Span>💵</Span>
-              {`${data.placeDetail.pay === '' ? '-' : data.placeDetail.pay}`}
+              <LeftBox>
+                <Span>💵</Span>
+              </LeftBox>
+              <PayRight>
+                {`${data.placeDetail.pay === '' ? '-' : data.placeDetail.pay}`}
+              </PayRight>
             </Pay>
             <FacilityBox>
               <LeftBox2>
@@ -272,34 +295,42 @@ const Stamp = (props) => {
                 </Facility>
               </RightBox2>
             </FacilityBox>
-            <Open>
+            <Open
+              style={{
+                color:
+                  data.placeDetail.open === '' ? 'black' : 'rgb(54, 143, 255)',
+              }}
+            >
               <Span>운영</Span>
               {`${data.placeDetail.open === '' ? '-' : data.placeDetail.open}`}
             </Open>
             <Close>
               <Span>휴무</Span>
               {`${
-                data.placeDetail.close === '' ? '-' : data.placeDetail.close
+                data.placeDetail.close === '' || 'null'
+                  ? '-'
+                  : data.placeDetail.close
               }`}
             </Close>
             <PageUrl>
-              <Span>🌐</Span>
-              <Url as='a' href={url} target='_blank'>
-                {`${
-                  data.placeDetail.homepage === ''
-                    ? '-'
-                    : data.placeDetail.homepage
-                }`}
-              </Url>
+              <LeftBox>
+                <Span>🌐</Span>
+              </LeftBox>
+              <UrlRight>
+                <Url as='a' href={url} target='_blank'>
+                  {`${
+                    data.placeDetail.homepage === ''
+                      ? '-'
+                      : data.placeDetail.homepage
+                  }`}
+                </Url>
+              </UrlRight>
             </PageUrl>
 
             <DetailBox>
               <Span>개요</Span>
-              <Detail>
-                {`${
-                  data.placeDetail.detail === '' ? '-' : data.placeDetail.detail
-                }`}
-              </Detail>
+
+              <Detail>{`${text === '' ? '-' : text}`}</Detail>
             </DetailBox>
           </PopupBox>
         </PopupWarp>
