@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useRef } from 'react';
 import Header from '../Components/Header';
 import Button from '../Components/Button';
 import styled from 'styled-components';
@@ -29,6 +29,9 @@ const ProfileImg = styled.div`
   background-color: var(--gray1);
   margin: 20px 30px;
   overflow: hidden;
+  &:hover {
+    cursor: pointer;
+  }
 `
 
 const SignupForm = styled.form`
@@ -120,11 +123,57 @@ const Join = () => {
 
   const navigate = useNavigate();
 
+  const randomNickname = () => {
+    
+    const formData = new FormData();
+    formData.append('nickname', nickname);
+
+    try {
+      const response = axios.post('/boogimon/user/user.jsp', formData, {
+        params: {
+          command: 'randomNickname',
+          nickname: nickname,
+        },
+      });
+
+      if(response.data.resultCode === '00') {
+        setError('랜덤 닉네임 생성');
+        sessionStorage.setItem('nickname', response.data.user.nickname);
+      } else {
+        setError('랜덤 닉네임 생성 실패'); 
+      }
+    } catch (error) {
+        console.log(error);
+      }
+    }
+
   const handleImageChange = (e) => {
     const file = e.target.files[0];
+    if(file) {
     setProfileImg(file);
-  };
   
+    const formData = new FormData();
+    formData.append('userId', userId);
+    formData.append('profileImg', file);
+
+    try {
+      const response = axios.post('/boogimon/user/userUpload.jsp', formData, {
+        params: {
+          command: 'changeImg',
+        },
+      });
+
+      if(response.data.resultCode === '00') {
+        setError('사진 업로드 완료');
+      } else {
+        setError('사진 업로드 실패'); 
+      }
+    } catch (error) {
+        console.log(error);
+      }
+    }
+  };
+
   const handleSubmit = async () => {
     
     if (userId.length < 1 || userId.length > 30) {
@@ -161,21 +210,25 @@ const Join = () => {
         },
       });
       
-      // Handle response here...
       if(response.data.resultCode === '00') {
         navigate('/login');
       } else {
         if (response.data.resultCode === '22'){
-          setError('중복된 사용자ID 입니다.');
+          setError('중복된 사용자ID 입니다');
         } else if (response.data.resultCode === '23'){
-          setError('중복된 닉네임 입니다.');
+          setError('중복된 닉네임 입니다');
         } else {
-          setError('기타 이유로 가입에 실패하셨습니다.');
+          setError('기타 이유로 회원가입에 실패하셨습니다');
         }
       }
     } catch (error) {
       console.log(error);
     }
+  };
+    const fileInputRef = useRef(null);
+
+    const handleAvatarClick = () => {
+      fileInputRef.current.click();
   };
 
   return (
@@ -185,21 +238,34 @@ const Join = () => {
       <Wrap> 
         <Title>회원가입</Title>
         
-        <SignupForm id="signup-form" className="signup-form" encType="multipart/form-data" method="POST">
-          
+        <SignupForm 
+          id="signup-form" 
+          className="signup-form" 
+          encType="multipart/form-data" 
+          method="POST"
+        >
           <Input type='email' name="user_id" id="user_id" placeholder='가입한 이메일' required value={userId} onChange={(e) => setUserId(e.target.value)}/>
           <Input type="password" name="passwd" id="passwd" placeholder="비밀번호" required value={passwd} onChange={(e) => setPasswd(e.target.value)}/>
           <Input type="password" name="passwdConfirm" id="passwdConfirm" placeholder="비밀번호 확인" required value={passwdConfirm} onChange={(e) => setPasswdConfirm(e.target.value)}/>
           <Input type="text" name="nickname" id="nickname" placeholder="닉네임" required value={nickname} onChange={(e) => setNickname(e.target.value)}/>
-          <Button children={'랜덤 버튼'} style={{position: "absolute", top: "245px", right: "-150px"}}/>
+          <Button children={'랜덤 버튼'} onClick={randomNickname} style={{position: "absolute", top: "245px", right: "-150px"}}/>
           
-          <Label htmlFor="profileImg">
+          <Label htmlFor="profileImg" onClick={handleAvatarClick}>
             프로필 이미지
           </Label>
           <ImgBox>
-            <ProfileImg>
-              <img src={avatar} alt='' /><br/>
-              <input type="file"  name="profileImg" id="profileImg" accept="image/*" onChange={(e) => setProfileImg(e.target.value)}/>
+            <ProfileImg onClick={handleAvatarClick}>
+              <img src={avatar} alt='' />
+              <br/>
+              <input 
+                type="file" 
+                name="profileImg" 
+                id="profileImg" 
+                accept="image/*" 
+                onChange={handleImageChange}
+                ref={fileInputRef} // Associate the ref with the file input
+                style={{ display: 'none' }} 
+              />
             </ProfileImg>
             <Button children={'업로드 버튼'} id="upload" onClick={handleImageChange}/>
           </ImgBox>
