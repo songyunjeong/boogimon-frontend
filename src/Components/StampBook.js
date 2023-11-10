@@ -50,11 +50,6 @@ const StampBook = (props) => {
     navigate('/stampDetail', {
       state: {
         id: props.id,
-        nickname: props.nickname,
-        description: props.description,
-        stampbookRegdate: props.stampbookRegdate,
-        likeCount: props.likeCount,
-        title: props.title,
       },
     });
 
@@ -74,8 +69,7 @@ const StampBook = (props) => {
           <div>{likeBtn ? props.likeCount * 1 + 1 : props.likeCount}</div>
         </StampBookLike>
         <StampBookBtnBox>
-          <Button children={'담기'} $marginright />
-          <Button children={'삭제'} />
+          <Button children={'담기'} />
         </StampBookBtnBox>
       </StampBookTxt>
     </div>

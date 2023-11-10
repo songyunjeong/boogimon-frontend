@@ -102,16 +102,29 @@ const CreateUserBox = styled.div`
 const StampDetail = () => {
   const divRef = useRef();
   const { state } = useLocation();
-  const [bookData, setBookData] = useState();
+  const [data, setData] = useState();
   const [comment, setComment] = useState('');
+  const [commentList, setCommentList] = useState();
+  const [post, setPost] = useState(false);
 
   useEffect(() => {
     boogi
       .get(`/boogimon/stampbook/stampbook.jsp?stampbookId=${state.id}`)
       .then((response) => {
-        setBookData(response.data);
+        setData(response.data);
       });
   }, []);
+
+  useEffect(() => {
+    boogi
+      .get(
+        `/boogimon/stampbook/comment.jsp?command=list&stampbookId=${state.id}`
+      )
+      .then((response) => {
+        setCommentList(response.data);
+        console.log('댓글 불러오기 완료!');
+      });
+  }, [post]);
 
   const downloadHandler = async (e) => {
     if (!divRef.current) return;
@@ -130,17 +143,25 @@ const StampDetail = () => {
   };
 
   const commentPost = () => {
-    boogi
-      .post('/boogimon/stampbook/comment.jsp', null, {
-        params: {
-          stampbookId: state.id,
-          userId: 'red@google.com',
-          comment: comment,
-        },
-      })
-      .then((response) => {
-        console.log(response.data);
-      });
+    if (window.sessionStorage.getItem('userId')) {
+      setPost(false);
+
+      boogi
+        .post('/boogimon/stampbook/comment.jsp', null, {
+          params: {
+            stampbookId: state.id,
+            userId: window.sessionStorage.getItem('userId'),
+            comment: comment,
+          },
+        })
+        .then(() => {
+          console.log('댓글 작성 완료');
+          setPost(true);
+          setComment('');
+        });
+    } else {
+      console.log('로그인 해주세요.');
+    }
   };
 
   return (
@@ -148,11 +169,11 @@ const StampDetail = () => {
       <Header />
 
       <Wrap>
-        <Title>{state.title}</Title>
+        <Title>{data?.stampbook.title}</Title>
 
         <div>
           <StampBoardBox ref={divRef}>
-            {bookData?.stampbook.stampList.map((stamp, i) => {
+            {data?.stampbook.stampList.map((stamp, i) => {
               return (
                 <Stamp
                   src={stamp.thumbnail}
@@ -183,7 +204,7 @@ const StampDetail = () => {
             <StampBookLikeBtn>
               <img src={like} alt='좋아요' />
             </StampBookLikeBtn>
-            <div>{state.likeCount}</div>
+            <div>{data?.stampbook.likeCount}</div>
           </StampBookLike>
         </ButtonBar>
 
@@ -194,6 +215,7 @@ const StampDetail = () => {
             <input
               type='text'
               placeholder='공백 불가, 최대 250자 작성 가능'
+              value={comment}
               onChange={(e) => {
                 setComment(e.target.value);
               }}
@@ -202,7 +224,7 @@ const StampDetail = () => {
           </InputBox>
 
           <CommentListBox>
-            {bookData?.stampbook.commentList.map((talk, i) => {
+            {commentList?.commentList.map((talk, i) => {
               return (
                 <CommentBox
                   profileImg={talk.profileImg}
@@ -215,7 +237,7 @@ const StampDetail = () => {
             })}
           </CommentListBox>
 
-          {bookData?.stampbook.commentList.length > 5 && (
+          {data?.stampbook.commentList.length > 5 && (
             <MoreBtn>
               <Button
                 children={'더보기'}
@@ -231,10 +253,12 @@ const StampDetail = () => {
           <Title>스탬프북 작성자</Title>
 
           <CreatorMsgBox
-            profileImg={avatar}
-            nickname={state.nickname}
-            description={state.description}
-            stampbookRegdate={state.stampbookRegdate}
+            profileImg={
+              data?.stampbook.profileImg ? data?.stampbook.profileImg : avatar
+            }
+            nickname={data?.stampbook.nickname}
+            description={data?.stampbook.description}
+            stampbookRegdate={data?.stampbook.stampbookRegdate}
             margin={'20px 0'}
           />
         </CreateUserBox>

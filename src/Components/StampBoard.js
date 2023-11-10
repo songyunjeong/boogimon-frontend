@@ -14,6 +14,7 @@ const StampBoardBox = styled.div`
   padding: 25px;
   box-sizing: border-box;
   overflow: hidden;
+  cursor: pointer;
   > div:nth-child(3n) {
     margin-right: 0;
   }
@@ -43,6 +44,7 @@ const StampBoard = (props) => {
         title: props.title,
       },
     });
+
   return (
     <StampBoardBox onClick={goToStampDetail}>
       {data?.stampbook.stampList.map((stamp, i) => {

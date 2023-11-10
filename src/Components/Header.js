@@ -20,9 +20,10 @@ const Logo = styled.img`
 `;
 
 const GNB = styled.div`
+  display: inline-block;
   font-size: var(--small);
-  text-align: right;
   padding-bottom: 10px;
+  cursor: pointer;
 `;
 
 const LNB = styled.div`
@@ -51,7 +52,7 @@ const Header = () => {
       </Link>
 
       {isLogin ? (
-        <div className='menu'>
+        <div className='menu' style={{ textAlign: 'right' }}>
           <GNB onClick={logout}>로그아웃</GNB>
 
           <LNB>
