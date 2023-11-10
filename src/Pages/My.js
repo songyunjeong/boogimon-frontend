@@ -412,7 +412,7 @@ const My = () => {
     return (
       <Mypage>
         <MyImg>
-          <MyProfileImg src={apiData.user.profilImg} alt='프로필이미지' />
+          <MyProfileImg src={apiData.user.profileImg} alt='프로필이미지' />
         </MyImg>
         <MyproFile>
           <NickName>

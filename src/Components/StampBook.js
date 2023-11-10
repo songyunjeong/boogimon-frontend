@@ -46,7 +46,17 @@ const StampBook = (props) => {
   const navigate = useNavigate();
   const [likeBtn, setLikeBtn] = useState(false);
 
-  const goToStampDetail = () => navigate('/stampDetail', {});
+  const goToStampDetail = () =>
+    navigate('/stampDetail', {
+      state: {
+        id: props.id,
+        nickname: props.nickname,
+        description: props.description,
+        stampbookRegdate: props.stampbookRegdate,
+        likeCount: props.likeCount,
+        title: props.title,
+      },
+    });
 
   const likeHandler = () => {
     setLikeBtn(!likeBtn);
