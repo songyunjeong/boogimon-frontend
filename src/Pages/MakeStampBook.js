@@ -216,6 +216,9 @@ const ThumnailBOX = styled.div`
 
 const SearchStampName = styled.p`
   text-align: center;
+  white-space: normal; /* 넘치는 텍스트를 한 줄에 표시 */
+  overflow: hidden; /* 넘치는 텍스트를 숨김 */
+  text-overflow: ellipsis; /* 넘치는 텍스트를 ...으로 표시 */
 `;
 
 const MakeStampBook = () => {
@@ -284,12 +287,15 @@ const MakeStampBook = () => {
         const placeName = selectedStamp.name;
         setplaceName(placeName);
 
+        const placeId = selectedStamp.placeId;
+
         // 새로운 스탬프를 추가
         setStampList((prevStampList) => [
           ...prevStampList,
           {
             thumbnail: thumbnailUrl,
             placeName,
+            placeId,
           },
         ]);
       }
@@ -381,6 +387,8 @@ const MakeStampBook = () => {
   const [stampBookTitle, setStampBookTitle] = useState(''); // 타이틀 상태와 업데이트 함수
   const [stampDetail, setStampDetail] = useState(''); // 상세설명 상태와 업데이트 함수
 
+  const MAX_LENGTH_BEFORE_NEWLINE = 9;
+
   const onTitleRegister = () => {
     if (stampList.length < 9) {
       // 9개 미만이면 알림 띄우고 종료
@@ -391,22 +399,44 @@ const MakeStampBook = () => {
     // 9개 이상일 때는 정말 등록할 것인지 확인
     const confirmMessage = window.confirm('정말 등록하시겠습니까?');
 
+    // 각 스탬프에 stampNo 부여
+    const stampedStamps = stampList.map((stamp, index) => ({
+      ...stamp,
+      stampNo: index + 1,
+    }));
+
     if (confirmMessage) {
       // 등록 로직 추가
       // 예를 들어, 서버에 스탬프북 정보를 전송하는 코드 등을 추가할 수 있습니다.
       const requestData = {
-        userId: '사용자_아이디_값', // 사용자 아이디 값
-        title: '스탬프북_제목', // 스탬프북 제목 값
-        description: '스탬프북_설명', // 스탬프북 설명 값
-        rStampList: JSON.stringify(stampList), // 등록한 스탬프 목록을 JSON 문자열로 변환
+        params: {
+          command: 'insert',
+          userId: sessionStorage.getItem('userId'), // 사용자 아이디 값
+          title: stampBookTitle, // 스탬프북 제목 값
+          description: stampDetail, // 스탬프북 설명 값
+          rStampList: JSON.stringify(stampedStamps), // 등록한 스탬프 목록을 JSON 문자열로 변환
+          // rStampList: '[{"stampNo": 1,"placeId": 1 },{"stampNo": 2,"placeId":2},{"stampNo":3,"placeId": 3}]', // 등록한 스탬프 목록을 JSON 문자열로 변환
+        },
       };
 
       // 서버로 POST 요청 보내기
       boogi
-        .post('/boogimon/stampbook/stampbook.jsp?command=insert', requestData)
+        .post('/boogimon/stampbook/stampbook.jsp', null, requestData)
         .then((response) => {
           // 성공적으로 등록되었을 때의 처리
           console.log('스탬프북이 성공적으로 등록되었습니다.', response);
+
+          // 서버로부터 받은 스탬프 정보 업데이트
+          const updatedStampList = response.data.stamps;
+
+          // 서버에서 받은 스탬프 정보를 현재의 stampList에 업데이트
+          setStampList(updatedStampList);
+
+          // 나머지 초기화 로직 추가
+          setStampBookTitle('');
+          setStampDetail('');
+          setThumbnail(null);
+          setplaceName(null);
         })
         .catch((error) => {
           // 등록 실패 시의 처리
@@ -418,7 +448,7 @@ const MakeStampBook = () => {
   const onDelete = (index) => {
     // 클릭된 스탬프를 목록에서 제거
     setStampList((prevStampList) =>
-      prevStampList.filter((stamp, stampIndex) => stampIndex !== index)
+      prevStampList.filter((_, stampIndex) => stampIndex !== index)
     );
 
     // 저장된 정보 초기화
@@ -492,7 +522,7 @@ const MakeStampBook = () => {
         <div>
           <StampBoard ref={divRef}>
             {!screenShot &&
-              stampList.map((stamp, index) => (
+              stampList?.map((stamp, index) => (
                 <NewStamp key={index}>
                   <NewStampImgBox>
                     {stamp.thumbnail ? (
@@ -510,7 +540,16 @@ const MakeStampBook = () => {
                     )}
                   </NewStampImgBox>
                   <NewStampBtnBox>
-                    <SearchStampName>{stamp.placeName}</SearchStampName>
+                    <SearchStampName>
+                      {stamp.placeName.length > MAX_LENGTH_BEFORE_NEWLINE
+                        ? stamp.placeName.split(',').map((part, index) => (
+                            <React.Fragment key={index}>
+                              {index > 0 && <br />}
+                              {part}
+                            </React.Fragment>
+                          ))
+                        : stamp.placeName}
+                    </SearchStampName>
                     <Button children={'삭제'} onClick={() => onDelete(index)} />
                   </NewStampBtnBox>
                 </NewStamp>
