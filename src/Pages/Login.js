@@ -78,9 +78,6 @@ const FindPassword = styled.div`
   color: var(--gray4);
   padding: 20px 0;
   text-decoration: underline var(--gray4);
-  a {
-  color: var(--gray4)
-  }
   &:hover,
   &:focus {
     cursor: pointer;
@@ -93,7 +90,7 @@ const FindPWLink = styled(Link)`
 `;
 
 const Login = () => {
-  const [userId, setUserId] = useState(''); 
+  const [userId, setUserId] = useState('');
   const [passwd, setPasswd] = useState('');
   const [error, setError] = useState('');
 
@@ -121,27 +118,19 @@ const Login = () => {
     try {
       const response = await boogi.post('/boogimon/user/user.jsp', null, {
         params: {
-          command : 'login',
+          command: 'login',
           userId: userId,
-          passwd: SHA256(SHA256(passwd).toString()).toString(),   
-        }
+          passwd: SHA256(passwd).toString(),
+        },
       });
-      
 
-      if(response.data.resultCode === '00') {
-        
-        // console.log("json 데이터 출력 = " + JSON.stringify(response.data));
-
+      if (response.data.resultCode === '00') {
         sessionStorage.setItem('userId', userId);
-        
-        // let userId = sessionStorage.getItem('userId'); 
-        // console.log("userId = ", userId);
-
         navigate('/');
         setIsLogin(true);
       } else {
         setError('로그인 실패');
-      }  
+      }
     } catch (error) {
       setError('로그인 실패');
     }
@@ -154,24 +143,34 @@ const Login = () => {
       <Wrap>
         <Title>로그인</Title>
         <InputBox>
-          <input type='email' name="user_id" id="user_id" placeholder='가입한 이메일' required 
-                 value={userId} 
-                 onChange={(e) => setUserId(e.target.value)}
+          <input
+            type='email'
+            name='user_id'
+            id='user_id'
+            placeholder='가입한 이메일'
+            required
+            value={userId}
+            onChange={(e) => setUserId(e.target.value)}
           />
-          <input type="password" name="passwd" id="passwd" placeholder="비밀번호" required
-                 value={passwd} 
-                 onChange={(e) => setPasswd(e.target.value)}
+          <input
+            type='password'
+            name='passwd'
+            id='passwd'
+            placeholder='비밀번호'
+            required
+            value={passwd}
+            onChange={(e) => setPasswd(e.target.value)}
           />
           <Error>{error}</Error>
 
           <ButtonContainer>
-            <LoginBtn type="submit" id="login" onClick={handleLogin}>
+            <LoginBtn type='submit' id='login' onClick={handleLogin}>
               <p>로그인</p>
             </LoginBtn>
           </ButtonContainer>
 
           <FindPassword>
-          <FindPWLink to="/findPassword">비밀번호를 잊으셨나요</FindPWLink>
+            <FindPWLink to='/findPassword'>비밀번호를 잊으셨나요</FindPWLink>
           </FindPassword>
         </InputBox>
       </Wrap>
