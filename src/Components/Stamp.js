@@ -15,13 +15,16 @@ const StampImgBox = styled.div`
   border-radius: 50%;
   margin-bottom: 10px;
   overflow: hidden;
+  cursor: pointer;
   > img {
     width: ${(props) => (props.$small ? '150px' : '200px')};
+    height: 100%;
   }
 `;
 
 const StampTitle = styled.div`
   text-align: center;
+  cursor: default;
   ${(props) =>
     props.$small &&
     css`

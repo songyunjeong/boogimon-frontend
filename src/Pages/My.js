@@ -1,15 +1,12 @@
-import React, { useContext, useEffect, useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
 import styled from 'styled-components';
 import '../globalStyle';
 import boogicard from '../images/bogimon_card_b.png';
 import Header from '../Components/Header';
-import StampBook from '../Components/StampBook';
 import Button from '../Components/Button';
 import html2canvas from 'html2canvas';
 import boogi from '../boogi';
-import avatar from '../images/avatar.png';
-import { AppContext } from '../App';
 
 const Modal = styled.div`
   position: fixed;
@@ -19,6 +16,7 @@ const Modal = styled.div`
   height: 100%;
   z-index: 1000;
 `;
+
 const PopupBg = styled.div`
   position: fixed;
   top: 0;
@@ -43,6 +41,7 @@ const CloseBtn = styled.button`
     border: 2px solid var(--light-blue);
   }
 `;
+
 const OpenBtn = styled.button`
   border: 2px solid var(--gray2);
   border-radius: 4px;
@@ -84,7 +83,6 @@ const CardPopup = styled.div`
   transform: translate(-50%, -40%);
 
   white-space: normal;
-
   border-radius: 10px;
 `;
 
@@ -143,7 +141,6 @@ const RandomImg = styled.div`
 const CardContent = styled.p`
   width: 260px;
   height: 180px;
-
   position: absolute;
   left: 7%;
   top: 52%;
@@ -265,7 +262,7 @@ const Level = styled.p`
   position: absolute;
   font-size: var(--big);
   top: 40px;
-  left: 85%;
+  right: 45px;
   text-align: center; /* 텍스트를 가운데 정렬 */
 `;
 
@@ -321,31 +318,6 @@ const Exp = styled.p`
 const My = () => {
   const [openCard, closeCard] = useState(false);
   const [apiData, setApiData] = useState({ user: [] });
-
-  const { isLogin } = useContext(AppContext);
-
-  const stampBookList = [
-    {
-      title: '스탬프북1',
-      like: '30',
-    },
-    {
-      title: '스탬프북2',
-      like: '22',
-    },
-    {
-      title: '스탬프북3',
-      like: '20',
-    },
-    {
-      title: '스탬프북4',
-      like: '13',
-    },
-    {
-      title: '스탬프북5',
-      like: '5',
-    },
-  ];
 
   const onOpenCard = () => {
     closeCard(!openCard);
@@ -404,9 +376,8 @@ const My = () => {
       )
       .then((response) => {
         setApiData(response.data);
-        console.log(response.data);
       });
-  }, [isLogin]);
+  }, []);
 
   const View = () => {
     return (

@@ -522,7 +522,7 @@ const MakeStampBook = () => {
         <div>
           <StampBoard ref={divRef}>
             {!screenShot &&
-              stampList.map((stamp, index) => (
+              stampList?.map((stamp, index) => (
                 <NewStamp key={index}>
                   <NewStampImgBox>
                     {stamp.thumbnail ? (
