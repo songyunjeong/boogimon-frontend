@@ -117,35 +117,29 @@ const Join = () => {
   const [userId, setUserId] = useState(''); 
   const [passwd, setPasswd] = useState('');
   const [passwdConfirm, setPasswdConfirm] = useState('');
-  const [nickname, setNickname] = useState('');
+  const [nickname, setNickname] = useState(sessionStorage.getItem('nickname') || '');
   const [profileImg, setProfileImg] = useState('');
   const [error, setError] = useState('');
 
   const navigate = useNavigate();
 
   const randomNickname = () => {
-    
-    const formData = new FormData();
-    formData.append('nickname', nickname);
-
-    try {
-      const response = axios.post('/boogimon/user/user.jsp', formData, {
-        params: {
-          command: 'randomNickname',
-          nickname: nickname,
-        },
-      });
-
+    axios.get('/boogimon/user/user.jsp', {
+      params: {
+        command: 'randomNickname',
+        nickname: nickname,
+      },
+    })
+    .then((response)=> {
       if(response.data.resultCode === '00') {
-        setError('랜덤 닉네임 생성');
-        sessionStorage.setItem('nickname', response.data.user.nickname);
+        const newNickname = response.data.user.nickname;
+        sessionStorage.setItem('nickname', newNickname);
+        setNickname(newNickname); 
       } else {
         setError('랜덤 닉네임 생성 실패'); 
       }
-    } catch (error) {
-        console.log(error);
-      }
-    }
+    })
+  };
 
   const handleImageChange = (e) => {
     const file = e.target.files[0];
@@ -247,7 +241,7 @@ const Join = () => {
           <Input type='email' name="user_id" id="user_id" placeholder='가입한 이메일' required value={userId} onChange={(e) => setUserId(e.target.value)}/>
           <Input type="password" name="passwd" id="passwd" placeholder="비밀번호" required value={passwd} onChange={(e) => setPasswd(e.target.value)}/>
           <Input type="password" name="passwdConfirm" id="passwdConfirm" placeholder="비밀번호 확인" required value={passwdConfirm} onChange={(e) => setPasswdConfirm(e.target.value)}/>
-          <Input type="text" name="nickname" id="nickname" placeholder="닉네임" required value={nickname} onChange={(e) => setNickname(e.target.value)}/>
+          <Input type="text" name="nickname" id="nickname" placeholder="닉네임" required value={sessionStorage.nickname || nickname} onChange={(e) => setNickname(e.target.value)}/>
           <Button children={'랜덤 버튼'} onClick={randomNickname} style={{position: "absolute", top: "245px", right: "-150px"}}/>
           
           <Label htmlFor="profileImg" onClick={handleAvatarClick}>
