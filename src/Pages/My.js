@@ -154,8 +154,8 @@ const Mypage = styled.div`
   position: relative;
   height: 250px;
   width: 1280px;
-  margin: 30px auto;
-  border-radius: 8px;
+  margin: 30px auto 0; /* 위에 30px의 margin 추가 */
+  border-radius: 10px;
   border: 1px solid var(--gray2);
 `;
 
@@ -412,7 +412,7 @@ const My = () => {
     return (
       <Mypage>
         <MyImg>
-          <MyProfileImg src={apiData.user.profilImg} alt='프로필이미지' />
+          <MyProfileImg src={apiData.user.profileImg} alt='프로필이미지' />
         </MyImg>
         <MyproFile>
           <NickName>
@@ -435,14 +435,18 @@ const My = () => {
           </CompleteBtn>
         </MyproFile>
         <MyProgress>
-          <Rank>{apiData.user.ranking}</Rank>
+          <Rank>랭킹: {apiData.user.ranking}th</Rank>
           <Level>
             LV.
             {apiData.user.exp < 100
               ? 1
               : Math.floor(apiData.user.exp / 100) + 1}
           </Level>
-          <Progress value={apiData.user.exp % 100} min='0' max='100' />
+          <Progress
+            value={!isNaN(apiData.user.exp) ? apiData.user.exp % 100 : 0}
+            min='0'
+            max='100'
+          />
           <StampComplete>
             모은 스탬프: {apiData.user.userTotalVisit}
           </StampComplete>
