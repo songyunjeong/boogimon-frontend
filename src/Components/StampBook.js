@@ -46,7 +46,17 @@ const StampBook = (props) => {
   const navigate = useNavigate();
   const [likeBtn, setLikeBtn] = useState(false);
 
-  const goToStampDetail = () => navigate('/stampDetail', {});
+  const goToStampDetail = () =>
+    navigate('/stampDetail', {
+      state: {
+        id: props.id,
+        nickname: props.nickname,
+        description: props.description,
+        stampbookRegdate: props.stampbookRegdate,
+        likeCount: props.likeCount,
+        title: props.title,
+      },
+    });
 
   const likeHandler = () => {
     setLikeBtn(!likeBtn);
@@ -64,8 +74,7 @@ const StampBook = (props) => {
           <div>{likeBtn ? props.likeCount * 1 + 1 : props.likeCount}</div>
         </StampBookLike>
         <StampBookBtnBox>
-          <Button children={'담기'} $marginright />
-          <Button children={'삭제'} />
+          <Button children={'담기'} />
         </StampBookBtnBox>
       </StampBookTxt>
     </div>

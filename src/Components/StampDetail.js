@@ -11,7 +11,6 @@ import { useEffect, useRef, useState } from 'react';
 import html2canvas from 'html2canvas';
 import { saveAs } from 'file-saver';
 import images from '../images/test.jpg';
-import data from '../data.json';
 import CreatorMsgBox from '../Components/CreatorMsgBox';
 import boogi from '../boogi';
 
@@ -254,7 +253,7 @@ const StampDetail = () => {
   const divRef = useRef();
   const { state } = useLocation();
   const [popupOn, setPopupOn] = useState(false);
-  const [bookData, setBookData] = useState();
+  const [data, setData] = useState();
   const [comment, setComment] = useState('');
   const [isValid, setIsValid] = useState(false);
 
@@ -274,20 +273,15 @@ const StampDetail = () => {
     }
   };
 
-  const commentPost = () => {
-    boogi
-      .post('/boogimon/stampbook/comment.jsp', {
-        params: {
-          stampbookId: state.id,
-          userId: 'red@boogimon.com',
-          comment: comment,
-        },
-      })
-      .then((response) => {
-        console.log(response.data);
-        setComment('');
-      });
-  };
+  // const commentPost = () => {
+  //   boogi.post('/boogimon/stampbook/comment.jsp', {
+  //     params: {
+  //       stampbookId: state.id,
+  //       userId: window.sessionStorage.getItem('userId'),
+  //       comment: comment,
+  //     },
+  //   });
+  // };
 
   const onOpenPopup = () => {
     setPopupOn(!popupOn);
@@ -355,22 +349,23 @@ const StampDetail = () => {
 
   useEffect(() => {
     boogi
-      .get(`/boogimon/stampbook/stampbook.jsp?stampbookId=${state.id}`)
+      .get(`/boogimon/stampbook/stampbook.jsp?stampbookId=${state.stampbookId}`)
       .then((response) => {
-        setBookData(response.data);
+        setData(response.data);
+        console.log(response.data);
       });
-  }, []);
+  });
 
   return (
     <div>
       <Header />
 
       <Wrap>
-        <Title>{state.title}</Title>
+        <Title>{data.stampbook.title}</Title>
 
         <div>
           <StampBoardBox ref={divRef}>
-            {bookData?.stampbook.stampList.map((stamp, i) => {
+            {data.stampbook.stampList.map((stamp, i) => {
               return (
                 <Stamp
                   src={stamp.thumbnail}
@@ -403,7 +398,7 @@ const StampDetail = () => {
             <StampBookLikeBtn>
               <img src={like} alt='좋아요' />
             </StampBookLikeBtn>
-            <div>{state.likeCount}</div>
+            <div>{data.stampbook.likeCount}</div>
           </StampBookLike>
         </ButtonBar>
 
@@ -423,13 +418,13 @@ const StampDetail = () => {
             <input
               type='submit'
               children={'등록'}
-              onClick={commentPost}
+              // onClick={commentPost}
               disabled={isValid ? false : true}
             />
           </InputBox>
 
           <CommentListBox>
-            {bookData?.stampbook.commentList.map((talk, i) => {
+            {data.stampbook.commentList.map((talk, i) => {
               return (
                 <CommentBox
                   profileImg={talk.profileImg}
