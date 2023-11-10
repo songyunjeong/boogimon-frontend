@@ -467,7 +467,6 @@ const My = () => {
           <option>최신순</option>
           <option>가나다순</option>
         </Sort>
-
         <StampBookBox></StampBookBox>
       </Wrap>
     </div>
