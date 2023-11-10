@@ -383,7 +383,7 @@ const My = () => {
     return (
       <Mypage>
         <MyImg>
-          <MyProfileImg src={apiData.user.profileImg} alt='프로필 이미지' />
+          <MyProfileImg src={apiData.user.profileImg} alt='프로필이미지' />
         </MyImg>
         <MyproFile>
           <NickName>
@@ -438,7 +438,6 @@ const My = () => {
           <option>최신순</option>
           <option>가나다순</option>
         </Sort>
-
         <StampBookBox></StampBookBox>
       </Wrap>
     </div>

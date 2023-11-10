@@ -163,7 +163,7 @@ const Traffic = styled.div`
 `;
 
 const Tel = styled(Addr)`
-  clear: both;
+  /* clear: both; */
   padding-top: 10px;
 `;
 const Close = styled.div`
@@ -182,7 +182,7 @@ const FacilityBox = styled(Close)`
 `;
 
 const Open = styled(Close)`
-  /* color: rgb(54, 143, 255); */
+  clear: both;
   font-weight: bold;
 `;
 
@@ -193,6 +193,7 @@ const PageUrl = styled(Close)`
 const DetailBox = styled.div`
   margin: 20px 20px 20px 20px;
   width: 760px;
+  clear: both;
 `;
 
 const Detail = styled.div`
