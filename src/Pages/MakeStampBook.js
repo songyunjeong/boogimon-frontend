@@ -378,6 +378,9 @@ const MakeStampBook = () => {
   const divRef = useRef();
   const [screenShot, setScreenShot] = useState(false);
 
+  const [stampBookTitle, setStampBookTitle] = useState(''); // 타이틀 상태와 업데이트 함수
+  const [stampDetail, setStampDetail] = useState(''); // 상세설명 상태와 업데이트 함수
+
   const onTitleRegister = () => {
     if (stampList.length < 9) {
       // 9개 미만이면 알림 띄우고 종료
@@ -391,7 +394,24 @@ const MakeStampBook = () => {
     if (confirmMessage) {
       // 등록 로직 추가
       // 예를 들어, 서버에 스탬프북 정보를 전송하는 코드 등을 추가할 수 있습니다.
-      console.log('스탬프북이 성공적으로 등록되었습니다.');
+      const requestData = {
+        userId: '사용자_아이디_값', // 사용자 아이디 값
+        title: '스탬프북_제목', // 스탬프북 제목 값
+        description: '스탬프북_설명', // 스탬프북 설명 값
+        rStampList: JSON.stringify(stampList), // 등록한 스탬프 목록을 JSON 문자열로 변환
+      };
+
+      // 서버로 POST 요청 보내기
+      boogi
+        .post('/boogimon/stampbook/stampbook.jsp?command=insert', requestData)
+        .then((response) => {
+          // 성공적으로 등록되었을 때의 처리
+          console.log('스탬프북이 성공적으로 등록되었습니다.', response);
+        })
+        .catch((error) => {
+          // 등록 실패 시의 처리
+          console.error('스탬프북 등록에 실패했습니다.', error);
+        });
     }
   };
 
@@ -404,6 +424,26 @@ const MakeStampBook = () => {
     // 저장된 정보 초기화
     setThumbnail(null);
     setplaceName(null);
+  };
+
+  const onCancel = () => {
+    // 취소 여부 확인
+    const shouldCancel = window.confirm('취소하시겠습니까?');
+
+    if (shouldCancel) {
+      // 취소 버튼 클릭 시 스탬프 목록 초기화
+      setStampList([]);
+
+      // 타이틀과 상세설명 초기화
+      setStampBookTitle('');
+      setStampDetail('');
+
+      // 나머지 초기화 로직 추가
+
+      // 예를 들어, 저장된 정보 초기화
+      setThumbnail(null);
+      setplaceName(null);
+    }
   };
 
   const downloadHandler = async (e) => {
@@ -428,7 +468,11 @@ const MakeStampBook = () => {
 
       <Wrap>
         <TitleBox>
-          <StampBookTitle placeholder='타이틀을 작성해주세요.' />
+          <StampBookTitle
+            placeholder='타이틀을 작성해주세요.'
+            value={stampBookTitle}
+            onChange={(e) => setStampBookTitle(e.target.value)}
+          />
           <Button
             onClick={onOpenMap}
             style={{
@@ -439,7 +483,7 @@ const MakeStampBook = () => {
             장소등록
           </Button>
           <TitleButtonBox>
-            <Button children={'취소'} $marginright />
+            <Button children={'취소'} $marginright onClick={onCancel} />
             <Button children={'등록'} onClick={onTitleRegister} />
           </TitleButtonBox>
           {MapPlace ? <Popup /> : ''}
@@ -478,7 +522,11 @@ const MakeStampBook = () => {
           </MapBox>
         </div>
 
-        <StampDetailTxt placeholder='상세설명을 작성해주세요.' />
+        <StampDetailTxt
+          placeholder='상세설명을 작성해주세요.'
+          value={stampDetail}
+          onChange={(e) => setStampDetail(e.target.value)}
+        />
 
         <p>스탬프북 이미지</p>
         <p
