@@ -50,11 +50,6 @@ const StampBook = (props) => {
     navigate('/stampDetail', {
       state: {
         id: props.id,
-        nickname: props.nickname,
-        description: props.description,
-        stampbookRegdate: props.stampbookRegdate,
-        likeCount: props.likeCount,
-        title: props.title,
       },
     });
 
