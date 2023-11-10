@@ -1,6 +1,8 @@
 import { Link } from 'react-router-dom';
 import logo from '../images/logo.png';
 import styled from 'styled-components';
+import { useContext } from 'react';
+import { AppContext } from '../App';
 
 const HeaderBox = styled.div`
   display: flex;
@@ -18,9 +20,10 @@ const Logo = styled.img`
 `;
 
 const GNB = styled.div`
+  display: inline-block;
   font-size: var(--small);
-  text-align: right;
   padding-bottom: 10px;
+  cursor: pointer;
 `;
 
 const LNB = styled.div`
@@ -35,21 +38,39 @@ const StyledLink = styled(Link)`
 `;
 
 const Header = () => {
+  const { isLogin, setIsLogin } = useContext(AppContext);
+
+  const logout = () => {
+    setIsLogin(false);
+    sessionStorage.clear();
+  };
+
   return (
     <HeaderBox>
       <Link to='/'>
         <Logo src={logo} alt='로고 이미지' />
       </Link>
 
-      <div className='menu'>
-        <GNB>로그아웃</GNB>
+      {isLogin ? (
+        <div className='menu' style={{ textAlign: 'right' }}>
+          <GNB onClick={logout}>로그아웃</GNB>
 
-        <LNB>
-          <StyledLink to='/my'>내 스탬프북</StyledLink>
-          <StyledLink to='/boogiBook'>부기 도감</StyledLink>
-          <StyledLink to='/makeStampBook'>스탬프북 만들기</StyledLink>
-        </LNB>
-      </div>
+          <LNB>
+            <StyledLink to='/my'>내 스탬프북</StyledLink>
+            <StyledLink to='/boogiBook'>부기 도감</StyledLink>
+            <StyledLink to='/makeStampBook'>스탬프북 만들기</StyledLink>
+          </LNB>
+        </div>
+      ) : (
+        <div className='menu'>
+          <div className='menu'>
+            <LNB>
+              <StyledLink to='/login'>로그인</StyledLink>
+              <StyledLink to='/join'>회원가입</StyledLink>
+            </LNB>
+          </div>
+        </div>
+      )}
     </HeaderBox>
   );
 };
