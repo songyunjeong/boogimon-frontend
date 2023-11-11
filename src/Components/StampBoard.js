@@ -47,7 +47,7 @@ const StampBoard = (props) => {
 
   return (
     <StampBoardBox onClick={goToStampDetail}>
-      {data?.stampbook.stampList.map((stamp, i) => {
+      {data?.stampbook?.stampList?.map((stamp, i) => {
         return (
           <Stamp
             src={stamp.thumbnail}
