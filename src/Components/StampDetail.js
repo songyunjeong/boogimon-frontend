@@ -384,7 +384,6 @@ const StampDetail = () => {
       .get(`/boogimon/stampbook/stampbook.jsp?stampbookId=${state.stampbookId}`)
       .then((response) => {
         setData(response.data);
-        console.log(data);
       });
 
     if (isLogin) {
@@ -398,8 +397,6 @@ const StampDetail = () => {
           setUser(response.data);
           console.log(user);
         });
-
-      // if (user.)
     }
   });
 
@@ -440,12 +437,7 @@ const StampDetail = () => {
             onClick={downloadHandler}
           />
           <StampBookLike>
-            <StampBookLikeBtn
-              onClick={() => {
-                console.log('click');
-              }}
-              style={{ backgroundColor: 'red' }}
-            >
+            <StampBookLikeBtn onClick={likeHandler}>
               <img src={likeBtn ? likeFullImg : likeImg} alt='좋아요' />
             </StampBookLikeBtn>
             <div>{likeCount}</div>
