@@ -2,7 +2,7 @@ import React, { useState, useRef } from 'react';
 import Header from '../Components/Header';
 import Button from '../Components/Button';
 import styled from 'styled-components';
-import avatar from '../images/avatar.png';
+// import avatar from '../images/avatar.png';
 import axios from 'axios';
 import { SHA256 } from 'crypto-js';
 import { useNavigate } from 'react-router-dom';
@@ -111,6 +111,7 @@ const Label = styled.div`
 const Error = styled.div`
   color: var(--magenta);
   padding: 10px;
+  text-align: center;
 `
 
 const Join = () => {
@@ -142,29 +143,33 @@ const Join = () => {
   };
 
   const handleImageChange = (e) => {
-    const file = e.target.files[0];
-    if(file) {
-    setProfileImg(file);
+    const profileImg = e.target.files[0];
+    if(profileImg) {
+    setProfileImg(profileImg);
   
     const formData = new FormData();
     formData.append('userId', userId);
-    formData.append('profileImg', file);
+    formData.append('profileImg', profileImg);
 
-    try {
-      const response = axios.post('/boogimon/user/userUpload.jsp', formData, {
-        params: {
-          command: 'changeImg',
-        },
-      });
-
+    axios.post('/boogimon/user/userUpload.jsp', formData, {
+      params: {
+        command: 'changeImg',
+      },
+    })
+    .then((response) => {
       if(response.data.resultCode === '00') {
-        setError('사진 업로드 완료');
+        console.log('New ImageURL:', response.data.newImageURL);
+        setProfileImg(response.data.newImageURL);
       } else {
-        setError('사진 업로드 실패'); 
+        setError('사진 업로드 실패');
+        console.log(response.data.resultCode);
       }
-    } catch (error) {
-        console.log(error);
-      }
+    })
+
+    .catch((error) => {
+      setError('사진 업로드 실패'); 
+      console.log('Image Upload Error:', error);
+      });
     }
   };
 
@@ -244,12 +249,12 @@ const Join = () => {
           <Input type="text" name="nickname" id="nickname" placeholder="닉네임" required value={sessionStorage.nickname || nickname} onChange={(e) => setNickname(e.target.value)}/>
           <Button children={'랜덤 버튼'} onClick={randomNickname} style={{position: "absolute", top: "245px", right: "-150px"}}/>
           
-          <Label htmlFor="profileImg" onClick={handleAvatarClick}>
+          <Label htmlFor="profileImg">
             프로필 이미지
           </Label>
           <ImgBox>
             <ProfileImg onClick={handleAvatarClick}>
-              <img src={avatar} alt='' />
+              {profileImg && <img src={URL.createObjectURL(profileImg)} alt='' />}
               <br/>
               <input 
                 type="file" 
@@ -257,7 +262,7 @@ const Join = () => {
                 id="profileImg" 
                 accept="image/*" 
                 onChange={handleImageChange}
-                ref={fileInputRef} // Associate the ref with the file input
+                ref={fileInputRef} 
                 style={{ display: 'none' }} 
               />
             </ProfileImg>
