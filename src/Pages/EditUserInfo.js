@@ -46,7 +46,7 @@ const Form = styled.form.attrs({
   position: relative;
 `;
 
-const Input = styled.input.attrs({ required: true })`
+const Input = styled.input`
   width: 438px;
   height: 50px;
   border: 1px solid var(--gray2);
@@ -119,7 +119,7 @@ const ModelBox = styled.div`
 `;
 const Model = styled.div`
   width: 260px;
-  height: 8vh;
+  height: 10vh;
   border: 2px solid var(--gray2);
   border-radius: 25px;
   position: fixed;
@@ -206,8 +206,10 @@ const EditUserInfo = () => {
         }
       )
       .then((res) => {
-        if (!e.target.files[0]) {
-          setImage(avatar);
+        if (e.target.files[0]) {
+        } else {
+          //업로드 취소할 시
+          setImage(image);
           return;
         }
         //화면에 프로필 사진 표시
@@ -217,7 +219,7 @@ const EditUserInfo = () => {
             setImage(reader.result);
           }
         };
-        res.reader.readAsDataURL(e.target.files[0]);
+        reader.readAsDataURL(e.target.files[0]);
       });
   };
 
@@ -239,8 +241,23 @@ const EditUserInfo = () => {
   };
 
   const navigate = useNavigate();
-  const goHome = () => navigate('/', {});
-
+  const goHome = () => {
+    axios
+      .post(
+        `http://localhost:8080/boogimon/user/user.jsp?command=delete=${sessionId}`,
+        null,
+        {
+          params: {
+            userId: sessionId,
+          },
+        }
+      )
+      .then((res) => {
+        if (res.sessionId === res.Id) {
+          navigate('/', {});
+        }
+      });
+  };
   const passwordCheckHandler = (password, confirm) => {
     //정규표현식
     const passwordRegex = /^(?=.*[a-zA-Z])(?=.*[0-9]).{4,20}$/;
@@ -326,7 +343,6 @@ const EditUserInfo = () => {
 
         <Form>
           <MyImg>
-            {/* <MyProfileImg src={apiData.user.profileImg} alt='프로필이미지' /> */}
             <MyProfileImg
               src={image}
               onClick={() => {
