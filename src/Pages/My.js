@@ -496,6 +496,7 @@ const My = () => {
                 isLike={book.isLike}
                 likeCount={book.likeCount}
                 title={book.title}
+                userpick='true'
                 key={i}
               />
             );

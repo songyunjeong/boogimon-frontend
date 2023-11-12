@@ -4,7 +4,7 @@ import likeFullImg from '../images/like_full.png';
 import likeImg from '../images/like.png';
 import avatar from '../images/avatar.png';
 import Map from '../Components/Map';
-import { Link, useLocation, useParams } from 'react-router-dom';
+import { useLocation, useParams } from 'react-router-dom';
 import Button from '../Components/Button';
 import styled from 'styled-components';
 import Stamp from '../Components/Stamp';
@@ -101,160 +101,12 @@ const CreateUserBox = styled.div`
   height: 320px;
 `;
 
-const Span = styled.span`
-  color: var(--gray3);
-  padding-right: 5px;
-  font-weight: bold;
-  width: 40px;
-  display: inline-block;
-`;
-
-const Modal = styled.div`
-  position: fixed;
-  top: 0px;
-  left: 0px;
-  width: 100vw;
-  height: 100vh;
-  z-index: 99999;
-`;
-
-const PopupBg = styled.div`
-  width: 100vw;
-  height: 100vh;
-  background-color: rgba(0, 0, 0, 0.6);
-`;
-
-const CloseBox = styled.div`
-  display: flex;
-  justify-content: end;
-  margin-bottom: 10px;
-`;
-
-const PopupWarp = styled.div`
-  position: fixed;
-  width: 800px;
-  height: 80vh;
-  top: calc(50% - 92vh / 2);
-  left: calc(50% - 800px / 2);
-`;
-
-const PopupBox = styled.div`
-  position: absolute;
-  background-color: white;
-  width: 800px;
-  font-size: var(--small);
-  border-radius: 10px;
-`;
-
-const CloseBtn = styled.button`
-  border: 2px solid var(--gray2);
-  border-radius: 4px;
-  background-color: #ffffff;
-  padding: 8px 25px;
-  box-sizing: border-box;
-  &:hover {
-    cursor: pointer;
-    background-color: var(--yellow);
-    border: 2px solid var(--light-blue);
-  }
-`;
-
-const PlaceImg = styled.div`
-  width: 800px;
-  height: 300px;
-  border-radius: 10px 10px 0 0;
-`;
-
-const Img = styled(PlaceImg)`
-  background-size: 100% 100%;
-`;
-
-const PlaceName = styled.div`
-  width: 760px;
-  font-size: 24px;
-  margin: 15px 20px 0px 20px;
-  font-weight: bolder;
-`;
-
-const GrayBox = styled.div`
-  width: 720px;
-  margin: 10px 20px 0px 20px;
-  padding: 20px;
-  border-radius: 6px;
-  background-color: rgb(250, 250, 250);
-`;
-
-const Addr = styled.div`
-  width: 720px;
-`;
-
-const TrafficBox = styled(Addr)`
-  padding-top: 10px;
-`;
-
-const LeftBox = styled.div`
-  float: left;
-  width: 40px;
-`;
-
-const RightBox = styled.div`
-  float: right;
-  width: 673px;
-`;
-
-const Traffic = styled.div`
-  width: 690px;
-`;
-
-const Tel = styled(Addr)`
-  clear: both;
-  padding-top: 10px;
-`;
-
-const Pay = styled.div`
-  width: 760px;
-  margin: 13px 20px 0px 20px;
-  border-bottom: 1px solid rgb(239, 239, 239);
-  padding-bottom: 13px;
-`;
-
-const Facility = styled(Pay)``;
-
-const Open = styled(Pay)`
-  color: rgb(54, 143, 255);
-  font-weight: bold;
-`;
-
-const Close = styled(Pay)``;
-
-const PageUrl = styled(Pay)``;
-
-const DetailBox = styled.div`
-  margin: 20px 20px 20px 20px;
-  width: 760px;
-`;
-
-const Detail = styled.div`
-  height: 255px;
-  overflow-y: scroll;
-  padding-top: 10px;
-`;
-
-const LinkUrl = styled(Link)`
-  &:hover,
-  &:focus {
-    color: blue;
-  }
-`;
-
 const StampDetail = () => {
   const divRef = useRef();
   const { id } = useParams();
   const { isLogin } = useContext(AppContext);
-  const { pathname } = useLocation();
-  const [popupOn, setPopupOn] = useState(false);
+  const { state } = useLocation();
   const [data, setData] = useState();
-  const [userPick, setUserPick] = useState();
   const [likeBtn, setLikeBtn] = useState();
   const [comment, setComment] = useState('');
   const [commentDataList, setCommentDataList] = useState();
@@ -299,81 +151,21 @@ const StampDetail = () => {
     }
   };
 
-  const onOpenPopup = () => {
-    setPopupOn(!popupOn);
-  };
-
-  const Popup = () => {
-    return (
-      <Modal>
-        <PopupBg />
-        <PopupWarp>
-          <CloseBox>
-            <CloseBtn onClick={onOpenPopup}>닫기</CloseBtn>
-          </CloseBox>
-          <PopupBox>
-            <PlaceImg>
-              <Img />
-            </PlaceImg>
-
-            <PlaceName> {data.name}</PlaceName>
-
-            <GrayBox>
-              <Addr>
-                <Span>주소</Span> {data.addr}
-              </Addr>
-              <TrafficBox>
-                <LeftBox>
-                  <Span>교통</Span>
-                </LeftBox>
-                <RightBox>
-                  <Traffic>{data.traffic}</Traffic>
-                </RightBox>
-              </TrafficBox>
-              <Tel>
-                <Span>전화</Span> {data.tel}
-              </Tel>
-            </GrayBox>
-
-            <Pay>
-              <Span>💵</Span> {data.money}
-            </Pay>
-            <Facility>
-              <Span>시설</Span> {data.facility}
-            </Facility>
-            <Open>
-              <Span>운영</Span> {data.open}
-            </Open>
-            <Close>
-              <Span>휴무</Span> {data.close}
-            </Close>
-            <PageUrl>
-              <Span>🌐</Span>
-              <LinkUrl to='/{data.url}'>{data.url}</LinkUrl>
-              {/* <a href='{data.url}'>{data.url}</a> */}
-            </PageUrl>
-
-            <DetailBox>
-              <Span>개요</Span>
-              <Detail>{data.detail}</Detail>
-            </DetailBox>
-          </PopupBox>
-        </PopupWarp>
-      </Modal>
-    );
-  };
-
   useEffect(() => {
     if (isLogin) {
       boogi
-        .get(`/boogimon/stampbook/stampbook.jsp?stampbookId=${id}`)
+        .get(
+          `/boogimon/stampbook/stampbook.jsp?stampbookId=${state?.stampbookId}`
+        )
         .then((response) => {
           setData(response.data);
           console.log(data?.stampbook.isLike);
         });
     } else {
       boogi
-        .get(`/boogimon/stampbook/stampbook.jsp?stampbookId=${id}`)
+        .get(
+          `/boogimon/stampbook/stampbook.jsp?stampbookId=${state?.stampbookId}`
+        )
         .then((response) => {
           setData(response.data);
         });
@@ -381,23 +173,15 @@ const StampDetail = () => {
   }, []);
 
   useEffect(() => {
+    console.log(state.userpick);
     boogi
-      .get(`/boogimon/stampbook/comment.jsp?command=list&stampbookId=${id}`)
+      .get(
+        `/boogimon/stampbook/comment.jsp?command=list&stampbookId=${state.stampbookId}`
+      )
       .then((response) => {
         setCommentDataList(response.data);
       });
-  }, [post]);
-
-  useEffect(() => {
-    boogi
-      .get(
-        'http://localhost:8080/boogimon/stampbook/stamp.jsp?command=list&stampbookId=0&userId=boogi@boogimon.com'
-      )
-      .then((response) => {
-        setUserPick(response.data);
-        console.log(response.data);
-      });
-  }, []);
+  }, [id, post]);
 
   return (
     <div>
@@ -408,16 +192,15 @@ const StampDetail = () => {
 
         <div>
           <StampBoardBox ref={divRef}>
-            {pathname === '/my'
+            {state.userpick && state.userpick === 'true'
               ? data?.stampbook.stampList.map((stamp, i) => {
                   return (
                     <Stamp
-                      src={stamp.thumbnail}
+                      src={''}
                       alt={stamp.placeName + ' 이미지'}
                       title={stamp.placeName}
                       placeid={stamp.placeId}
                       key={i}
-                      onClick={onOpenPopup}
                     />
                   );
                 })
@@ -429,11 +212,9 @@ const StampDetail = () => {
                       title={stamp.placeName}
                       placeid={stamp.placeId}
                       key={i}
-                      onClick={onOpenPopup}
                     />
                   );
                 })}
-            {popupOn && <Popup />}
           </StampBoardBox>
 
           <MapBox>
@@ -443,7 +224,9 @@ const StampDetail = () => {
 
         <ButtonBar>
           <Button children={'공유'} $marginright />
-          <Button children={'담기'} $marginright />
+          {state.userpick !== 'true' && (
+            <Button children={'담기'} $marginright />
+          )}
           <Button
             children={'스탬프북 이미지 다운로드'}
             onClick={() => {

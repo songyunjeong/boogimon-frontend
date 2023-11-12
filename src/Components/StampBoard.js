@@ -24,7 +24,10 @@ const StampBoard = (props) => {
   const navigate = useNavigate();
   const [data, setData] = useState();
 
-  const goToStampDetail = () => navigate(`/stampDetail/${props.stampbookId}`);
+  const goToStampDetail = () =>
+    navigate(`/stampDetail/${props.stampbookId}`, {
+      state: { stampbookId: props.stampbookId, userpick: props.userpick },
+    });
 
   useEffect(() => {
     boogi
