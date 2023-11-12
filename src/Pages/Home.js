@@ -75,7 +75,7 @@ const Home = () => {
         </Sort>
 
         <StampBookBox>
-          {stampbookData?.stampbookList.map((book, i) => {
+          {stampbookData?.stampbookList?.map((book, i) => {
             return (
               <StampBook
                 stampbookid={book.stampbookId}
