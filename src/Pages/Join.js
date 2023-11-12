@@ -119,7 +119,7 @@ const Join = () => {
   const [passwd, setPasswd] = useState('');
   const [passwdConfirm, setPasswdConfirm] = useState('');
   const [nickname, setNickname] = useState(sessionStorage.getItem('nickname') || '');
-  const [profileImg, setProfileImg] = useState('');
+  const [profileImg, setProfileImg] = useState(null);
   const [error, setError] = useState('');
 
   const navigate = useNavigate();
@@ -143,9 +143,9 @@ const Join = () => {
   };
 
   const handleImageChange = (e) => {
-    const profileImg = e.target.files[0];
-    if(profileImg) {
-    setProfileImg(profileImg);
+    const selectedImage = e.target.files[0];
+    if(selectedImage) {
+    setProfileImg(selectedImage);
   
     const formData = new FormData();
     formData.append('userId', userId);
@@ -160,10 +160,11 @@ const Join = () => {
       if(response.data.resultCode === '00') {
         console.log('New ImageURL:', response.data.newImageURL);
         setProfileImg(response.data.newImageURL);
-      } else {
-        setError('사진 업로드 실패');
-        console.log(response.data.resultCode);
-      }
+      } 
+      // else {
+      //   setError('사진 업로드 실패');
+      //   console.log(response.data.resultCode);
+      // }
     })
 
     .catch((error) => {
