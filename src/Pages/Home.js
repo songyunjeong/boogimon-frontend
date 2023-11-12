@@ -49,12 +49,18 @@ const Home = () => {
         )
         .then((response) => {
           setStampbookData(response.data);
+          console.log(
+            '로그인한 사용자 Home.js에서 stampbook list 데이터 가져오기 성공'
+          );
         });
     } else {
       boogi
         .get(`/boogimon/stampbook/stampbook.jsp?command=list`)
         .then((response) => {
           setStampbookData(response.data);
+          console.log(
+            '로그인 하지 않은 사용자 Home.js에서 stampbook list 데이터 가져오기 성공'
+          );
         });
     }
   }, []);
@@ -74,13 +80,11 @@ const Home = () => {
           {stampbookData?.stampbookList.map((book, i) => {
             return (
               <StampBook
-                stampbookId={book.stampbookId}
-                nickname={book.nickname}
-                description={book.description}
-                stampbookRegdate={book.stampbookRegdate}
-                isLike={book.isLike}
-                likeCount={book.likeCount}
+                stampbookid={book.stampbookId}
+                islike={book.isLike}
+                likecount={book.likeCount}
                 title={book.title}
+                stamplist={book.stampList}
                 key={i}
               />
             );

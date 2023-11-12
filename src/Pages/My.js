@@ -455,14 +455,13 @@ const My = () => {
           {data?.stampbookList.map((book, i) => {
             return (
               <StampBook
-                stampbookId={book.stampbookId}
+                stampbookid={book.stampbookId}
                 nickname={book.nickname}
                 description={book.description}
                 stampbookRegdate={book.stampbookRegdate}
                 isLike={book.isLike}
                 likeCount={book.likeCount}
                 title={book.title}
-                userpick='true'
                 key={i}
               />
             );
