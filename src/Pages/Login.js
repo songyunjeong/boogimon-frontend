@@ -129,7 +129,7 @@ const Login = () => {
         navigate('/');
         setIsLogin(true);
       } else {
-        setError('로그인 실패');
+        setError('비밀번호를 잘못 입력했습니다.');
       }
     } catch (error) {
       setError('로그인 실패');
