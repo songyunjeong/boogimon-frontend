@@ -36,8 +36,8 @@ const StampBookBox = styled.section`
 `;
 
 const Home = () => {
-  const { isLogin } = useContext(AppContext);
-  const [stampbookData, setStampbookData] = useState();
+  const { isLogin, setIsLogin } = useContext(AppContext);
+  const [data, setData] = useState();
 
   useEffect(() => {
     if (isLogin) {
@@ -48,13 +48,13 @@ const Home = () => {
           )}`
         )
         .then((response) => {
-          setStampbookData(response.data);
+          setData(response.data);
         });
     } else {
       boogi
         .get(`/boogimon/stampbook/stampbook.jsp?command=list`)
         .then((response) => {
-          setStampbookData(response.data);
+          setData(response.data);
         });
     }
   }, []);
@@ -71,10 +71,10 @@ const Home = () => {
         </Sort>
 
         <StampBookBox>
-          {stampbookData?.stampbookList.map((book, i) => {
+          {data?.stampbookList.map((book, i) => {
             return (
               <StampBook
-                stampbookId={book.stampbookId}
+                id={book.stampbookId}
                 nickname={book.nickname}
                 description={book.description}
                 stampbookRegdate={book.stampbookRegdate}

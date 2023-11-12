@@ -136,11 +136,12 @@ const RandomImg = styled.div`
   height: 150px;
   position: absolute;
   left: 8%;
-  top: 10%;
+  top: 14%;
   z-index: 3; /* 더 높은 z-index 값을 설정하여 앞으로 가져옵니다 */
   background-size: 100% 100%;
   background-repeat: no-repeat; /* 이미지 반복 방지 */
   background-position: center; /* 이미지를 가운데 정렬 */
+  border-radius: 50%;
 `;
 
 const CardContent = styled.p`
@@ -496,7 +497,6 @@ const My = () => {
                 isLike={book.isLike}
                 likeCount={book.likeCount}
                 title={book.title}
-                userpick='true'
                 key={i}
               />
             );

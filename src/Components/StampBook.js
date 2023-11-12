@@ -1,5 +1,5 @@
 import React, { useContext, useEffect, useState } from 'react';
-import { useLocation, useNavigate } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 import likeFullImg from '../images/like_full.png';
 import likeImg from '../images/like.png';
 import Button from './Button';
@@ -14,13 +14,13 @@ const StampBookTxt = styled.div`
   margin-top: 10px;
 `;
 
-const StampBookTitle = styled.div`
+const StampBookTitle = styled.button`
   border: none;
   background-color: transparent;
   font-size: var(--regular);
   margin-bottom: 10px;
   &:hover {
-    cursor: default;
+    cursor: pointer;
   }
 `;
 
@@ -45,15 +45,18 @@ const StampBookBtnBox = styled.div`
 `;
 
 const StampBook = (props) => {
-  const { isLogin } = useContext(AppContext);
-  const { pathname } = useLocation();
-  const [likeBtn, setLikeBtn] = useState(props.isLike);
+  const navigate = useNavigate();
+  const { isLogin, setIsLogin } = useContext(AppContext);
+  const [likeBtn, setLikeBtn] = useState(false);
+
   const [likeCount, setLikeCount] = useState(props.likeCount);
+
+  const goToStampDetail = () =>
+    navigate(`/my/stampDetail/${props.stampbookId}`);
 
   const likeHandler = () => {
     if (isLogin) {
       setLikeBtn(!likeBtn);
-
       if (likeBtn) {
         boogi.get(`/boogimon/stampbook/stampbook.jsp?command=unlike`, {
           params: {
@@ -75,7 +78,6 @@ const StampBook = (props) => {
       console.log('좋아요는 로그인 후 가능합니다.');
     }
   };
-
   useEffect(() => {
     if (props.isLike === true) {
       setLikeBtn(true);
@@ -83,25 +85,19 @@ const StampBook = (props) => {
   }, [likeBtn]);
 
   return (
-    <div {...props}>
-      <StampBoard stampbookId={props.stampbookId} userpick={props.userpick} />
+    <div>
+      <StampBoard stampbookId={props.stampbookId} />
+      <StampBoard id={props.id} />
       <StampBookTxt>
-        <StampBookTitle>{props.title}</StampBookTitle>
+        <StampBookTitle onClick={goToStampDetail}>{props.title}</StampBookTitle>
         <StampBookLike>
           <StampBookLikeBtn onClick={likeHandler}>
-            <img
-              src={isLogin && likeBtn ? likeFullImg : likeImg}
-              alt='좋아요'
-            />
+            <img src={likeBtn ? likeFullImg : likeImg} alt='좋아요' />
           </StampBookLikeBtn>
           <div>{likeCount}</div>
         </StampBookLike>
         <StampBookBtnBox>
-          {pathname === '/my' ? (
-            <Button children={'삭제'} />
-          ) : (
-            <Button children={'담기'} />
-          )}
+          <Button children={'담기'} />
         </StampBookBtnBox>
       </StampBookTxt>
     </div>

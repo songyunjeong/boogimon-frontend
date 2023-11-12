@@ -214,15 +214,18 @@ const Stamp = (props) => {
   const [background, setBackground] = useState('');
   const [url, setUrl] = useState('');
 
-  const onOpenPopup = () => {
-    boogi
-      .get(`http://localhost:8080/boogimon/place.jsp?placeId=${props.placeid}`)
-      .then((response) => {
-        setData(response.data);
-        setBackground(response.data.placeDetail.img);
-        setUrl(response.data.placeDetail.homepage);
-        setPopupOn(!popupOn);
-      });
+  const onOpenPopup = async () => {
+    if (window.location.pathname === '/stampDetail') {
+      // console.log('pathname: ', window.location.pathname);
+      const ajax_data = await boogi.get(
+        `http://localhost:8080/boogimon/place.jsp?placeId=${props.placeid}`
+      );
+
+      setData(ajax_data.data);
+      setBackground(ajax_data.data.placeDetail.img);
+      setUrl(ajax_data.data.placeDetail.homepage);
+      setPopupOn(!popupOn);
+    }
   };
 
   const onClosePopup = () => {
