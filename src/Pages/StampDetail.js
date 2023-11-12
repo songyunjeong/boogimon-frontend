@@ -8,12 +8,11 @@ import { useLocation } from 'react-router-dom';
 import Button from '../Components/Button';
 import styled from 'styled-components';
 import Stamp from '../Components/Stamp';
-import { useContext, useEffect, useRef, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import html2canvas from 'html2canvas';
 import { saveAs } from 'file-saver';
 import CreatorMsgBox from '../Components/CreatorMsgBox';
 import boogi from '../boogi';
-import { AppContext } from '../App';
 
 const Wrap = styled.div`
   width: 1280px;
@@ -104,12 +103,22 @@ const CreateUserBox = styled.div`
 const StampDetail = () => {
   const divRef = useRef();
   const { state } = useLocation();
-  const [data, setData] = useState();
-  const [likeBtn, setLikeBtn] = useState();
+  const [data, setData] = useState([]);
+  const [likeBtn, setLikeBtn] = useState(state.islike);
+  const [likeCount, setLikeCount] = useState(state.likecount);
   const [comment, setComment] = useState('');
-  const [commentDataList, setCommentDataList] = useState();
+  const [commentDataList, setCommentDataList] = useState([]);
   const [post, setPost] = useState(false);
   const [isValid, setIsValid] = useState(false);
+
+  const getDetailData = () => {
+    boogi
+      .get(`/boogimon/stampbook/stampbook.jsp?stampbookId=${state.stampbookid}`)
+      .then((response) => {
+        setData(response.data);
+        console.log('스탬프북 디테일 데이터 가져오기 완료');
+      });
+  };
 
   const downloadHandler = async (e) => {
     if (!divRef.current) return;
@@ -127,52 +136,82 @@ const StampDetail = () => {
     }
   };
 
-  const commentPost = () => {
+  const likeHandler = () => {
     if (window.sessionStorage.getItem('userId')) {
-      setPost(false);
+      setLikeBtn(!likeBtn);
 
-      boogi.post('/boogimon/stampbook/comment.jsp', null, {
-        params: {
-          stampbookid: state.stampbookid,
-          userId: window.sessionStorage.getItem('userId'),
-          comment: comment,
-        },
-      });
+      if (likeBtn) {
+        boogi.get(`/boogimon/stampbook/stampbook.jsp?command=unlike`, {
+          params: {
+            stampbookId: state.stampbookid,
+            userId: window.sessionStorage.getItem('userId'),
+          },
+        });
+        setLikeCount(likeCount - 1);
+        console.log('좋아요 -1');
+      } else {
+        boogi.get(`/boogimon/stampbook/stampbook.jsp?command=like`, {
+          params: {
+            stampbookId: state.stampbookid,
+            userId: window.sessionStorage.getItem('userId'),
+          },
+        });
+        setLikeCount(likeCount + 1);
+        console.log('좋아요 +1');
+      }
+    } else {
+      console.log('좋아요는 로그인 후 가능합니다.');
+    }
+  };
 
+  const postComment = () => {
+    setPost(false);
+
+    if (window.sessionStorage.getItem('userId')) {
       boogi
-        .get(
-          `/boogimon/stampbook/comment.jsp?command=list&stampbookId=${state.stampbookid}`
-        )
-        .then((response) => {
-          setCommentDataList(response.data);
+        .post('/boogimon/stampbook/comment.jsp', null, {
+          params: {
+            stampbookId: state.stampbookid,
+            userId: window.sessionStorage.getItem('userId'),
+            comment: comment,
+          },
         })
-
-        .then((response) => {
-          console.log('댓글 작성 완료');
-          setCommentDataList(response.data);
+        .then(() => {
           setPost(true);
           setComment('');
+          console.log('댓글 작성 완료');
         });
     } else {
       console.log('로그인 해주세요.');
     }
   };
 
-  useEffect(() => {
+  const getComment = () => {
     boogi
-      .get(`/boogimon/stampbook/stampbook.jsp?stampbookId=${state.stampbookid}`)
+      .get(
+        `/boogimon/stampbook/comment.jsp?command=list&stampbookId=${state.stampbookid}`
+      )
       .then((response) => {
-        setData(response.data);
-        console.log('스탬프북 디테일 데이터 가져오기 완료');
+        setCommentDataList(response.data);
+        console.log('댓글 가져오기 완료');
       });
+  };
+
+  useEffect(() => {
+    getDetailData();
+    getComment();
   }, []);
+
+  useEffect(() => {
+    getComment();
+  }, [post]);
 
   return (
     <div>
       <Header />
 
       <Wrap>
-        <Title>{data?.stampbook.title}</Title>
+        <Title>{data?.stampbook?.title}</Title>
 
         <div>
           <StampBoardBox ref={divRef}>
@@ -204,10 +243,10 @@ const StampDetail = () => {
             }}
           />
           <StampBookLike>
-            <StampBookLikeBtn>
+            <StampBookLikeBtn onClick={likeHandler}>
               <img src={likeBtn ? likeFullImg : likeImg} alt='좋아요' />
             </StampBookLikeBtn>
-            <div>{data?.stampbook.likeCount}</div>
+            <div>{likeCount}</div>
           </StampBookLike>
         </ButtonBar>
 
@@ -228,7 +267,7 @@ const StampDetail = () => {
             />
             <Button
               children={'등록'}
-              onClick={commentPost}
+              onClick={postComment}
               disabled={isValid ? false : true}
             />
           </InputBox>
@@ -247,16 +286,14 @@ const StampDetail = () => {
             })}
           </CommentListBox>
 
-          {data?.stampbook.commentList.length > 5 && (
-            <MoreBtn>
-              <Button
-                children={'더보기'}
-                style={{
-                  marginTop: '10px',
-                }}
-              />
-            </MoreBtn>
-          )}
+          <MoreBtn>
+            <Button
+              children={'더보기'}
+              style={{
+                marginTop: '10px',
+              }}
+            />
+          </MoreBtn>
         </section>
 
         <CreateUserBox>
@@ -264,11 +301,11 @@ const StampDetail = () => {
 
           <CreatorMsgBox
             profileImg={
-              data?.stampbook.profileImg ? data?.stampbook.profileImg : avatar
+              data?.stampbook?.profileImg ? data.stampbook.profileImg : avatar
             }
-            nickname={data?.stampbook.nickname}
-            description={data?.stampbook.description}
-            stampbookRegdate={data?.stampbook.stampbookRegdate}
+            nickname={data?.stampbook?.nickname}
+            description={data?.stampbook?.description}
+            stampbookRegdate={data?.stampbook?.stampbookRegdate}
             margin={'20px 0'}
           />
         </CreateUserBox>

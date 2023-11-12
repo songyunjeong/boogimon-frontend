@@ -1,7 +1,5 @@
 import styled from 'styled-components';
 import Stamp from './Stamp';
-import { useEffect, useState } from 'react';
-import boogi from '../boogi';
 import { useNavigate } from 'react-router-dom';
 
 const StampBoardBox = styled.div`
@@ -25,7 +23,13 @@ const StampBoard = (props) => {
 
   const goToStampDetail = () =>
     navigate(`/stampDetail`, {
-      state: { stampbookid: props.stampbookid, userpick: props.userpick },
+      state: {
+        stampbookid: props.stampbookid,
+        islike: props.islike,
+        likecount: props.likecount,
+        title: props.title,
+        stamplist: props.stamplist,
+      },
     });
 
   return (

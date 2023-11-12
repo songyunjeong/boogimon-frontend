@@ -1,8 +1,7 @@
 import StampBook from '../Components/StampBook';
 import Header from '../Components/Header';
 import styled from 'styled-components';
-import { useContext, useEffect, useState } from 'react';
-import { AppContext } from '../App';
+import { useEffect, useState } from 'react';
 import boogi from '../boogi';
 
 const Wrap = styled.div`
@@ -36,11 +35,10 @@ const StampBookBox = styled.section`
 `;
 
 const Home = () => {
-  const { isLogin } = useContext(AppContext);
   const [stampbookData, setStampbookData] = useState();
 
   useEffect(() => {
-    if (isLogin) {
+    if (window.sessionStorage.getItem('userId')) {
       boogi
         .get(
           `/boogimon/stampbook/stampbook.jsp?command=list&userId=${window.sessionStorage.getItem(

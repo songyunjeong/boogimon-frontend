@@ -49,25 +49,27 @@ const StampBook = (props) => {
   const [likeCount, setLikeCount] = useState(props.likecount);
 
   const likeHandler = () => {
-    if (isLogin) {
+    if (window.sessionStorage.getItem('userId')) {
       setLikeBtn(!likeBtn);
 
       if (likeBtn) {
         boogi.get(`/boogimon/stampbook/stampbook.jsp?command=unlike`, {
           params: {
-            stampbookid: props.stampbookid,
+            stampbookId: props.stampbookid,
             userId: window.sessionStorage.getItem('userId'),
           },
         });
-        return setLikeCount(likeCount - 1);
+        setLikeCount(likeCount - 1);
+        console.log('좋아요 -1');
       } else {
         boogi.get(`/boogimon/stampbook/stampbook.jsp?command=like`, {
           params: {
-            stampbookid: props.stampbookid,
+            stampbookId: props.stampbookid,
             userId: window.sessionStorage.getItem('userId'),
           },
         });
-        return setLikeCount(likeCount + 1);
+        setLikeCount(likeCount + 1);
+        console.log('좋아요 +1');
       }
     } else {
       console.log('좋아요는 로그인 후 가능합니다.');
@@ -75,14 +77,20 @@ const StampBook = (props) => {
   };
 
   useEffect(() => {
-    if (props.isLike === true) {
+    if (props.islike === 'true') {
       setLikeBtn(true);
     }
   }, [likeBtn]);
 
   return (
     <div>
-      <StampBoard stampbookid={props.stampbookid} stamplist={props.stamplist} />
+      <StampBoard
+        stampbookid={props.stampbookid}
+        islike={props.islike}
+        likecount={props.likecount}
+        title={props.title}
+        stamplist={props.stamplist}
+      />
       <StampBookTxt>
         <StampBookTitle>{props.title}</StampBookTitle>
         <StampBookLike>
