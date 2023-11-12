@@ -46,16 +46,11 @@ const StampBookBtnBox = styled.div`
 
 const StampBook = (props) => {
   const navigate = useNavigate();
-  const { isLogin, setIsLogin } = useContext(AppContext);
-  const [likeBtn, setLikeBtn] = useState(false);
+  const { isLogin } = useContext(AppContext);
+  const [likeBtn, setLikeBtn] = useState(props.isLike);
   const [likeCount, setLikeCount] = useState(props.likeCount);
 
-  const goToStampDetail = () =>
-    navigate('/stampDetail', {
-      state: {
-        id: props.id,
-      },
-    });
+  const goToStampDetail = () => navigate(`/stampDetail/${props.stampbookId}`);
 
   const likeHandler = () => {
     if (isLogin) {
@@ -64,19 +59,19 @@ const StampBook = (props) => {
       if (likeBtn) {
         boogi.get(`/boogimon/stampbook/stampbook.jsp?command=unlike`, {
           params: {
-            stampbookId: props.id,
+            stampbookId: props.stampbookId,
             userId: window.sessionStorage.getItem('userId'),
           },
         });
-        setLikeCount(likeCount - 1);
+        return setLikeCount(likeCount - 1);
       } else {
         boogi.get(`/boogimon/stampbook/stampbook.jsp?command=like`, {
           params: {
-            stampbookId: props.id,
+            stampbookId: props.stampbookId,
             userId: window.sessionStorage.getItem('userId'),
           },
         });
-        setLikeCount(likeCount + 1);
+        return setLikeCount(likeCount + 1);
       }
     } else {
       console.log('좋아요는 로그인 후 가능합니다.');
@@ -87,16 +82,19 @@ const StampBook = (props) => {
     if (props.isLike === true) {
       setLikeBtn(true);
     }
-  }, []);
+  }, [likeBtn]);
 
   return (
     <div>
-      <StampBoard id={props.id} />
+      <StampBoard stampbookId={props.stampbookId} />
       <StampBookTxt>
         <StampBookTitle onClick={goToStampDetail}>{props.title}</StampBookTitle>
         <StampBookLike>
           <StampBookLikeBtn onClick={likeHandler}>
-            <img src={likeBtn ? likeFullImg : likeImg} alt='좋아요' />
+            <img
+              src={isLogin && likeBtn ? likeFullImg : likeImg}
+              alt='좋아요'
+            />
           </StampBookLikeBtn>
           <div>{likeCount}</div>
         </StampBookLike>
