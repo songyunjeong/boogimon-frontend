@@ -29,7 +29,7 @@ function App() {
           <Route path='/my' element={<My />} />
           <Route path='/boogiBook' element={<BoogiBook />} />
           <Route path='/makeStampBook' element={<MakeStampBook />} />
-          <Route path='/stampDetail' element={<StampDetail />} />
+          <Route path='/stampDetail/:id' element={<StampDetail />} />
           <Route path='/join' element={<Join />} />
           <Route path='/login' element={<Login />} />
           <Route path='/findPassword' element={<FindPassword />} />

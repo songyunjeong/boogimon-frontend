@@ -1,15 +1,13 @@
-import React, { useContext, useEffect, useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
 import styled from 'styled-components';
 import '../globalStyle';
 import boogicard from '../images/bogimon_card_b.png';
 import Header from '../Components/Header';
-import StampBook from '../Components/StampBook';
 import Button from '../Components/Button';
 import html2canvas from 'html2canvas';
 import boogi from '../boogi';
-import avatar from '../images/avatar.png';
-import { AppContext } from '../App';
+import StampBook from '../Components/StampBook';
 
 const Modal = styled.div`
   position: fixed;
@@ -19,6 +17,7 @@ const Modal = styled.div`
   height: 100%;
   z-index: 1000;
 `;
+
 const PopupBg = styled.div`
   position: fixed;
   top: 0;
@@ -43,6 +42,7 @@ const CloseBtn = styled.button`
     border: 2px solid var(--light-blue);
   }
 `;
+
 const OpenBtn = styled.button`
   border: 2px solid var(--gray2);
   border-radius: 4px;
@@ -84,7 +84,6 @@ const CardPopup = styled.div`
   transform: translate(-50%, -40%);
 
   white-space: normal;
-
   border-radius: 10px;
 `;
 
@@ -143,7 +142,6 @@ const RandomImg = styled.div`
 const CardContent = styled.p`
   width: 260px;
   height: 180px;
-
   position: absolute;
   left: 7%;
   top: 52%;
@@ -154,8 +152,8 @@ const Mypage = styled.div`
   position: relative;
   height: 250px;
   width: 1280px;
-  margin: 30px auto;
-  border-radius: 8px;
+  margin: 30px auto 0; /* 위에 30px의 margin 추가 */
+  border-radius: 10px;
   border: 1px solid var(--gray2);
 `;
 
@@ -265,7 +263,7 @@ const Level = styled.p`
   position: absolute;
   font-size: var(--big);
   top: 40px;
-  left: 85%;
+  right: 45px;
   text-align: center; /* 텍스트를 가운데 정렬 */
 `;
 
@@ -322,30 +320,7 @@ const My = () => {
   const [openCard, closeCard] = useState(false);
   const [apiData, setApiData] = useState({ user: [] });
 
-  const { isLogin } = useContext(AppContext);
-
-  const stampBookList = [
-    {
-      title: '스탬프북1',
-      like: '30',
-    },
-    {
-      title: '스탬프북2',
-      like: '22',
-    },
-    {
-      title: '스탬프북3',
-      like: '20',
-    },
-    {
-      title: '스탬프북4',
-      like: '13',
-    },
-    {
-      title: '스탬프북5',
-      like: '5',
-    },
-  ];
+  const [data, setData] = useState();
 
   const onOpenCard = () => {
     closeCard(!openCard);
@@ -404,19 +379,28 @@ const My = () => {
       )
       .then((response) => {
         setApiData(response.data);
-        console.log(response.data);
       });
-  }, [isLogin]);
+
+    boogi
+      .get(
+        `/boogimon/stampbook/stampbook.jsp?command=mylist&userId=${window.sessionStorage.getItem(
+          'userId'
+        )}`
+      )
+      .then((response) => {
+        setData(response.data);
+      });
+  }, []);
 
   const View = () => {
     return (
       <Mypage>
         <MyImg>
-          <MyProfileImg src={apiData.user.profileImg} alt='프로필이미지' />
+          <MyProfileImg src={apiData?.user.profileImg} alt='프로필이미지' />
         </MyImg>
         <MyproFile>
           <NickName>
-            {apiData.user.nickname ? apiData.user.nickname : '-'}
+            {apiData?.user.nickname ? apiData.user.nickname : '-'}
           </NickName>
           <Link to='/edituserinfo'>
             <Button
@@ -435,19 +419,23 @@ const My = () => {
           </CompleteBtn>
         </MyproFile>
         <MyProgress>
-          <Rank>{apiData.user.ranking}</Rank>
+          <Rank>랭킹: {apiData?.user.ranking}th</Rank>
           <Level>
             LV.
-            {apiData.user.exp < 100
+            {apiData?.user.exp < 100
               ? 1
-              : Math.floor(apiData.user.exp / 100) + 1}
+              : Math.floor(apiData?.user.exp / 100) + 1}
           </Level>
-          <Progress value={apiData.user.exp % 100} min='0' max='100' />
+          <Progress
+            value={!isNaN(apiData?.user.exp) ? apiData.user.exp % 100 : 0}
+            min='0'
+            max='100'
+          />
           <StampComplete>
-            모은 스탬프: {apiData.user.userTotalVisit}
+            모은 스탬프: {apiData?.user.userTotalVisit}
           </StampComplete>
-          <UserLike>받은 좋아요수: {apiData.user.userLikeCount}</UserLike>
-          <Exp>EXP.{apiData.user.exp % 100}/100</Exp>
+          <UserLike>받은 좋아요수: {apiData?.user.userLikeCount}</UserLike>
+          <Exp>EXP.{apiData?.user.exp % 100}/100</Exp>
         </MyProgress>
       </Mypage>
     );
@@ -463,8 +451,23 @@ const My = () => {
           <option>최신순</option>
           <option>가나다순</option>
         </Sort>
-
-        <StampBookBox></StampBookBox>
+        <StampBookBox>
+          {data?.stampbookList.map((book, i) => {
+            return (
+              <StampBook
+                stampbookId={book.stampbookId}
+                nickname={book.nickname}
+                description={book.description}
+                stampbookRegdate={book.stampbookRegdate}
+                isLike={book.isLike}
+                likeCount={book.likeCount}
+                title={book.title}
+                userpick='true'
+                key={i}
+              />
+            );
+          })}
+        </StampBookBox>
       </Wrap>
     </div>
   );

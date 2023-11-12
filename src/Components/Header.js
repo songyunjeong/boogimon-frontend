@@ -1,4 +1,4 @@
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import logo from '../images/logo.png';
 import styled from 'styled-components';
 import { useContext } from 'react';
@@ -20,9 +20,10 @@ const Logo = styled.img`
 `;
 
 const GNB = styled.div`
+  display: inline-block;
   font-size: var(--small);
-  text-align: right;
   padding-bottom: 10px;
+  cursor: pointer;
 `;
 
 const LNB = styled.div`
@@ -38,10 +39,12 @@ const StyledLink = styled(Link)`
 
 const Header = () => {
   const { isLogin, setIsLogin } = useContext(AppContext);
+  const navigate = useNavigate();
 
   const logout = () => {
     setIsLogin(false);
     sessionStorage.clear();
+    navigate('/');
   };
 
   return (
@@ -51,7 +54,7 @@ const Header = () => {
       </Link>
 
       {isLogin ? (
-        <div className='menu'>
+        <div className='menu' style={{ textAlign: 'right' }}>
           <GNB onClick={logout}>로그아웃</GNB>
 
           <LNB>

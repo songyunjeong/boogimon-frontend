@@ -1,7 +1,8 @@
 import StampBook from '../Components/StampBook';
 import Header from '../Components/Header';
 import styled from 'styled-components';
-import { useEffect, useState } from 'react';
+import { useContext, useEffect, useState } from 'react';
+import { AppContext } from '../App';
 import boogi from '../boogi';
 
 const Wrap = styled.div`
@@ -35,14 +36,27 @@ const StampBookBox = styled.section`
 `;
 
 const Home = () => {
-  const [data, setData] = useState();
+  const { isLogin } = useContext(AppContext);
+  const [stampbookData, setStampbookData] = useState();
 
   useEffect(() => {
-    boogi
-      .get('/boogimon/stampbook/stampbook.jsp?command=list')
-      .then((response) => {
-        setData(response.data);
-      });
+    if (isLogin) {
+      boogi
+        .get(
+          `/boogimon/stampbook/stampbook.jsp?command=list&userId=${window.sessionStorage.getItem(
+            'userId'
+          )}`
+        )
+        .then((response) => {
+          setStampbookData(response.data);
+        });
+    } else {
+      boogi
+        .get(`/boogimon/stampbook/stampbook.jsp?command=list`)
+        .then((response) => {
+          setStampbookData(response.data);
+        });
+    }
   }, []);
 
   return (
@@ -57,13 +71,14 @@ const Home = () => {
         </Sort>
 
         <StampBookBox>
-          {data?.stampbookList.map((book, i) => {
+          {stampbookData?.stampbookList.map((book, i) => {
             return (
               <StampBook
-                id={book.stampbookId}
+                stampbookId={book.stampbookId}
                 nickname={book.nickname}
                 description={book.description}
                 stampbookRegdate={book.stampbookRegdate}
+                isLike={book.isLike}
                 likeCount={book.likeCount}
                 title={book.title}
                 key={i}
