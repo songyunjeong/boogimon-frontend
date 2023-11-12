@@ -1,18 +1,20 @@
 import CommentBox from '../Components/CommentBox';
 import Header from '../Components/Header';
-import like from '../images/like.png';
+import likeFullImg from '../images/like_full.png';
+import likeImg from '../images/like.png';
 import avatar from '../images/avatar.png';
 import Map from '../Components/Map';
 import { Link, useLocation } from 'react-router-dom';
 import Button from '../Components/Button';
 import styled from 'styled-components';
 import Stamp from '../Components/Stamp';
-import { useEffect, useRef, useState } from 'react';
+import { useContext, useEffect, useRef, useState } from 'react';
 import html2canvas from 'html2canvas';
 import { saveAs } from 'file-saver';
 import images from '../images/test.jpg';
 import CreatorMsgBox from '../Components/CreatorMsgBox';
 import boogi from '../boogi';
+import { AppContext } from '../App';
 
 const Wrap = styled.div`
   width: 1280px;
@@ -252,10 +254,14 @@ const LinkUrl = styled(Link)`
 const StampDetail = () => {
   const divRef = useRef();
   const { state } = useLocation();
+  const { isLogin, setIsLogin } = useContext(AppContext);
   const [popupOn, setPopupOn] = useState(false);
   const [data, setData] = useState();
+  const [user, setUser] = useState();
   const [comment, setComment] = useState('');
   const [isValid, setIsValid] = useState(false);
+  const [likeBtn, setLikeBtn] = useState(false);
+  const [likeCount, setLikeCount] = useState(data.stampbook.likeCount);
 
   const downloadHandler = async (e) => {
     if (!divRef.current) return;
@@ -273,15 +279,41 @@ const StampDetail = () => {
     }
   };
 
-  // const commentPost = () => {
-  //   boogi.post('/boogimon/stampbook/comment.jsp', {
-  //     params: {
-  //       stampbookId: state.id,
-  //       userId: window.sessionStorage.getItem('userId'),
-  //       comment: comment,
-  //     },
-  //   });
-  // };
+  const commentPost = () => {
+    boogi.post('/boogimon/stampbook/comment.jsp', {
+      params: {
+        stampbookId: state.id,
+        userId: window.sessionStorage.getItem('userId'),
+        comment: comment,
+      },
+    });
+  };
+
+  const likeHandler = () => {
+    if (isLogin) {
+      setLikeBtn(!likeBtn);
+
+      if (likeBtn) {
+        boogi.get(`/boogimon/stampbook/stampbook.jsp?command=unlike`, {
+          params: {
+            stampbookId: state.stampbookId,
+            userId: window.sessionStorage.getItem('userId'),
+          },
+        });
+        setLikeCount(likeCount - 1);
+      } else {
+        boogi.get(`/boogimon/stampbook/stampbook.jsp?command=like`, {
+          params: {
+            stampbookId: state.stampbookId,
+            userId: window.sessionStorage.getItem('userId'),
+          },
+        });
+        setLikeCount(likeCount + 1);
+      }
+    } else {
+      console.log('좋아요는 로그인 후 가능합니다.');
+    }
+  };
 
   const onOpenPopup = () => {
     setPopupOn(!popupOn);
@@ -352,8 +384,20 @@ const StampDetail = () => {
       .get(`/boogimon/stampbook/stampbook.jsp?stampbookId=${state.stampbookId}`)
       .then((response) => {
         setData(response.data);
-        console.log(response.data);
       });
+
+    if (isLogin) {
+      boogi
+        .get(
+          `/boogimon/stampbook/stampbook.jsp?command=list&userId=${window.sessionStorage.getItem(
+            'userId'
+          )}`
+        )
+        .then((response) => {
+          setUser(response.data);
+          console.log(user);
+        });
+    }
   });
 
   return (
@@ -390,15 +434,13 @@ const StampDetail = () => {
           <Button children={'담기'} $marginright />
           <Button
             children={'스탬프북 이미지 다운로드'}
-            onClick={() => {
-              downloadHandler();
-            }}
+            onClick={downloadHandler}
           />
           <StampBookLike>
-            <StampBookLikeBtn>
-              <img src={like} alt='좋아요' />
+            <StampBookLikeBtn onClick={likeHandler}>
+              <img src={likeBtn ? likeFullImg : likeImg} alt='좋아요' />
             </StampBookLikeBtn>
-            <div>{data.stampbook.likeCount}</div>
+            <div>{likeCount}</div>
           </StampBookLike>
         </ButtonBar>
 
@@ -418,7 +460,7 @@ const StampDetail = () => {
             <input
               type='submit'
               children={'등록'}
-              // onClick={commentPost}
+              onClick={commentPost}
               disabled={isValid ? false : true}
             />
           </InputBox>
