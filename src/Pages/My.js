@@ -8,6 +8,7 @@ import Button from '../Components/Button';
 import html2canvas from 'html2canvas';
 import boogi from '../boogi';
 import StampBook from '../Components/StampBook';
+import logo from '../images/logo.png';
 
 const Modal = styled.div`
   position: fixed;
@@ -125,7 +126,7 @@ const CardName = styled.p`
   width: 130px;
   height: 25px;
   position: absolute;
-  left: 18%;
+  left: 26%;
   top: 2%;
   z-index: 2; /* 더 높은 z-index 값을 설정하여 앞으로 가져옵니다 */
 `;
@@ -134,18 +135,34 @@ const RandomImg = styled.div`
   width: 240px;
   height: 150px;
   position: absolute;
-  left: 10%;
-  top: 9%;
+  left: 8%;
+  top: 10%;
   z-index: 3; /* 더 높은 z-index 값을 설정하여 앞으로 가져옵니다 */
+  background-size: 100% 100%;
+  background-repeat: no-repeat; /* 이미지 반복 방지 */
+  background-position: center; /* 이미지를 가운데 정렬 */
 `;
 
 const CardContent = styled.p`
   width: 260px;
-  height: 180px;
+  height: 140px;
   position: absolute;
-  left: 7%;
+  left: 5%;
+  top: 51%;
+  z-index: 3; /* 더 높은 z-index 값을 설정하여 앞으로 가져옵니다 */
+`;
+
+const MainImg = styled.div`
+  width: 260px;
+  height: 80px;
+  position: absolute;
+  left: 6%;
   top: 65%;
   z-index: 3; /* 더 높은 z-index 값을 설정하여 앞으로 가져옵니다 */
+  background-image: url(${logo});
+  background-size: 90% 90%;
+  background-repeat: no-repeat; /* 이미지 반복 방지 */
+  background-position: center; /* 이미지를 가운데 정렬 */
 `;
 
 const RegDates = styled.div`
@@ -365,13 +382,15 @@ const My = () => {
             닫기
           </CloseBtn>
           <BoogiCardContainer className='CardPopup'>
-            <CardName>
-              트레이너명: {apiData.user.nickname ? apiData.user.nickname : '-'}
-            </CardName>
+            <CardName>BOOGIMON</CardName>
             <RandomImg>
               <MyProfileImg src={apiData.user.profileImg} alt='프로필 이미지' />
             </RandomImg>
-            <CardContent>부기몬의 세계로 오신것을 환영합니다</CardContent>
+            <CardContent>
+              {apiData.user.nickname ? apiData.user.nickname : '-'} 님<hr />
+              부기몬의 세계로 오신것을 환영합니다!
+            </CardContent>
+            <MainImg />
             <RegDates>가입일: {apiData.user.regdate}</RegDates>
           </BoogiCardContainer>
           <Download>
@@ -398,7 +417,7 @@ const My = () => {
 
     boogi
       .get(
-        `/boogimon/stampbook/stampbook.jsp?command=mylist&userId=${window.sessionStorage.getItem(
+        `/boogimon/stampbook/stampbook.jsp?command=list&userId=${window.sessionStorage.getItem(
           'userId'
         )}`
       )
