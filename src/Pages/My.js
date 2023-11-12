@@ -487,10 +487,10 @@ const My = () => {
           <option>가나다순</option>
         </Sort>
         <StampBookBox>
-          {data?.stampbookList.map((book, i) => {
+          {data?.stampbookList?.map((book, i) => {
             return (
               <StampBook
-                stampbookId={book.stampbookId}
+                stampbookid={book.stampbookId}
                 nickname={book.nickname}
                 description={book.description}
                 stampbookRegdate={book.stampbookRegdate}

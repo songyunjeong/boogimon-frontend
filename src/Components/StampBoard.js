@@ -21,32 +21,27 @@ const StampBoardBox = styled.div`
 `;
 
 const StampBoard = (props) => {
-  const [data, setData] = useState();
-
-  const goToStampDetail = () => navigate(`/stampDetail/${props.stampbookId}`);
-
-  useEffect(() => {
-    boogi
-      .get(`/boogimon/stampbook/stampbook.jsp?stampbookId=${props.id}`)
-      .then((response) => {
-        setData(response.data);
-      });
-  }, []);
-
   const navigate = useNavigate();
+
+  const goToStampDetail = () =>
+    navigate(`/stampDetail`, {
+      state: { stampbookid: props.stampbookid, userpick: props.userpick },
+    });
 
   return (
     <StampBoardBox onClick={goToStampDetail}>
-      {data?.stampbook.stampList.map((stamp, i) => {
-        return (
-          <Stamp
-            src={stamp.thumbnail}
-            alt={stamp.placeName + ' 이미지'}
-            title={stamp.placeName}
-            key={i}
-            $small
-          />
-        );
+      {props.stamplist.map((stamp, i) => {
+        if (i < 9) {
+          return (
+            <Stamp
+              src={stamp.thumbnail}
+              alt={stamp.name + ' 이미지'}
+              title={stamp.name}
+              key={i}
+              $small
+            />
+          );
+        }
       })}
     </StampBoardBox>
   );

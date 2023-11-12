@@ -4,7 +4,7 @@ import likeFullImg from '../images/like_full.png';
 import likeImg from '../images/like.png';
 import avatar from '../images/avatar.png';
 import Map from '../Components/Map';
-import { useLocation, useParams } from 'react-router-dom';
+import { useLocation } from 'react-router-dom';
 import Button from '../Components/Button';
 import styled from 'styled-components';
 import Stamp from '../Components/Stamp';
@@ -103,8 +103,6 @@ const CreateUserBox = styled.div`
 
 const StampDetail = () => {
   const divRef = useRef();
-  const { id } = useParams();
-  const { isLogin } = useContext(AppContext);
   const { state } = useLocation();
   const [data, setData] = useState();
   const [likeBtn, setLikeBtn] = useState();
@@ -136,7 +134,7 @@ const StampDetail = () => {
       boogi
         .post('/boogimon/stampbook/comment.jsp', null, {
           params: {
-            stampbookId: id,
+            stampbookid: state.stampbookid,
             userId: window.sessionStorage.getItem('userId'),
             comment: comment,
           },
@@ -152,36 +150,23 @@ const StampDetail = () => {
   };
 
   useEffect(() => {
-    if (isLogin) {
-      boogi
-        .get(
-          `/boogimon/stampbook/stampbook.jsp?stampbookId=${state?.stampbookId}`
-        )
-        .then((response) => {
-          setData(response.data);
-          console.log(data?.stampbook.isLike);
-        });
-    } else {
-      boogi
-        .get(
-          `/boogimon/stampbook/stampbook.jsp?stampbookId=${state?.stampbookId}`
-        )
-        .then((response) => {
-          setData(response.data);
-        });
-    }
+    boogi
+      .get(`/boogimon/stampbook/stampbook.jsp?stampbookId=${state.stampbookid}`)
+      .then((response) => {
+        setData(response.data);
+        console.log('스탬프북 디테일 데이터 가져오기 완료');
+      });
   }, []);
 
   useEffect(() => {
-    console.log(state.userpick);
     boogi
       .get(
-        `/boogimon/stampbook/comment.jsp?command=list&stampbookId=${state.stampbookId}`
+        `/boogimon/stampbook/comment.jsp?command=list&stampbookId=${state.stampbookid}`
       )
       .then((response) => {
         setCommentDataList(response.data);
       });
-  }, [id, post]);
+  }, [post]);
 
   return (
     <div>
@@ -192,29 +177,17 @@ const StampDetail = () => {
 
         <div>
           <StampBoardBox ref={divRef}>
-            {state.userpick && state.userpick === 'true'
-              ? data?.stampbook.stampList.map((stamp, i) => {
-                  return (
-                    <Stamp
-                      src={''}
-                      alt={stamp.placeName + ' 이미지'}
-                      title={stamp.placeName}
-                      placeid={stamp.placeId}
-                      key={i}
-                    />
-                  );
-                })
-              : data?.stampbook.stampList.map((stamp, i) => {
-                  return (
-                    <Stamp
-                      src={stamp.thumbnail}
-                      alt={stamp.placeName + ' 이미지'}
-                      title={stamp.placeName}
-                      placeid={stamp.placeId}
-                      key={i}
-                    />
-                  );
-                })}
+            {data?.stampbook?.stampList?.map((stamp, i) => {
+              return (
+                <Stamp
+                  src={stamp.thumbnail}
+                  alt={stamp.placeName + ' 이미지'}
+                  title={stamp.placeName}
+                  placeid={stamp.placeId}
+                  key={i}
+                />
+              );
+            })}
           </StampBoardBox>
 
           <MapBox>
@@ -224,9 +197,7 @@ const StampDetail = () => {
 
         <ButtonBar>
           <Button children={'공유'} $marginright />
-          {state.userpick !== 'true' && (
-            <Button children={'담기'} $marginright />
-          )}
+          <Button children={'담기'} $marginright />
           <Button
             children={'스탬프북 이미지 다운로드'}
             onClick={() => {
@@ -264,7 +235,7 @@ const StampDetail = () => {
           </InputBox>
 
           <CommentListBox>
-            {commentDataList?.commentList.map((talk, i) => {
+            {commentDataList?.commentList?.map((talk, i) => {
               return (
                 <CommentBox
                   profileImg={talk.profileImg}

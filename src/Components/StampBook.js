@@ -1,5 +1,4 @@
 import React, { useContext, useEffect, useState } from 'react';
-import { useNavigate } from 'react-router-dom';
 import likeFullImg from '../images/like_full.png';
 import likeImg from '../images/like.png';
 import Button from './Button';
@@ -45,14 +44,9 @@ const StampBookBtnBox = styled.div`
 `;
 
 const StampBook = (props) => {
-  const navigate = useNavigate();
-  const { isLogin, setIsLogin } = useContext(AppContext);
-  const [likeBtn, setLikeBtn] = useState(false);
-
-  const [likeCount, setLikeCount] = useState(props.likeCount);
-
-  const goToStampDetail = () =>
-    navigate(`/my/stampDetail/${props.stampbookId}`);
+  const { isLogin } = useContext(AppContext);
+  const [likeBtn, setLikeBtn] = useState(props.islike);
+  const [likeCount, setLikeCount] = useState(props.likecount);
 
   const likeHandler = () => {
     if (isLogin) {
@@ -60,7 +54,7 @@ const StampBook = (props) => {
       if (likeBtn) {
         boogi.get(`/boogimon/stampbook/stampbook.jsp?command=unlike`, {
           params: {
-            stampbookId: props.stampbookId,
+            stampbookid: props.stampbookid,
             userId: window.sessionStorage.getItem('userId'),
           },
         });
@@ -68,7 +62,7 @@ const StampBook = (props) => {
       } else {
         boogi.get(`/boogimon/stampbook/stampbook.jsp?command=like`, {
           params: {
-            stampbookId: props.stampbookId,
+            stampbookid: props.stampbookid,
             userId: window.sessionStorage.getItem('userId'),
           },
         });
@@ -86,10 +80,9 @@ const StampBook = (props) => {
 
   return (
     <div>
-      <StampBoard stampbookId={props.stampbookId} />
-      <StampBoard id={props.id} />
+      <StampBoard stampbookid={props.stampbookid} stamplist={props.stamplist} />
       <StampBookTxt>
-        <StampBookTitle onClick={goToStampDetail}>{props.title}</StampBookTitle>
+        <StampBookTitle>{props.title}</StampBookTitle>
         <StampBookLike>
           <StampBookLikeBtn onClick={likeHandler}>
             <img src={likeBtn ? likeFullImg : likeImg} alt='좋아요' />
@@ -97,6 +90,7 @@ const StampBook = (props) => {
           <div>{likeCount}</div>
         </StampBookLike>
         <StampBookBtnBox>
+          <Button children={'삭제'} $marginright />
           <Button children={'담기'} />
         </StampBookBtnBox>
       </StampBookTxt>
