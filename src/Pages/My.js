@@ -125,7 +125,7 @@ const CardName = styled.p`
   width: 130px;
   height: 25px;
   position: absolute;
-  left: 10%;
+  left: 18%;
   top: 2%;
   z-index: 2; /* 더 높은 z-index 값을 설정하여 앞으로 가져옵니다 */
 `;
@@ -144,8 +144,18 @@ const CardContent = styled.p`
   height: 180px;
   position: absolute;
   left: 7%;
-  top: 52%;
+  top: 65%;
   z-index: 3; /* 더 높은 z-index 값을 설정하여 앞으로 가져옵니다 */
+`;
+
+const RegDates = styled.div`
+  width: 240px;
+  height: 25px;
+  position: absolute;
+  left: 10%;
+  top: 90%;
+  z-index: 3; /* 더 높은 z-index 값을 설정하여 앞으로 가져옵니다 */
+  border-color: var(--yellow);
 `;
 
 const Mypage = styled.div`
@@ -355,9 +365,14 @@ const My = () => {
             닫기
           </CloseBtn>
           <BoogiCardContainer className='CardPopup'>
-            <CardName>광안리</CardName>
-            <RandomImg>랜덤이미지</RandomImg>
-            <CardContent>카드내용? 축하드립니다~</CardContent>
+            <CardName>
+              트레이너명: {apiData.user.nickname ? apiData.user.nickname : '-'}
+            </CardName>
+            <RandomImg>
+              <MyProfileImg src={apiData.user.profileImg} alt='프로필 이미지' />
+            </RandomImg>
+            <CardContent>부기몬의 세계로 오신것을 환영합니다</CardContent>
+            <RegDates>가입일: {apiData.user.regdate}</RegDates>
           </BoogiCardContainer>
           <Download>
             <DownloadBtn
