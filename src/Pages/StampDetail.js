@@ -251,8 +251,10 @@ const StampDetail = () => {
   const divRef = useRef();
   const { id } = useParams();
   const { isLogin } = useContext(AppContext);
+  const { pathname } = useLocation();
   const [popupOn, setPopupOn] = useState(false);
   const [data, setData] = useState();
+  const [userPick, setUserPick] = useState();
   const [likeBtn, setLikeBtn] = useState();
   const [comment, setComment] = useState('');
   const [commentDataList, setCommentDataList] = useState();
@@ -386,6 +388,17 @@ const StampDetail = () => {
       });
   }, [post]);
 
+  useEffect(() => {
+    boogi
+      .get(
+        'http://localhost:8080/boogimon/stampbook/stamp.jsp?command=list&stampbookId=0&userId=boogi@boogimon.com'
+      )
+      .then((response) => {
+        setUserPick(response.data);
+        console.log(response.data);
+      });
+  }, []);
+
   return (
     <div>
       <Header />
@@ -395,18 +408,31 @@ const StampDetail = () => {
 
         <div>
           <StampBoardBox ref={divRef}>
-            {data?.stampbook.stampList.map((stamp, i) => {
-              return (
-                <Stamp
-                  src={stamp.thumbnail}
-                  alt={stamp.placeName + ' 이미지'}
-                  title={stamp.placeName}
-                  placeid={stamp.placeId}
-                  key={i}
-                  onClick={onOpenPopup}
-                />
-              );
-            })}
+            {pathname === '/my'
+              ? data?.stampbook.stampList.map((stamp, i) => {
+                  return (
+                    <Stamp
+                      src={stamp.thumbnail}
+                      alt={stamp.placeName + ' 이미지'}
+                      title={stamp.placeName}
+                      placeid={stamp.placeId}
+                      key={i}
+                      onClick={onOpenPopup}
+                    />
+                  );
+                })
+              : data?.stampbook.stampList.map((stamp, i) => {
+                  return (
+                    <Stamp
+                      src={stamp.thumbnail}
+                      alt={stamp.placeName + ' 이미지'}
+                      title={stamp.placeName}
+                      placeid={stamp.placeId}
+                      key={i}
+                      onClick={onOpenPopup}
+                    />
+                  );
+                })}
             {popupOn && <Popup />}
           </StampBoardBox>
 

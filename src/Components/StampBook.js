@@ -1,5 +1,5 @@
 import React, { useContext, useEffect, useState } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { useLocation, useNavigate } from 'react-router-dom';
 import likeFullImg from '../images/like_full.png';
 import likeImg from '../images/like.png';
 import Button from './Button';
@@ -47,10 +47,12 @@ const StampBookBtnBox = styled.div`
 const StampBook = (props) => {
   const navigate = useNavigate();
   const { isLogin } = useContext(AppContext);
+  const { pathname } = useLocation();
   const [likeBtn, setLikeBtn] = useState(props.isLike);
   const [likeCount, setLikeCount] = useState(props.likeCount);
 
-  const goToStampDetail = () => navigate(`/stampDetail/${props.stampbookId}`);
+  const goToStampDetail = () =>
+    navigate(`/my/stampDetail/${props.stampbookId}`);
 
   const likeHandler = () => {
     if (isLogin) {
@@ -99,7 +101,11 @@ const StampBook = (props) => {
           <div>{likeCount}</div>
         </StampBookLike>
         <StampBookBtnBox>
-          <Button children={'담기'} />
+          {pathname === '/my' ? (
+            <Button children={'삭제'} />
+          ) : (
+            <Button children={'담기'} />
+          )}
         </StampBookBtnBox>
       </StampBookTxt>
     </div>

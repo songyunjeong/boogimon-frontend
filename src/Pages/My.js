@@ -7,6 +7,7 @@ import Header from '../Components/Header';
 import Button from '../Components/Button';
 import html2canvas from 'html2canvas';
 import boogi from '../boogi';
+import StampBook from '../Components/StampBook';
 
 const Modal = styled.div`
   position: fixed;
@@ -319,6 +320,8 @@ const My = () => {
   const [openCard, closeCard] = useState(false);
   const [apiData, setApiData] = useState({ user: [] });
 
+  const [data, setData] = useState();
+
   const onOpenCard = () => {
     closeCard(!openCard);
   };
@@ -377,17 +380,27 @@ const My = () => {
       .then((response) => {
         setApiData(response.data);
       });
+
+    boogi
+      .get(
+        `/boogimon/stampbook/stampbook.jsp?command=mylist&userId=${window.sessionStorage.getItem(
+          'userId'
+        )}`
+      )
+      .then((response) => {
+        setData(response.data);
+      });
   }, []);
 
   const View = () => {
     return (
       <Mypage>
         <MyImg>
-          <MyProfileImg src={apiData.user.profileImg} alt='프로필이미지' />
+          <MyProfileImg src={apiData?.user.profileImg} alt='프로필이미지' />
         </MyImg>
         <MyproFile>
           <NickName>
-            {apiData.user.nickname ? apiData.user.nickname : '-'}
+            {apiData?.user.nickname ? apiData.user.nickname : '-'}
           </NickName>
           <Link to='/edituserinfo'>
             <Button
@@ -406,23 +419,23 @@ const My = () => {
           </CompleteBtn>
         </MyproFile>
         <MyProgress>
-          <Rank>랭킹: {apiData.user.ranking}th</Rank>
+          <Rank>랭킹: {apiData?.user.ranking}th</Rank>
           <Level>
             LV.
-            {apiData.user.exp < 100
+            {apiData?.user.exp < 100
               ? 1
-              : Math.floor(apiData.user.exp / 100) + 1}
+              : Math.floor(apiData?.user.exp / 100) + 1}
           </Level>
           <Progress
-            value={!isNaN(apiData.user.exp) ? apiData.user.exp % 100 : 0}
+            value={!isNaN(apiData?.user.exp) ? apiData.user.exp % 100 : 0}
             min='0'
             max='100'
           />
           <StampComplete>
-            모은 스탬프: {apiData.user.userTotalVisit}
+            모은 스탬프: {apiData?.user.userTotalVisit}
           </StampComplete>
-          <UserLike>받은 좋아요수: {apiData.user.userLikeCount}</UserLike>
-          <Exp>EXP.{apiData.user.exp % 100}/100</Exp>
+          <UserLike>받은 좋아요수: {apiData?.user.userLikeCount}</UserLike>
+          <Exp>EXP.{apiData?.user.exp % 100}/100</Exp>
         </MyProgress>
       </Mypage>
     );
@@ -438,7 +451,22 @@ const My = () => {
           <option>최신순</option>
           <option>가나다순</option>
         </Sort>
-        <StampBookBox></StampBookBox>
+        <StampBookBox>
+          {data?.stampbookList.map((book, i) => {
+            return (
+              <StampBook
+                stampbookId={book.stampbookId}
+                nickname={book.nickname}
+                description={book.description}
+                stampbookRegdate={book.stampbookRegdate}
+                isLike={book.isLike}
+                likeCount={book.likeCount}
+                title={book.title}
+                key={i}
+              />
+            );
+          })}
+        </StampBookBox>
       </Wrap>
     </div>
   );
