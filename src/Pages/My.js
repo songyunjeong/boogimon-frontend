@@ -7,6 +7,7 @@ import Header from '../Components/Header';
 import Button from '../Components/Button';
 import html2canvas from 'html2canvas';
 import boogi from '../boogi';
+import StampBook from '../Components/StampBook';
 
 const Modal = styled.div`
   position: fixed;
@@ -319,6 +320,8 @@ const My = () => {
   const [openCard, closeCard] = useState(false);
   const [apiData, setApiData] = useState({ user: [] });
 
+  const [data, setData] = useState();
+
   const onOpenCard = () => {
     closeCard(!openCard);
   };
@@ -376,6 +379,16 @@ const My = () => {
       )
       .then((response) => {
         setApiData(response.data);
+      });
+
+    boogi
+      .get(
+        `/boogimon/stampbook/stampbook.jsp?command=list&userId=${window.sessionStorage.getItem(
+          'userId'
+        )}`
+      )
+      .then((response) => {
+        setData(response.data);
       });
   }, []);
 
@@ -438,7 +451,22 @@ const My = () => {
           <option>최신순</option>
           <option>가나다순</option>
         </Sort>
-        <StampBookBox></StampBookBox>
+        <StampBookBox>
+          {data?.stampbookList.map((book, i) => {
+            return (
+              <StampBook
+                id={book.stampbookId}
+                nickname={book.nickname}
+                description={book.description}
+                stampbookRegdate={book.stampbookRegdate}
+                isLike={book.isLike}
+                likeCount={book.likeCount}
+                title={book.title}
+                key={i}
+              />
+            );
+          })}
+        </StampBookBox>
       </Wrap>
     </div>
   );
