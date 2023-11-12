@@ -39,7 +39,7 @@ const StampBoard = (props) => {
 
   return (
     <StampBoardBox onClick={goToStampDetail}>
-      {data?.stampbook.stampList.map((stamp, i) => {
+      {data?.stampbook?.stampList?.map((stamp, i) => {
         if (i < 9) {
           return (
             <Stamp

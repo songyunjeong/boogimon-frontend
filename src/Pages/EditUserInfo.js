@@ -46,7 +46,7 @@ const Form = styled.form.attrs({
   position: relative;
 `;
 
-const Input = styled.input`
+const Input = styled.input.attrs({ required: true })`
   width: 438px;
   height: 50px;
   border: 1px solid var(--gray2);
@@ -119,7 +119,7 @@ const ModelBox = styled.div`
 `;
 const Model = styled.div`
   width: 260px;
-  height: 10vh;
+  height: 8vh;
   border: 2px solid var(--gray2);
   border-radius: 25px;
   position: fixed;
@@ -195,17 +195,16 @@ const EditUserInfo = () => {
     e.preventDefault();
 
     axios
-      .post(
-        `http://localhost:8080/boogimon/user/user.jsp?command=changeImg`,
-        null,
-        {
-          params: {
-            userId: sessionId,
-            profileImg: image,
-          },
-        }
-      )
+      .post(`http://localhost:8080/boogimon/user/user.jsp`, null, {
+        params: {
+          command: 'changeImg',
+          userId: sessionId,
+          profileImg: 'profile_img',
+        },
+      })
       .then((res) => {
+        // if (e.target.files[0] && res.data.result === '00') {
+        // }
         if (e.target.files[0]) {
         } else {
           //업로드 취소할 시
@@ -241,23 +240,24 @@ const EditUserInfo = () => {
   };
 
   const navigate = useNavigate();
+
   const goHome = () => {
     axios
-      .post(
-        `http://localhost:8080/boogimon/user/user.jsp?command=delete=${sessionId}`,
-        null,
-        {
-          params: {
-            userId: sessionId,
-          },
-        }
-      )
+      .post(`http://localhost:8080/boogimon/user/user.jsp`, null, {
+        params: {
+          command: 'delete',
+          userId: sessionId,
+        },
+      })
       .then((res) => {
-        if (res.sessionId === res.Id) {
-          navigate('/', {});
+        if (res.data.result === '00') {
+          sessionStorage.setItem('userId', sessionId);
+          navigate('/');
+          setIsLogin(false);
         }
       });
   };
+
   const passwordCheckHandler = (password, confirm) => {
     //정규표현식
     const passwordRegex = /^(?=.*[a-zA-Z])(?=.*[0-9]).{4,20}$/;
@@ -345,6 +345,7 @@ const EditUserInfo = () => {
           <MyImg>
             <MyProfileImg
               src={image}
+              // src={apiData?.user.profileImg ? apiData?.user.profileImg : image}
               onClick={() => {
                 fileInput.current.click();
               }}
