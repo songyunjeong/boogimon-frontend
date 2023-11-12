@@ -398,7 +398,7 @@ const My = () => {
 
     boogi
       .get(
-        `/boogimon/stampbook/stampbook.jsp?command=list&userId=${window.sessionStorage.getItem(
+        `/boogimon/stampbook/stampbook.jsp?command=mylist&userId=${window.sessionStorage.getItem(
           'userId'
         )}`
       )
@@ -411,11 +411,11 @@ const My = () => {
     return (
       <Mypage>
         <MyImg>
-          <MyProfileImg src={apiData.user.profileImg} alt='프로필이미지' />
+          <MyProfileImg src={apiData?.user.profileImg} alt='프로필이미지' />
         </MyImg>
         <MyproFile>
           <NickName>
-            {apiData.user.nickname ? apiData.user.nickname : '-'}
+            {apiData?.user.nickname ? apiData.user.nickname : '-'}
           </NickName>
           <Link to='/edituserinfo'>
             <Button
@@ -434,23 +434,23 @@ const My = () => {
           </CompleteBtn>
         </MyproFile>
         <MyProgress>
-          <Rank>랭킹: {apiData.user.ranking}th</Rank>
+          <Rank>랭킹: {apiData?.user.ranking}th</Rank>
           <Level>
             LV.
-            {apiData.user.exp < 100
+            {apiData?.user.exp < 100
               ? 1
-              : Math.floor(apiData.user.exp / 100) + 1}
+              : Math.floor(apiData?.user.exp / 100) + 1}
           </Level>
           <Progress
-            value={!isNaN(apiData.user.exp) ? apiData.user.exp % 100 : 0}
+            value={!isNaN(apiData?.user.exp) ? apiData.user.exp % 100 : 0}
             min='0'
             max='100'
           />
           <StampComplete>
-            모은 스탬프: {apiData.user.userTotalVisit}
+            모은 스탬프: {apiData?.user.userTotalVisit}
           </StampComplete>
-          <UserLike>받은 좋아요수: {apiData.user.userLikeCount}</UserLike>
-          <Exp>EXP.{apiData.user.exp % 100}/100</Exp>
+          <UserLike>받은 좋아요수: {apiData?.user.userLikeCount}</UserLike>
+          <Exp>EXP.{apiData?.user.exp % 100}/100</Exp>
         </MyProgress>
       </Mypage>
     );
@@ -470,7 +470,7 @@ const My = () => {
           {data?.stampbookList.map((book, i) => {
             return (
               <StampBook
-                id={book.stampbookId}
+                stampbookId={book.stampbookId}
                 nickname={book.nickname}
                 description={book.description}
                 stampbookRegdate={book.stampbookRegdate}

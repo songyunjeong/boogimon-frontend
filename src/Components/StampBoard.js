@@ -21,42 +21,33 @@ const StampBoardBox = styled.div`
 `;
 
 const StampBoard = (props) => {
+  const navigate = useNavigate();
   const [data, setData] = useState();
+
+  const goToStampDetail = () => navigate(`/stampDetail/${props.stampbookId}`);
 
   useEffect(() => {
     boogi
-      .get(`/boogimon/stampbook/stampbook.jsp?stampbookId=${props.id}`)
+      .get(`/boogimon/stampbook/stampbook.jsp?stampbookId=${props.stampbookId}`)
       .then((response) => {
         setData(response.data);
       });
   }, []);
 
-  const navigate = useNavigate();
-
-  const goToStampDetail = () =>
-    navigate('/stampDetail', {
-      state: {
-        id: props.id,
-        nickname: props.nickname,
-        description: props.description,
-        stampbookRegdate: props.stampbookRegdate,
-        likeCount: props.likeCount,
-        title: props.title,
-      },
-    });
-
   return (
     <StampBoardBox onClick={goToStampDetail}>
-      {data?.stampbook?.stampList?.map((stamp, i) => {
-        return (
-          <Stamp
-            src={stamp.thumbnail}
-            alt={stamp.placeName + ' 이미지'}
-            title={stamp.placeName}
-            key={i}
-            $small
-          />
-        );
+      {data?.stampbook.stampList.map((stamp, i) => {
+        if (i < 9) {
+          return (
+            <Stamp
+              src={stamp.thumbnail}
+              alt={stamp.placeName + ' 이미지'}
+              title={stamp.placeName}
+              key={i}
+              $small
+            />
+          );
+        }
       })}
     </StampBoardBox>
   );

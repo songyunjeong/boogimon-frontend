@@ -1,4 +1,4 @@
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import logo from '../images/logo.png';
 import styled from 'styled-components';
 import { useContext } from 'react';
@@ -39,10 +39,12 @@ const StyledLink = styled(Link)`
 
 const Header = () => {
   const { isLogin, setIsLogin } = useContext(AppContext);
+  const navigate = useNavigate();
 
   const logout = () => {
     setIsLogin(false);
     sessionStorage.clear();
+    navigate('/');
   };
 
   return (
