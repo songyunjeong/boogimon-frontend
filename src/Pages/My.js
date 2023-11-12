@@ -319,7 +319,6 @@ const Exp = styled.p`
 const My = () => {
   const [openCard, closeCard] = useState(false);
   const [apiData, setApiData] = useState({ user: [] });
-
   const [data, setData] = useState();
 
   const onOpenCard = () => {
@@ -452,16 +451,14 @@ const My = () => {
           <option>가나다순</option>
         </Sort>
         <StampBookBox>
-          {data?.stampbookList.map((book, i) => {
+          {data?.stampbookList?.map((book, i) => {
             return (
               <StampBook
                 stampbookid={book.stampbookId}
-                nickname={book.nickname}
-                description={book.description}
-                stampbookRegdate={book.stampbookRegdate}
-                isLike={book.isLike}
-                likeCount={book.likeCount}
+                islike={book.isLike}
+                likecount={book.likeCount}
                 title={book.title}
+                stamplist={book.stampList}
                 key={i}
               />
             );

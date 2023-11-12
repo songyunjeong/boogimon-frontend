@@ -131,16 +131,25 @@ const StampDetail = () => {
     if (window.sessionStorage.getItem('userId')) {
       setPost(false);
 
+      boogi.post('/boogimon/stampbook/comment.jsp', null, {
+        params: {
+          stampbookid: state.stampbookid,
+          userId: window.sessionStorage.getItem('userId'),
+          comment: comment,
+        },
+      });
+
       boogi
-        .post('/boogimon/stampbook/comment.jsp', null, {
-          params: {
-            stampbookid: state.stampbookid,
-            userId: window.sessionStorage.getItem('userId'),
-            comment: comment,
-          },
+        .get(
+          `/boogimon/stampbook/comment.jsp?command=list&stampbookId=${state.stampbookid}`
+        )
+        .then((response) => {
+          setCommentDataList(response.data);
         })
-        .then(() => {
+
+        .then((response) => {
           console.log('댓글 작성 완료');
+          setCommentDataList(response.data);
           setPost(true);
           setComment('');
         });
@@ -157,16 +166,6 @@ const StampDetail = () => {
         console.log('스탬프북 디테일 데이터 가져오기 완료');
       });
   }, []);
-
-  useEffect(() => {
-    boogi
-      .get(
-        `/boogimon/stampbook/comment.jsp?command=list&stampbookId=${state.stampbookid}`
-      )
-      .then((response) => {
-        setCommentDataList(response.data);
-      });
-  }, [post]);
 
   return (
     <div>
