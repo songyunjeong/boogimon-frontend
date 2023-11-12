@@ -14,13 +14,13 @@ const StampBookTxt = styled.div`
   margin-top: 10px;
 `;
 
-const StampBookTitle = styled.button`
+const StampBookTitle = styled.div`
   border: none;
   background-color: transparent;
   font-size: var(--regular);
   margin-bottom: 10px;
   &:hover {
-    cursor: pointer;
+    cursor: default;
   }
 `;
 
@@ -45,14 +45,10 @@ const StampBookBtnBox = styled.div`
 `;
 
 const StampBook = (props) => {
-  const navigate = useNavigate();
   const { isLogin } = useContext(AppContext);
   const { pathname } = useLocation();
   const [likeBtn, setLikeBtn] = useState(props.isLike);
   const [likeCount, setLikeCount] = useState(props.likeCount);
-
-  const goToStampDetail = () =>
-    navigate(`/my/stampDetail/${props.stampbookId}`);
 
   const likeHandler = () => {
     if (isLogin) {
@@ -87,10 +83,10 @@ const StampBook = (props) => {
   }, [likeBtn]);
 
   return (
-    <div>
-      <StampBoard stampbookId={props.stampbookId} />
+    <div {...props}>
+      <StampBoard stampbookId={props.stampbookId} userpick={props.userpick} />
       <StampBookTxt>
-        <StampBookTitle onClick={goToStampDetail}>{props.title}</StampBookTitle>
+        <StampBookTitle>{props.title}</StampBookTitle>
         <StampBookLike>
           <StampBookLikeBtn onClick={likeHandler}>
             <img
