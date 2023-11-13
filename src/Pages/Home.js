@@ -36,6 +36,7 @@ const StampBookBox = styled.section`
 
 const Home = () => {
   const [stampbookData, setStampbookData] = useState();
+  const [sort, setSort] = useState();
 
   useEffect(() => {
     if (window.sessionStorage.getItem('userId')) {
@@ -68,10 +69,22 @@ const Home = () => {
       <Header />
 
       <Wrap>
-        <Sort>
-          <option>인기순</option>
-          <option>최신순</option>
-          <option>가나다순</option>
+        <Sort
+          onChange={(e) => {
+            if (e.target.value === 'new') {
+              console.log('sort() new');
+            } else if (e.target.value === 'popular') {
+              console.log('sort() popular');
+            } else if (e.target.value === 'abc') {
+              console.log('sort() abc');
+            }
+          }}
+        >
+          <option value='new' selected>
+            최신순
+          </option>
+          <option value='popular'>인기순</option>
+          <option value='abc'>가나다순</option>
         </Sort>
 
         <StampBookBox>

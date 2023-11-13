@@ -8,6 +8,7 @@ import Button from '../Components/Button';
 import html2canvas from 'html2canvas';
 import boogi from '../boogi';
 import StampBook from '../Components/StampBook';
+import logo from '../images/logo.png';
 
 const Modal = styled.div`
   position: fixed;
@@ -125,7 +126,7 @@ const CardName = styled.p`
   width: 130px;
   height: 25px;
   position: absolute;
-  left: 10%;
+  left: 26%;
   top: 2%;
   z-index: 2; /* 더 높은 z-index 값을 설정하여 앞으로 가져옵니다 */
 `;
@@ -134,18 +135,45 @@ const RandomImg = styled.div`
   width: 240px;
   height: 150px;
   position: absolute;
-  left: 10%;
-  top: 9%;
+  left: 8%;
+  top: 14%;
   z-index: 3; /* 더 높은 z-index 값을 설정하여 앞으로 가져옵니다 */
+  background-size: 100% 100%;
+  background-repeat: no-repeat; /* 이미지 반복 방지 */
+  background-position: center; /* 이미지를 가운데 정렬 */
+  border-radius: 50%;
 `;
 
 const CardContent = styled.p`
   width: 260px;
-  height: 180px;
+  height: 140px;
   position: absolute;
-  left: 7%;
-  top: 52%;
+  left: 5%;
+  top: 51%;
   z-index: 3; /* 더 높은 z-index 값을 설정하여 앞으로 가져옵니다 */
+`;
+
+const MainImg = styled.div`
+  width: 260px;
+  height: 80px;
+  position: absolute;
+  left: 6%;
+  top: 65%;
+  z-index: 3; /* 더 높은 z-index 값을 설정하여 앞으로 가져옵니다 */
+  background-image: url(${logo});
+  background-size: 90% 90%;
+  background-repeat: no-repeat; /* 이미지 반복 방지 */
+  background-position: center; /* 이미지를 가운데 정렬 */
+`;
+
+const RegDates = styled.div`
+  width: 240px;
+  height: 25px;
+  position: absolute;
+  left: 10%;
+  top: 90%;
+  z-index: 3; /* 더 높은 z-index 값을 설정하여 앞으로 가져옵니다 */
+  border-color: var(--yellow);
 `;
 
 const Mypage = styled.div`
@@ -354,9 +382,16 @@ const My = () => {
             닫기
           </CloseBtn>
           <BoogiCardContainer className='CardPopup'>
-            <CardName>광안리</CardName>
-            <RandomImg>랜덤이미지</RandomImg>
-            <CardContent>카드내용? 축하드립니다~</CardContent>
+            <CardName>BOOGIMON</CardName>
+            <RandomImg>
+              <MyProfileImg src={apiData.user.profileImg} alt='프로필 이미지' />
+            </RandomImg>
+            <CardContent>
+              {apiData.user.nickname ? apiData.user.nickname : '-'} 님<hr />
+              부기몬의 세계로 오신것을 환영합니다!
+            </CardContent>
+            <MainImg />
+            <RegDates>가입일: {apiData.user.regdate}</RegDates>
           </BoogiCardContainer>
           <Download>
             <DownloadBtn
