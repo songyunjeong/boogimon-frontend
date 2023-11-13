@@ -103,7 +103,7 @@ const Login = () => {
       return;
     }
 
-    const passwordRegex = /^[a-z\d!@*&-_]{4,20}$/;
+    const passwordRegex = /^(?=.*[a-zA-Z])(?=.*[0-9]).{4,20}$/;
 
     if (passwd === '') {
       setError('비밀번호를 입력해주세요.');
@@ -129,7 +129,7 @@ const Login = () => {
         navigate('/');
         setIsLogin(true);
       } else {
-        setError('로그인 실패');
+        setError('비밀번호를 잘못 입력했습니다.');
       }
     } catch (error) {
       setError('로그인 실패');
@@ -178,3 +178,4 @@ const Login = () => {
   );
 };
 export default Login;
+

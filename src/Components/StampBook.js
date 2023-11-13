@@ -49,6 +49,7 @@ const StampBook = (props) => {
   const { pathname } = useLocation();
   const [likeBtn, setLikeBtn] = useState(props.islike);
   const [likeCount, setLikeCount] = useState(props.likecount);
+  const [data, setData] = useState();
 
   const likeHandler = () => {
     if (window.sessionStorage.getItem('userId')) {
@@ -126,6 +127,16 @@ const StampBook = (props) => {
     if (props.islike === 'true') {
       setLikeBtn(true);
     }
+
+    boogi
+      .get(
+        `/boogimon/stampbook/stampbook.jsp?command=mylist&userId=${window.sessionStorage.getItem(
+          'stampbookId'
+        )}`
+      )
+      .then((response) => {
+        setData(response.data);
+      });
   }, [likeBtn]);
 
   return (
