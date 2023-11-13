@@ -1,6 +1,5 @@
 import styled, { css } from 'styled-components';
 import React, { useState } from 'react';
-import axios from 'axios';
 import boogi from '../boogi';
 
 const StampBox = styled.div`

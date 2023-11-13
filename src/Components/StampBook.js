@@ -143,8 +143,8 @@ const StampBook = (props) => {
     <div>
       <StampBoard
         stampbookid={props.stampbookid}
-        islike={props.islike}
-        likecount={props.likecount}
+        islike={likeBtn}
+        likecount={likeCount}
         title={props.title}
         stamplist={props.stamplist}
       />
