@@ -263,6 +263,38 @@ const EditUserInfo = () => {
       });
   };
 
+  // const [profileImg, setProfileImg] = useState('');
+
+  // const fileInputRef = useRef(null);
+
+  // const handleProfileClick = () => {
+  //   console.log(fileInputRef);
+  //   fileInputRef.current.click();
+  // };
+
+  // const handleImageChange = (e) => {
+  //   console.log(document.getElementById('profileImg'));
+  //   const selectedImage = e.target.files[0];
+  //   if (selectedImage) {
+  //     setProfileImg(selectedImage);
+
+  //     const formData = new FormData();
+  //     formData.append('userId', sessionId);
+  //     formData.append('profileImg', profileImg);
+
+  //     axios
+  //       .post('/boogimon/user/userUpload.jsp', formData, {
+  //         params: {
+  //           command: 'changeImg',
+  //         },
+  //       })
+  //       .then((response) => {
+  //         if (response.data.resultCode === '00') {
+  //           setProfileImg(response.data.newImageURL);
+  //         }
+  //       });
+  //   }
+  // };
   useEffect(() => {
     boogi
       .get(
@@ -339,12 +371,16 @@ const EditUserInfo = () => {
     event.preventDefault();
 
     axios
-      .post(`/boogimon/user/user.jsp?command=changePasswd`, null, {
-        params: {
-          userId: sessionId,
-          newPasswd: SHA256(password).toString(),
-        },
-      })
+      .post(
+        `http://localhost:8080/boogimon/user/user.jsp?command=changePasswd`,
+        null,
+        {
+          params: {
+            userId: sessionId,
+            newPasswd: SHA256(password).toString(),
+          },
+        }
+      )
       .then((res) => {
         if (res.password === res.confirm) {
           alert('비밀변호 변경이 완료되었습니다.');
@@ -382,9 +418,6 @@ const EditUserInfo = () => {
         <Form>
           <MyImg>
             <MyProfileImg
-              // src={URL.createObjectURL(profileImg)}
-              // src={profileImg}
-              // alt=''
               src={
                 apiData?.user.profileImg ? apiData?.user.profileImg : imgFile
               }
@@ -392,8 +425,7 @@ const EditUserInfo = () => {
               // src={imgFile ? imgFile : avatar}
               alt='프로필 이미지'
             />
-            {/* {profileImg && <img src={URL.createObjectURL(profileImg)} alt='' />} */}
-            {/* <label htmlFor='profileImg'>프로필 이미지 추가</label> */}
+
             <input
               type='file'
               style={{ display: 'none' }}
@@ -407,7 +439,11 @@ const EditUserInfo = () => {
           {/* <ImgBox>
             <ProfileImg onClick={handleProfileClick}>
               {profileImg && (
-                <img src={URL.createObjectURL(profileImg)} alt='' />
+                <img
+                  src={URL.createObjectURL(profileImg)}
+
+                  alt=''
+                />
               )}
               <br />
               <input

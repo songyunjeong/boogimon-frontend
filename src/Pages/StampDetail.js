@@ -107,7 +107,6 @@ const StampDetail = () => {
   const [likeBtn, setLikeBtn] = useState(state.islike);
   const [likeCount, setLikeCount] = useState(state.likecount);
   const [comment, setComment] = useState('');
-  const [commentDataList, setCommentDataList] = useState([]);
   const [post, setPost] = useState(false);
   const [isValid, setIsValid] = useState(false);
 
@@ -186,24 +185,8 @@ const StampDetail = () => {
     }
   };
 
-  const getComment = () => {
-    boogi
-      .get(
-        `/boogimon/stampbook/comment.jsp?command=list&stampbookId=${state.stampbookid}`
-      )
-      .then((response) => {
-        setCommentDataList(response.data);
-        console.log('댓글 가져오기 완료');
-      });
-  };
-
   useEffect(() => {
     getDetailData();
-    getComment();
-  }, []);
-
-  useEffect(() => {
-    getComment();
   }, [post]);
 
   return (
@@ -273,7 +256,7 @@ const StampDetail = () => {
           </InputBox>
 
           <CommentListBox>
-            {commentDataList?.commentList?.map((talk, i) => {
+            {data?.stampbook?.commentList?.map((talk, i) => {
               return (
                 <CommentBox
                   profileImg={talk.profileImg}

@@ -8,18 +8,12 @@ import MakeStampBook from './Pages/MakeStampBook';
 import BoogiBook from './Pages/BoogiBook';
 import Home from './Pages/Home';
 import My from './Pages/My';
-import { createContext, useEffect, useState } from 'react';
+import { createContext, useState } from 'react';
 
 export const AppContext = createContext();
 
 function App() {
   const [isLogin, setIsLogin] = useState(false);
-
-  useEffect(() => {
-    if (window.sessionStorage.getItem('userId')) {
-      setIsLogin(true);
-    }
-  }, []);
 
   return (
     <div className='App'>
