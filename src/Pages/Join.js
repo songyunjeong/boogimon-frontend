@@ -165,11 +165,6 @@ const Join = () => {
       //   console.log(response.data.resultCode);
       // }
     })
-
-    .catch((error) => {
-      setError('사진 업로드 실패'); 
-      console.log('Image Upload Error:', error);
-      });
     }
   };
 
