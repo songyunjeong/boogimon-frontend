@@ -1,5 +1,4 @@
 import React, { useContext, useEffect, useState } from 'react';
-import { useLocation, useNavigate } from 'react-router-dom';
 import likeFullImg from '../images/like_full.png';
 import likeImg from '../images/like.png';
 import Button from './Button';
@@ -46,30 +45,31 @@ const StampBookBtnBox = styled.div`
 
 const StampBook = (props) => {
   const { isLogin } = useContext(AppContext);
-  const { pathname } = useLocation();
-  const [likeBtn, setLikeBtn] = useState(props.isLike);
-  const [likeCount, setLikeCount] = useState(props.likeCount);
+  const [likeBtn, setLikeBtn] = useState(props.islike);
+  const [likeCount, setLikeCount] = useState(props.likecount);
 
   const likeHandler = () => {
-    if (isLogin) {
+    if (window.sessionStorage.getItem('userId')) {
       setLikeBtn(!likeBtn);
 
       if (likeBtn) {
         boogi.get(`/boogimon/stampbook/stampbook.jsp?command=unlike`, {
           params: {
-            stampbookId: props.stampbookId,
+            stampbookId: props.stampbookid,
             userId: window.sessionStorage.getItem('userId'),
           },
         });
-        return setLikeCount(likeCount - 1);
+        setLikeCount(likeCount - 1);
+        console.log('좋아요 -1');
       } else {
         boogi.get(`/boogimon/stampbook/stampbook.jsp?command=like`, {
           params: {
-            stampbookId: props.stampbookId,
+            stampbookId: props.stampbookid,
             userId: window.sessionStorage.getItem('userId'),
           },
         });
-        return setLikeCount(likeCount + 1);
+        setLikeCount(likeCount + 1);
+        console.log('좋아요 +1');
       }
     } else {
       console.log('좋아요는 로그인 후 가능합니다.');
@@ -77,14 +77,20 @@ const StampBook = (props) => {
   };
 
   useEffect(() => {
-    if (props.isLike === true) {
+    if (props.islike === 'true') {
       setLikeBtn(true);
     }
   }, [likeBtn]);
 
   return (
-    <div {...props}>
-      <StampBoard stampbookId={props.stampbookId} userpick={props.userpick} />
+    <div>
+      <StampBoard
+        stampbookid={props.stampbookid}
+        islike={props.islike}
+        likecount={props.likecount}
+        title={props.title}
+        stamplist={props.stamplist}
+      />
       <StampBookTxt>
         <StampBookTitle>{props.title}</StampBookTitle>
         <StampBookLike>
@@ -97,11 +103,8 @@ const StampBook = (props) => {
           <div>{likeCount}</div>
         </StampBookLike>
         <StampBookBtnBox>
-          {pathname === '/my' ? (
-            <Button children={'삭제'} />
-          ) : (
-            <Button children={'담기'} />
-          )}
+          <Button children={'삭제'} $marginright />
+          <Button children={'담기'} />
         </StampBookBtnBox>
       </StampBookTxt>
     </div>
