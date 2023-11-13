@@ -1,7 +1,6 @@
-import { useRef } from 'react';
 import Button from '../Components/Button';
 import Header from '../Components/Header';
-import React, { useState } from 'react';
+import React, { useState, useRef } from 'react';
 import Map from '../Components/Map';
 import styled from 'styled-components';
 import '../globalStyle';
@@ -215,21 +214,21 @@ const ThumnailBOX = styled.div`
 `;
 
 const SearchStampName = styled.p`
+  width: 150px;
+  font-size: var(--small);
   text-align: center;
-  white-space: normal; /* 넘치는 텍스트를 한 줄에 표시 */
+  white-space: nowrap; /* 넘치는 텍스트를 한 줄에 표시 */
   overflow: hidden; /* 넘치는 텍스트를 숨김 */
   text-overflow: ellipsis; /* 넘치는 텍스트를 ...으로 표시 */
+  margin-bottom: 5px;
 `;
 
 const MakeStampBook = () => {
   const [MapPlace, setMapPlace] = useState(false);
   const [apiData, setApiData] = useState([]);
-
   const [selectedItem, setSelectedItem] = useState(null);
-
   const [thumbnail, setThumbnail] = useState(null);
   const [placeName, setplaceName] = useState(null);
-
   const [stampList, setStampList] = useState([]); // 새로운 상태 추가
 
   const handleItemClick = (index) => {
@@ -337,6 +336,7 @@ const MakeStampBook = () => {
                       style={{
                         border:
                           selectedItem === index && '2px solid var(--yellow)',
+                        cursor: 'pointer',
                       }}
                     >
                       <ItemDetail>
@@ -383,10 +383,8 @@ const MakeStampBook = () => {
 
   const divRef = useRef();
   const [screenShot, setScreenShot] = useState(false);
-
   const [stampBookTitle, setStampBookTitle] = useState(''); // 타이틀 상태와 업데이트 함수
   const [stampDetail, setStampDetail] = useState(''); // 상세설명 상태와 업데이트 함수
-
   const MAX_LENGTH_BEFORE_NEWLINE = 9;
 
   const onTitleRegister = () => {
@@ -503,15 +501,6 @@ const MakeStampBook = () => {
             value={stampBookTitle}
             onChange={(e) => setStampBookTitle(e.target.value)}
           />
-          <Button
-            onClick={onOpenMap}
-            style={{
-              position: 'relative',
-              left: '-5%',
-            }}
-          >
-            장소등록
-          </Button>
           <TitleButtonBox>
             <Button children={'취소'} $marginright onClick={onCancel} />
             <Button children={'등록'} onClick={onTitleRegister} />
@@ -542,18 +531,24 @@ const MakeStampBook = () => {
                   <NewStampBtnBox>
                     <SearchStampName>
                       {stamp.placeName.length > MAX_LENGTH_BEFORE_NEWLINE
-                        ? stamp.placeName.split(',').map((part, index) => (
-                            <React.Fragment key={index}>
-                              {index > 0 && <br />}
-                              {part}
-                            </React.Fragment>
-                          ))
+                        ? stamp.placeName
+                            .split(',')
+                            .map((part, index) => (
+                              <React.Fragment key={index}>
+                                {part}
+                              </React.Fragment>
+                            ))
                         : stamp.placeName}
                     </SearchStampName>
                     <Button children={'삭제'} onClick={() => onDelete(index)} />
                   </NewStampBtnBox>
                 </NewStamp>
               ))}
+            <NewStamp>
+              <NewStampImgBox onClick={onOpenMap}>
+                <button>+</button>
+              </NewStampImgBox>
+            </NewStamp>
           </StampBoard>
 
           <MapBox>
