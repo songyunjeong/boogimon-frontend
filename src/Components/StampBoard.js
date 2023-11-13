@@ -25,6 +25,7 @@ const StampBoard = (props) => {
     navigate(`/stampDetail`, {
       state: {
         stampbookid: props.stampbookid,
+        ispick: props.ispick,
         islike: props.islike,
         likecount: props.likecount,
         title: props.title,

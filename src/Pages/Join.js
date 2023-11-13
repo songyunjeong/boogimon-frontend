@@ -2,21 +2,25 @@ import React, { useState, useRef } from 'react';
 import Header from '../Components/Header';
 import Button from '../Components/Button';
 import styled from 'styled-components';
-// import avatar from '../images/avatar.png';
-import axios from 'axios';
-import boogi from '../boogi';
+import avatar from '../images/avatar.png';
 import { SHA256 } from 'crypto-js';
 import { useNavigate } from 'react-router-dom';
+import boogi from '../boogi';
 
 const Wrap = styled.div`
+  display: flex;
+  justify-content: center;
+  align-items: center;
   width: 1280px;
+  height: 100vh;
   margin: 0 auto;
 `;
 
 const Title = styled.div`
   font-size: var(--big);
   font-weight: bold;
-  margin: 50px 0 30px;
+  margin-top: -120px;
+  margin-bottom: 50px;
   text-align: center;
   color: var(--black);
 `;
@@ -51,8 +55,6 @@ const ButtonContainer = styled.div`
 const SignupBtn = styled.div`
   display: block;
   background-color: var(--black);
-  border: 2px solid var(--black);
-  border-radius: 4px;
   padding: 20px 100px;
   font-size: var(--regular);
   font-weight: 700;
@@ -69,8 +71,7 @@ const SignupBtn = styled.div`
 
   &:hover {
     cursor: pointer;
-    background-color: var(--yellow);
-    border: 2px solid var(--light-blue);
+    background-color: var(--magenta);
     color: var(--black);
   }
 `;
@@ -83,7 +84,7 @@ const Input = styled.input`
   text-align: start;
   padding: 0 20px;
   box-sizing: border-box;
-  margin: 0 auto 30px;
+  margin: 0 auto 20px;
 
   &:focus {
     outline: none;
@@ -101,10 +102,10 @@ const ImgBox = styled.div`
 `;
 
 const Label = styled.div`
-  color: var(--gray4);
   display: flex;
   align-items: center;
   justify-content: center;
+  margin-top: 20px;
 `;
 
 const Error = styled.div`
@@ -117,9 +118,7 @@ const Join = () => {
   const [userId, setUserId] = useState('');
   const [passwd, setPasswd] = useState('');
   const [passwdConfirm, setPasswdConfirm] = useState('');
-  const [nickname, setNickname] = useState(
-    sessionStorage.getItem('nickname') || ''
-  );
+  const [nickname, setNickname] = useState();
   const [profileImg, setProfileImg] = useState('');
   const [error, setError] = useState('');
 
@@ -130,13 +129,11 @@ const Join = () => {
       .get('/boogimon/user/user.jsp', {
         params: {
           command: 'randomNickname',
-          nickname: nickname,
         },
       })
       .then((response) => {
         if (response.data.resultCode === '00') {
           const newNickname = response.data.user.nickname;
-          sessionStorage.setItem('nickname', newNickname);
           setNickname(newNickname);
         } else {
           setError('랜덤 닉네임 생성 실패');
@@ -235,82 +232,86 @@ const Join = () => {
       <Header />
 
       <Wrap>
-        <Title>회원가입</Title>
+        <div>
+          <Title>회원가입</Title>
 
-        <SignupForm
-          id='signup-form'
-          className='signup-form'
-          encType='multipart/form-data'
-          method='POST'
-        >
-          <Input
-            type='email'
-            name='user_id'
-            id='user_id'
-            placeholder='가입한 이메일'
-            required
-            value={userId}
-            onChange={(e) => setUserId(e.target.value)}
-          />
-          <Input
-            type='password'
-            name='passwd'
-            id='passwd'
-            placeholder='비밀번호'
-            required
-            value={passwd}
-            onChange={(e) => setPasswd(e.target.value)}
-          />
-          <Input
-            type='password'
-            name='passwdConfirm'
-            id='passwdConfirm'
-            placeholder='비밀번호 확인'
-            required
-            value={passwdConfirm}
-            onChange={(e) => setPasswdConfirm(e.target.value)}
-          />
-          <Input
-            type='text'
-            name='nickname'
-            id='nickname'
-            placeholder='닉네임'
-            required
-            value={sessionStorage.nickname || nickname}
-            onChange={(e) => setNickname(e.target.value)}
-          />
-          <Button
-            children={'랜덤 버튼'}
-            onClick={randomNickname}
-            style={{ position: 'absolute', top: '245px', right: '-150px' }}
-          />
+          <SignupForm
+            id='signup-form'
+            className='signup-form'
+            encType='multipart/form-data'
+            method='POST'
+          >
+            <Input
+              type='email'
+              name='user_id'
+              id='user_id'
+              placeholder='가입한 이메일'
+              required
+              value={userId}
+              onChange={(e) => setUserId(e.target.value)}
+            />
+            <Input
+              type='password'
+              name='passwd'
+              id='passwd'
+              placeholder='비밀번호'
+              required
+              value={passwd}
+              onChange={(e) => setPasswd(e.target.value)}
+            />
+            <Input
+              type='password'
+              name='passwdConfirm'
+              id='passwdConfirm'
+              placeholder='비밀번호 확인'
+              required
+              value={passwdConfirm}
+              onChange={(e) => setPasswdConfirm(e.target.value)}
+            />
+            <Input
+              type='text'
+              name='nickname'
+              id='nickname'
+              placeholder='닉네임'
+              required
+              value={nickname}
+              onChange={(e) => setNickname(e.target.value)}
+            />
+            <Button
+              children={'랜덤 버튼'}
+              onClick={randomNickname}
+              style={{ position: 'absolute', top: '218px', right: '-140px' }}
+            />
 
-          <Label htmlFor='profileImg'>프로필 이미지</Label>
-          <ImgBox>
-            <ProfileImg onClick={handleProfileClick}>
-              {profileImg && (
-                <img src={URL.createObjectURL(profileImg)} alt='' />
-              )}
-              <br />
-              <input
-                type='file'
-                name='profileImg'
-                id='profileImg'
-                accept='image/*'
-                onChange={handleImageChange}
-                ref={fileInputRef}
-                style={{ display: 'none' }}
-              />
-            </ProfileImg>
-          </ImgBox>
-          <Error>{error}</Error>
+            <Label htmlFor='profileImg'>프로필 이미지</Label>
+            <ImgBox>
+              <ProfileImg onClick={handleProfileClick}>
+                {profileImg ? (
+                  <img src={URL.createObjectURL(profileImg)} alt='' />
+                ) : (
+                  <img src={avatar} alt='' />
+                )}
+                <br />
+                <input
+                  type='file'
+                  name='profileImg'
+                  id='profileImg'
+                  accept='image/*'
+                  onChange={handleImageChange}
+                  ref={fileInputRef}
+                  style={{ display: 'none' }}
+                />
+              </ProfileImg>
+            </ImgBox>
+            <Error>{error}</Error>
 
-          <ButtonContainer>
-            <SignupBtn type='submit' id='signup' onClick={handleSubmit}>
-              <p>회원가입 완료</p>
-            </SignupBtn>
-          </ButtonContainer>
-        </SignupForm>
+            <ButtonContainer>
+              <SignupBtn type='submit' id='signup' onClick={handleSubmit}>
+                <p>회원가입 완료</p>
+              </SignupBtn>
+            </ButtonContainer>
+          </SignupForm>
+        </div>
       </Wrap>
     </>
   );

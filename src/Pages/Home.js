@@ -36,7 +36,7 @@ const StampBookBox = styled.section`
 
 const Home = () => {
   const [stampbookData, setStampbookData] = useState();
-  const [sort, setSort] = useState();
+  const [sort, setSort] = useState('new'); // 기본값을 최신순으로 설정
 
   useEffect(() => {
     if (window.sessionStorage.getItem('userId')) {
@@ -63,43 +63,57 @@ const Home = () => {
         });
     }
   }, []);
+  const sortStampBooks = (books, sortBy) => {
+    const sortedBooks = [...books]; // 복사본을 만들어 정렬
+    if (sortBy === 'new') {
+      // 최신순
+      sortedBooks.sort(
+        (a, b) => new Date(b.stampbookRegdate) - new Date(a.stampbookRegdate)
+      );
+    } else if (sortBy === 'popular') {
+      // 인기순 (예: likeCount를 기준으로 정렬)
+      sortedBooks.sort((a, b) => b.likeCount - a.likeCount);
+    } else if (sortBy === 'abc') {
+      // 가나다순 (예: title을 기준으로 정렬)
+      sortedBooks.sort((a, b) => a.title.localeCompare(b.title));
+    }
+    return sortedBooks;
+  };
+
+  // 정렬 변경 핸들러
+  const handleSortChange = (e) => {
+    const selectedSort = e.target.value;
+    setSort(selectedSort);
+  };
+
+  const sortedStampBooks = sortStampBooks(
+    stampbookData?.stampbookList || [],
+    sort
+  );
 
   return (
     <div>
       <Header />
 
       <Wrap>
-        <Sort
-          onChange={(e) => {
-            if (e.target.value === 'new') {
-              console.log('sort() new');
-            } else if (e.target.value === 'popular') {
-              console.log('sort() popular');
-            } else if (e.target.value === 'abc') {
-              console.log('sort() abc');
-            }
-          }}
-        >
-          <option value='new' selected>
-            최신순
-          </option>
+        <Sort onChange={handleSortChange} value={sort}>
+          <option value='new'>최신순</option>
           <option value='popular'>인기순</option>
           <option value='abc'>가나다순</option>
         </Sort>
 
         <StampBookBox>
-          {stampbookData?.stampbookList?.map((book, i) => {
-            return (
-              <StampBook
-                stampbookid={book.stampbookId}
-                islike={book.isLike}
-                likecount={book.likeCount}
-                title={book.title}
-                stamplist={book.stampList}
-                key={i}
-              />
-            );
-          })}
+          {sortedStampBooks.map((book, i) => (
+            <StampBook
+              stampbookid={book.stampbookId}
+              ispick={book.isPick}
+              islike={book.isLike}
+              likecount={book.likeCount}
+              title={book.title}
+              stamplist={book.stampList}
+              key={i}
+            />
+          ))}
         </StampBookBox>
       </Wrap>
     </div>
