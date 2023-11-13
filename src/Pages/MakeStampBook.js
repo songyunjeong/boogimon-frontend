@@ -7,6 +7,7 @@ import '../globalStyle';
 import html2canvas from 'html2canvas';
 import { saveAs } from 'file-saver';
 import boogi from '../boogi';
+import { useNavigate } from 'react-router-dom';
 
 const Wrap = styled.div`
   width: 1280px;
@@ -386,6 +387,7 @@ const MakeStampBook = () => {
   const [stampBookTitle, setStampBookTitle] = useState(''); // 타이틀 상태와 업데이트 함수
   const [stampDetail, setStampDetail] = useState(''); // 상세설명 상태와 업데이트 함수
   const MAX_LENGTH_BEFORE_NEWLINE = 9;
+  const navigate = useNavigate();
 
   const onTitleRegister = () => {
     if (stampList.length < 9) {
@@ -435,6 +437,9 @@ const MakeStampBook = () => {
           setStampDetail('');
           setThumbnail(null);
           setplaceName(null);
+
+          // 등록하면 마이 페이지로 이동
+          navigate('/my');
         })
         .catch((error) => {
           // 등록 실패 시의 처리
