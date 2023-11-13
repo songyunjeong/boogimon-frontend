@@ -139,7 +139,7 @@ const Login = () => {
         navigate('/');
         setIsLogin(true);
       } else {
-        setError('비밀번호를 잘못 입력했습니다.');
+        setError('로그인에 실패했습니다.');
       }
     } catch (error) {
       setError('로그인 실패');
