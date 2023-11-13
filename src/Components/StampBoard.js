@@ -25,6 +25,7 @@ const StampBoard = (props) => {
     navigate(`/stampDetail`, {
       state: {
         stampbookid: props.stampbookid,
+        isstamped: props.isstamped,
         ispick: props.ispick,
         islike: props.islike,
         likecount: props.likecount,
@@ -42,6 +43,7 @@ const StampBoard = (props) => {
               src={stamp.thumbnail}
               alt={stamp.name + ' 이미지'}
               title={stamp.name}
+              isstamped={stamp.isStamped}
               key={i}
               $small
             />

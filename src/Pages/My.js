@@ -405,30 +405,6 @@ const My = () => {
     );
   };
 
-  useEffect(() => {
-    // user 정보
-    boogi
-      .get(
-        `/boogimon/user/user.jsp?userId=${window.sessionStorage?.getItem(
-          'userId'
-        )}`
-      )
-      .then((response) => {
-        setApiData(response.data);
-      });
-
-    // user가 pick한 스탬프북 리스트
-    boogi
-      .get(
-        `/boogimon/stampbook/stampbook.jsp?command=mylist&userId=${window.sessionStorage.getItem(
-          'userId'
-        )}`
-      )
-      .then((response) => {
-        setData(response.data?.stampbookList || []);
-      });
-  }, []);
-
   const View = () => {
     return (
       <Mypage>
@@ -488,6 +464,7 @@ const My = () => {
       </Mypage>
     );
   };
+
   const handleSortChange = (e) => {
     const selectedSort = e.target.value;
     setSort(selectedSort);
@@ -507,6 +484,30 @@ const My = () => {
     return sortedBooks;
   };
 
+  useEffect(() => {
+    // user 정보
+    boogi
+      .get(
+        `/boogimon/user/user.jsp?userId=${window.sessionStorage.getItem(
+          'userId'
+        )}`
+      )
+      .then((response) => {
+        setApiData(response.data);
+      });
+
+    // user가 pick한 스탬프북 리스트
+    boogi
+      .get(
+        `/boogimon/stampbook/stampbook.jsp?command=mylist&userId=${window.sessionStorage.getItem(
+          'userId'
+        )}`
+      )
+      .then((response) => {
+        setData(response.data?.stampbookList || []);
+      });
+  }, []);
+
   return (
     <div>
       <Header />
@@ -522,6 +523,7 @@ const My = () => {
             return (
               <StampBook
                 stampbookid={book.stampbookId}
+                ispick={book.isPick}
                 islike={book.isLike}
                 likecount={book.likeCount}
                 title={book.title}
