@@ -90,22 +90,19 @@ const Input = styled.input`
 
 const ImgBox = styled.div`
   display: flex;
-  justify-content: left;
+  justify-content: center;
   align-items: center;
 
   > img {
     justify-content: left;
-  }
-
-  > button {
-    box-sizing: border-box;
-    height: 50px;
-  }  
+  } 
 `;
 
 const Label = styled.div`
   color: var(--gray4);
-  padding: 10px 0  0 35px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 `
 
 const Error = styled.div`
@@ -270,7 +267,7 @@ const Join = () => {
                 style={{ display: 'none' }} 
               />
             </ProfileImg>
-            <Button children={'업로드 버튼'} id="upload" onClick={handleImageChange}/>
+            
           </ImgBox>
           <Error>{error}</Error>
 
