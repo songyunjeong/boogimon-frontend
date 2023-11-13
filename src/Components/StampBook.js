@@ -48,39 +48,115 @@ const StampBook = (props) => {
   const [likeBtn, setLikeBtn] = useState(props.islike);
   const [likeCount, setLikeCount] = useState(props.likecount);
 
+  const [apiData, setApiData] = useState({ user: [] });
+  const [data, setData] = useState();
+
   const likeHandler = () => {
-    if (isLogin) {
+    if (window.sessionStorage.getItem('userId')) {
       setLikeBtn(!likeBtn);
       if (likeBtn) {
         boogi.get(`/boogimon/stampbook/stampbook.jsp?command=unlike`, {
           params: {
-            stampbookid: props.stampbookid,
+            stampbookId: props.stampbookid,
             userId: window.sessionStorage.getItem('userId'),
           },
         });
-        return setLikeCount(likeCount - 1);
+        setLikeCount(likeCount - 1);
+        console.log('좋아요 -1');
       } else {
         boogi.get(`/boogimon/stampbook/stampbook.jsp?command=like`, {
           params: {
-            stampbookid: props.stampbookid,
+            stampbookId: props.stampbookid,
             userId: window.sessionStorage.getItem('userId'),
           },
         });
-        return setLikeCount(likeCount + 1);
+        setLikeCount(likeCount + 1);
+        console.log('좋아요 +1');
       }
     } else {
       console.log('좋아요는 로그인 후 가능합니다.');
     }
   };
+
+  const deleteHandler = () => {
+    if (window.sessionStorage.getItem('userId')) {
+      // 삭제 요청 보내기
+      boogi
+        .get(`/boogimon/stampbook/stampbook.jsp?command=unpick`, {
+          params: {
+            stampbookId: props.stampbookid,
+            userId: window.sessionStorage.getItem('userId'),
+          },
+        })
+        .then((response) => {
+          console.log('삭제 요청 성공');
+          // TODO: 삭제 후에 추가적인 작업을 수행할 수 있습니다.
+          window.location.reload();
+        })
+        .catch((error) => {
+          console.error('삭제 요청 실패:', error);
+        });
+    } else {
+      console.log('삭제는 로그인 후 가능합니다.');
+    }
+  };
+
+  const addToMyListHandler = () => {
+    if (window.sessionStorage.getItem('userId')) {
+      // 담기 요청 보내기
+      boogi
+        .post(`/boogimon/stampbook/stampbook.jsp?command=pick`, null, {
+          params: {
+            stampbookId: props.stampbookid,
+            userId: window.sessionStorage.getItem('userId'),
+          },
+        })
+        .then((response) => {
+          console.log('담기 요청 성공');
+          // TODO: 담기 후에 추가적인 작업을 수행할 수 있습니다.
+        })
+        .catch((error) => {
+          console.error('담기 요청 실패:', error);
+        });
+    } else {
+      console.log('담기는 로그인 후 가능합니다.');
+    }
+  };
   useEffect(() => {
-    if (props.isLike === true) {
+    if (props.islike === 'true') {
       setLikeBtn(true);
     }
+
+    boogi
+      .get(
+        `/boogimon/user/user.jsp?userId=${window.sessionStorage?.getItem(
+          'userId'
+        )}`
+      )
+      .then((response) => {
+        setApiData(response.data);
+      });
+
+    boogi
+      .get(
+        `/boogimon/stampbook/stampbook.jsp?command=mylist&userId=${window.sessionStorage.getItem(
+          'stampbookId'
+        )}`
+      )
+      .then((response) => {
+        setData(response.data);
+      });
   }, [likeBtn]);
 
   return (
     <div>
-      <StampBoard stampbookid={props.stampbookid} stamplist={props.stamplist} />
+      <StampBoard
+        stampbookid={props.stampbookid}
+        islike={props.islike}
+        likecount={props.likecount}
+        title={props.title}
+        stamplist={props.stamplist}
+      />
       <StampBookTxt>
         <StampBookTitle>{props.title}</StampBookTitle>
         <StampBookLike>
@@ -90,8 +166,8 @@ const StampBook = (props) => {
           <div>{likeCount}</div>
         </StampBookLike>
         <StampBookBtnBox>
-          <Button children={'삭제'} $marginright />
-          <Button children={'담기'} />
+          <Button children={'삭제'} $marginright onClick={deleteHandler} />
+          <Button children={'담기'} onClick={addToMyListHandler} />
         </StampBookBtnBox>
       </StampBookTxt>
     </div>

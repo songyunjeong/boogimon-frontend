@@ -417,7 +417,7 @@ const My = () => {
 
     boogi
       .get(
-        `/boogimon/stampbook/stampbook.jsp?command=list&userId=${window.sessionStorage.getItem(
+        `/boogimon/stampbook/stampbook.jsp?command=mylist&userId=${window.sessionStorage.getItem(
           'userId'
         )}`
       )
@@ -440,7 +440,8 @@ const My = () => {
             <Button
               style={{
                 position: 'absolute',
-                top: '70%',
+                top: '120px',
+                left: '58px',
                 textAlign: 'center',
               }}
             >
@@ -448,14 +449,17 @@ const My = () => {
             </Button>
           </Link>
           <CompleteBtn>
-            <OpenBtn onClick={onOpenCard}>부기몬 카드</OpenBtn>
+            {/* <OpenBtn onClick={onOpenCard}>부기몬 카드</OpenBtn> */}
             {openCard && <Popup />}
           </CompleteBtn>
         </MyproFile>
         <MyProgress>
-          <Rank>랭킹: {apiData?.user.ranking}th</Rank>
+          <Rank>
+            Rank <b style={{ marginLeft: '10px' }}>{apiData?.user.ranking}</b>
+            <small> th</small>
+          </Rank>
           <Level>
-            LV.
+            <span style={{ marginRight: '10px' }}>LV.</span>
             {apiData?.user.exp < 100
               ? 1
               : Math.floor(apiData?.user.exp / 100) + 1}
@@ -466,10 +470,17 @@ const My = () => {
             max='100'
           />
           <StampComplete>
-            모은 스탬프: {apiData?.user.userTotalVisit}
+            <span style={{ marginRight: '10px' }}>모은 스탬프</span>{' '}
+            {apiData?.user.userTotalVisit} 개
           </StampComplete>
-          <UserLike>받은 좋아요수: {apiData?.user.userLikeCount}</UserLike>
-          <Exp>EXP.{apiData?.user.exp % 100}/100</Exp>
+          <UserLike>
+            <span style={{ marginRight: '10px' }}>받은 좋아요</span>{' '}
+            {apiData?.user.userLikeCount} 개
+          </UserLike>
+          <Exp>
+            <span style={{ marginRight: '10px' }}>EXP.</span>
+            {apiData?.user.exp % 100}/100
+          </Exp>
         </MyProgress>
       </Mypage>
     );
