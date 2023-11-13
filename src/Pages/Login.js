@@ -100,6 +100,13 @@ const Login = () => {
   const navigate = useNavigate();
   const { setIsLogin } = useContext(AppContext);
 
+  const handleKeyDown = (e) => {
+    // Enter 키를 눌렀을 때 로그인 함수 호출
+    if (e.key === 'Enter') {
+      handleLogin();
+    }
+  };
+
   const handleLogin = async () => {
     if (userId.length < 1 || userId.length > 30) {
       setError('아이디는 30자 이내여야 합니다.');
@@ -164,6 +171,7 @@ const Login = () => {
               required
               value={passwd}
               onChange={(e) => setPasswd(e.target.value)}
+              onKeyDown={handleKeyDown}
             />
             <Error>{error}</Error>
 
