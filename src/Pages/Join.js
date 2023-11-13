@@ -118,9 +118,7 @@ const Join = () => {
   const [userId, setUserId] = useState('');
   const [passwd, setPasswd] = useState('');
   const [passwdConfirm, setPasswdConfirm] = useState('');
-  const [nickname, setNickname] = useState(
-    sessionStorage.getItem('nickname') || ''
-  );
+  const [nickname, setNickname] = useState();
   const [profileImg, setProfileImg] = useState('');
   const [error, setError] = useState('');
 
@@ -131,13 +129,12 @@ const Join = () => {
       .get('/boogimon/user/user.jsp', {
         params: {
           command: 'randomNickname',
-          nickname: nickname,
         },
       })
       .then((response) => {
         if (response.data.resultCode === '00') {
           const newNickname = response.data.user.nickname;
-          sessionStorage.setItem('nickname', newNickname);
+
           setNickname(newNickname);
         } else {
           setError('랜덤 닉네임 생성 실패');
@@ -278,7 +275,7 @@ const Join = () => {
               id='nickname'
               placeholder='닉네임'
               required
-              value={sessionStorage.nickname || nickname}
+              value={nickname}
               onChange={(e) => setNickname(e.target.value)}
             />
             <Button
