@@ -20,7 +20,7 @@ function App() {
   const getIsStamped = (stampbookid) => {
     boogi
       .get(
-        `http://localhost:8080/boogimon/stampbook/stamp.jsp?command=list&stampbookId=${stampbookid}&userId=${window.sessionStorage.getItem(
+        `/boogimon/stampbook/stamp.jsp?command=list&stampbookId=${stampbookid}&userId=${window.sessionStorage.getItem(
           'userId'
         )}`
       )
