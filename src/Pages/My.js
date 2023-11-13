@@ -347,7 +347,8 @@ const Exp = styled.p`
 const My = () => {
   const [openCard, closeCard] = useState(false);
   const [apiData, setApiData] = useState({ user: [] });
-  const [data, setData] = useState();
+  const [data, setData] = useState([]);
+  const [sort, setSort] = useState('new'); // 기본값을 최신순으로 설정
 
   const onOpenCard = () => {
     closeCard(!openCard);
@@ -424,7 +425,7 @@ const My = () => {
         )}`
       )
       .then((response) => {
-        setData(response.data);
+        setData(response.data?.stampbookList || []);
       });
   }, []);
 
@@ -487,19 +488,37 @@ const My = () => {
       </Mypage>
     );
   };
+  const handleSortChange = (e) => {
+    const selectedSort = e.target.value;
+    setSort(selectedSort);
+  };
+
+  const sortedStampBooks = () => {
+    const sortedBooks = [...data];
+    if (sort === 'popular') {
+      sortedBooks.sort((a, b) => b.likeCount - a.likeCount);
+    } else if (sort === 'new') {
+      sortedBooks.sort(
+        (a, b) => new Date(b.stampbookRegdate) - new Date(a.stampbookRegdate)
+      );
+    } else if (sort === 'abc') {
+      sortedBooks.sort((a, b) => a.title.localeCompare(b.title));
+    }
+    return sortedBooks;
+  };
 
   return (
     <div>
       <Header />
       <View />
       <Wrap>
-        <Sort>
-          <option>인기순</option>
-          <option>최신순</option>
-          <option>가나다순</option>
+        <Sort onChange={handleSortChange} value={sort}>
+          <option value='popular'>인기순</option>
+          <option value='new'>최신순</option>
+          <option value='abc'>가나다순</option>
         </Sort>
         <StampBookBox>
-          {data?.stampbookList?.map((book, i) => {
+          {sortedStampBooks().map((book, i) => {
             return (
               <StampBook
                 stampbookid={book.stampbookId}

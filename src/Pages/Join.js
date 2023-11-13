@@ -134,7 +134,6 @@ const Join = () => {
       .then((response) => {
         if (response.data.resultCode === '00') {
           const newNickname = response.data.user.nickname;
-
           setNickname(newNickname);
         } else {
           setError('랜덤 닉네임 생성 실패');
