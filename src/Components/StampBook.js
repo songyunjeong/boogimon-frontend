@@ -1,4 +1,4 @@
-import React, { useContext, useState } from 'react';
+import React, { useContext, useEffect, useState } from 'react';
 import likeFullImg from '../images/like_full.png';
 import likeImg from '../images/like.png';
 import Button from './Button';
@@ -47,8 +47,8 @@ const StampBookBtnBox = styled.div`
 const StampBook = (props) => {
   const { isLogin } = useContext(AppContext);
   const { pathname } = useLocation();
-  const [likeBtn, setLikeBtn] = useState(props.islike);
-  const [likeCount, setLikeCount] = useState(props.likecount);
+  const [likeBtn, setLikeBtn] = useState();
+  const [likeCount, setLikeCount] = useState();
   const [pick, setPick] = useState(props.ispick);
 
   const likeHandler = () => {
@@ -123,6 +123,11 @@ const StampBook = (props) => {
       alert('담기는 로그인 후 가능합니다.');
     }
   };
+
+  useEffect(() => {
+    setLikeBtn(props.islike);
+    setLikeCount(props.likecount);
+  }, [props]);
 
   return (
     <div>
