@@ -279,17 +279,13 @@ const EditUserInfo = () => {
   const onClickPasswordHandler = (event) => {
     event.preventDefault();
 
-    axios
-      .post(
-        `http://localhost:8080/boogimon/user/user.jsp?command=changePasswd`,
-        null,
-        {
-          params: {
-            userId: sessionId,
-            newPasswd: SHA256(password).toString(),
-          },
-        }
-      )
+    boogi
+      .post(`/boogimon/user/user.jsp?command=changePasswd`, null, {
+        params: {
+          userId: sessionId,
+          newPasswd: SHA256(password).toString(),
+        },
+      })
       .then((res) => {
         if (res.password === res.confirm) {
           alert('비밀변호 변경이 완료되었습니다.');

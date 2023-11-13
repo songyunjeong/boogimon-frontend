@@ -9,15 +9,30 @@ import BoogiBook from './Pages/BoogiBook';
 import Home from './Pages/Home';
 import My from './Pages/My';
 import { createContext, useEffect, useState } from 'react';
+import boogi from './boogi';
 
 export const AppContext = createContext();
 
 function App() {
   const [isLogin, setIsLogin] = useState(false);
+  const [isStamped, setIsStamped] = useState(false);
 
-  useEffect(() => {
+  const getIsStamped = (stampbookid) => {
+    boogi
+      .get(
+        `/boogimon/stampbook/stamp.jsp?command=list&stampbookId=${stampbookid}&userId=${window.sessionStorage.getItem(
+          'userId'
+        )}`
+      )
+      .then((response) => {
+        console.log(response.data.stampList);
+      });
+  };
+
+  useEffect((stampbookid) => {
     if (window.sessionStorage.getItem('userId')) {
       setIsLogin(true);
+      getIsStamped(0);
     }
   }, []);
 

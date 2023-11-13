@@ -1,6 +1,7 @@
 import styled, { css } from 'styled-components';
 import React, { useState } from 'react';
 import axios from 'axios';
+import boogi from '../boogi';
 
 const StampBox = styled.div`
   width: ${(props) => (props.$small ? '110px' : '150px')};
@@ -217,8 +218,8 @@ const Stamp = (props) => {
   const onOpenPopup = async () => {
     if (window.location.pathname === '/stampDetail') {
       // console.log('pathname: ', window.location.pathname);
-      const ajax_data = await axios.get(
-        `http://localhost:8080/boogimon/place.jsp?placeId=${props.placeid}`
+      const ajax_data = await boogi.get(
+        `/boogimon/place.jsp?placeId=${props.placeid}`
       );
 
       setData(ajax_data.data);

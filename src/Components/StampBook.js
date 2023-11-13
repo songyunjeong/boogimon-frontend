@@ -6,6 +6,7 @@ import styled from 'styled-components';
 import StampBoard from './StampBoard';
 import boogi from '../boogi';
 import { AppContext } from '../App';
+import { useLocation } from 'react-router-dom';
 
 const StampBookTxt = styled.div`
   text-align: center;
@@ -45,11 +46,9 @@ const StampBookBtnBox = styled.div`
 
 const StampBook = (props) => {
   const { isLogin } = useContext(AppContext);
+  const { pathname } = useLocation();
   const [likeBtn, setLikeBtn] = useState(props.islike);
   const [likeCount, setLikeCount] = useState(props.likecount);
-
-  const [apiData, setApiData] = useState({ user: [] });
-  const [data, setData] = useState();
 
   const likeHandler = () => {
     if (window.sessionStorage.getItem('userId')) {
@@ -111,7 +110,7 @@ const StampBook = (props) => {
             userId: window.sessionStorage.getItem('userId'),
           },
         })
-        .then((response) => {
+        .then(() => {
           console.log('담기 요청 성공');
           // TODO: 담기 후에 추가적인 작업을 수행할 수 있습니다.
         })
@@ -122,30 +121,11 @@ const StampBook = (props) => {
       console.log('담기는 로그인 후 가능합니다.');
     }
   };
+
   useEffect(() => {
     if (props.islike === 'true') {
       setLikeBtn(true);
     }
-
-    boogi
-      .get(
-        `/boogimon/user/user.jsp?userId=${window.sessionStorage?.getItem(
-          'userId'
-        )}`
-      )
-      .then((response) => {
-        setApiData(response.data);
-      });
-
-    boogi
-      .get(
-        `/boogimon/stampbook/stampbook.jsp?command=mylist&userId=${window.sessionStorage.getItem(
-          'stampbookId'
-        )}`
-      )
-      .then((response) => {
-        setData(response.data);
-      });
   }, [likeBtn]);
 
   return (
@@ -166,8 +146,12 @@ const StampBook = (props) => {
           <div>{likeCount}</div>
         </StampBookLike>
         <StampBookBtnBox>
-          <Button children={'삭제'} $marginright onClick={deleteHandler} />
-          <Button children={'담기'} onClick={addToMyListHandler} />
+          {pathname === '/' && (
+            <Button children={'담기'} onClick={addToMyListHandler} />
+          )}
+          {isLogin && pathname === '/my' && (
+            <Button children={'삭제'} onClick={deleteHandler} />
+          )}
         </StampBookBtnBox>
       </StampBookTxt>
     </div>
