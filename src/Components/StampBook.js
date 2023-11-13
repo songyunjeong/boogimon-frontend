@@ -1,4 +1,4 @@
-import React, { useContext, useEffect, useState } from 'react';
+import React, { useContext, useState } from 'react';
 import likeFullImg from '../images/like_full.png';
 import likeImg from '../images/like.png';
 import Button from './Button';
@@ -50,7 +50,6 @@ const StampBook = (props) => {
   const [likeBtn, setLikeBtn] = useState(props.islike);
   const [likeCount, setLikeCount] = useState(props.likecount);
   const [pick, setPick] = useState(props.ispick);
-  const [data, setData] = useState();
 
   const likeHandler = () => {
     if (window.sessionStorage.getItem('userId')) {
@@ -124,22 +123,6 @@ const StampBook = (props) => {
       console.log('담기는 로그인 후 가능합니다.');
     }
   };
-
-  useEffect(() => {
-    if (props.islike === 'true') {
-      setLikeBtn(true);
-    }
-
-    boogi
-      .get(
-        `/boogimon/stampbook/stampbook.jsp?command=mylist&userId=${window.sessionStorage.getItem(
-          'stampbookId'
-        )}`
-      )
-      .then((response) => {
-        setData(response.data);
-      });
-  }, [likeBtn]);
 
   return (
     <div>

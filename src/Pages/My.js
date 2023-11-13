@@ -405,6 +405,7 @@ const My = () => {
   };
 
   useEffect(() => {
+    // user 정보
     boogi
       .get(
         `/boogimon/user/user.jsp?userId=${window.sessionStorage?.getItem(
@@ -415,6 +416,7 @@ const My = () => {
         setApiData(response.data);
       });
 
+    // user가 pick한 스탬프북 리스트
     boogi
       .get(
         `/boogimon/stampbook/stampbook.jsp?command=mylist&userId=${window.sessionStorage.getItem(
