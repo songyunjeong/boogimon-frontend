@@ -119,7 +119,7 @@ const Join = () => {
   const [passwd, setPasswd] = useState('');
   const [passwdConfirm, setPasswdConfirm] = useState('');
   const [nickname, setNickname] = useState(sessionStorage.getItem('nickname') || '');
-  const [profileImg, setProfileImg] = useState(null);
+  const [profileImg, setProfileImg] = useState('');
   const [error, setError] = useState('');
 
   const navigate = useNavigate();
@@ -143,6 +143,7 @@ const Join = () => {
   };
 
   const handleImageChange = (e) => {
+    console.log(document.getElementById('profileImg'));
     const selectedImage = e.target.files[0];
     if(selectedImage) {
     setProfileImg(selectedImage);
@@ -150,6 +151,7 @@ const Join = () => {
     const formData = new FormData();
     formData.append('userId', userId);
     formData.append('profileImg', profileImg);
+    console.log(profileImg)
 
     axios.post('/boogimon/user/userUpload.jsp', formData, {
       params: {
@@ -227,7 +229,8 @@ const Join = () => {
   };
     const fileInputRef = useRef(null);
 
-    const handleAvatarClick = () => {
+    const handleProfileClick = () => {
+      console.log(fileInputRef);
       fileInputRef.current.click();
   };
 
@@ -254,7 +257,7 @@ const Join = () => {
             프로필 이미지
           </Label>
           <ImgBox>
-            <ProfileImg onClick={handleAvatarClick}>
+            <ProfileImg onClick={handleProfileClick}>
               {profileImg && <img src={URL.createObjectURL(profileImg)} alt='' />}
               <br/>
               <input 
