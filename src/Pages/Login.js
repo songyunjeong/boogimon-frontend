@@ -7,13 +7,18 @@ import boogi from '../boogi';
 import { AppContext } from '../App';
 
 const Wrap = styled.div`
+  display: flex;
+  justify-content: center;
+  align-items: center;
   width: 1280px;
-  margin: 0 auto;
+  height: 100vh;
+  margin: auto;
 `;
 const Title = styled.div`
   font-size: var(--big);
   font-weight: bold;
-  margin: 100px 0 50px;
+  margin-top: -120px;
+  margin-bottom: 50px;
   text-align: center;
 `;
 const InputBox = styled.div`
@@ -51,8 +56,6 @@ const ButtonContainer = styled.div`
 const LoginBtn = styled.div`
   display: block;
   background-color: var(--black);
-  border: 2px solid var(--black);
-  border-radius: 4px;
   padding: 20px 100px;
   font-size: var(--regular);
   font-weight: 700;
@@ -68,8 +71,8 @@ const LoginBtn = styled.div`
 
   &:hover {
     cursor: pointer;
-    background-color: var(--yellow);
-    border: 2px solid var(--light-blue);
+    background-color: var(--magenta);
+    box-sizing: border-box;
     color: var(--black);
   }
 `;
@@ -141,41 +144,42 @@ const Login = () => {
       <Header />
 
       <Wrap>
-        <Title>로그인</Title>
-        <InputBox>
-          <input
-            type='email'
-            name='user_id'
-            id='user_id'
-            placeholder='가입한 이메일'
-            required
-            value={userId}
-            onChange={(e) => setUserId(e.target.value)}
-          />
-          <input
-            type='password'
-            name='passwd'
-            id='passwd'
-            placeholder='비밀번호'
-            required
-            value={passwd}
-            onChange={(e) => setPasswd(e.target.value)}
-          />
-          <Error>{error}</Error>
+        <div>
+          <Title>로그인</Title>
+          <InputBox>
+            <input
+              type='email'
+              name='user_id'
+              id='user_id'
+              placeholder='가입한 이메일'
+              required
+              value={userId}
+              onChange={(e) => setUserId(e.target.value)}
+            />
+            <input
+              type='password'
+              name='passwd'
+              id='passwd'
+              placeholder='비밀번호'
+              required
+              value={passwd}
+              onChange={(e) => setPasswd(e.target.value)}
+            />
+            <Error>{error}</Error>
 
-          <ButtonContainer>
-            <LoginBtn type='submit' id='login' onClick={handleLogin}>
-              <p>로그인</p>
-            </LoginBtn>
-          </ButtonContainer>
+            <ButtonContainer>
+              <LoginBtn type='submit' id='login' onClick={handleLogin}>
+                <p>로그인</p>
+              </LoginBtn>
+            </ButtonContainer>
 
-          <FindPassword>
-            <FindPWLink to='/findPassword'>비밀번호를 잊으셨나요</FindPWLink>
-          </FindPassword>
-        </InputBox>
+            <FindPassword>
+              <FindPWLink to='/findPassword'>비밀번호를 잊으셨나요</FindPWLink>
+            </FindPassword>
+          </InputBox>
+        </div>
       </Wrap>
     </div>
   );
 };
 export default Login;
-
