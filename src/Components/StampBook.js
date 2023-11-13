@@ -49,6 +49,7 @@ const StampBook = (props) => {
   const { pathname } = useLocation();
   const [likeBtn, setLikeBtn] = useState(props.islike);
   const [likeCount, setLikeCount] = useState(props.likecount);
+  const [pick, setPick] = useState(props.ispick);
   const [data, setData] = useState();
 
   const likeHandler = () => {
@@ -114,6 +115,7 @@ const StampBook = (props) => {
         .then(() => {
           console.log('담기 요청 성공');
           // TODO: 담기 후에 추가적인 작업을 수행할 수 있습니다.
+          setPick(true);
         })
         .catch((error) => {
           console.error('담기 요청 실패:', error);
@@ -143,6 +145,7 @@ const StampBook = (props) => {
     <div>
       <StampBoard
         stampbookid={props.stampbookid}
+        ispick={props.ispick}
         islike={likeBtn}
         likecount={likeCount}
         title={props.title}
@@ -157,7 +160,7 @@ const StampBook = (props) => {
           <div>{likeCount}</div>
         </StampBookLike>
         <StampBookBtnBox>
-          {pathname === '/' && (
+          {pathname === '/' && !pick && (
             <Button children={'담기'} onClick={addToMyListHandler} />
           )}
           {isLogin && pathname === '/my' && (

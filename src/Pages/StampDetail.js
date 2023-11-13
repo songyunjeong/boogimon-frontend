@@ -218,7 +218,7 @@ const StampDetail = () => {
 
         <ButtonBar>
           <Button children={'공유'} $marginright />
-          <Button children={'담기'} $marginright />
+          {!state.ispick && <Button children={'담기'} $marginright />}
           <Button
             children={'스탬프북 이미지 다운로드'}
             onClick={() => {

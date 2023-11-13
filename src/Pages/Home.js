@@ -92,6 +92,7 @@ const Home = () => {
             return (
               <StampBook
                 stampbookid={book.stampbookId}
+                ispick={book.isPick}
                 islike={book.isLike}
                 likecount={book.likeCount}
                 title={book.title}

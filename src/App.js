@@ -13,7 +13,9 @@ import { createContext, useState } from 'react';
 export const AppContext = createContext();
 
 function App() {
-  const [isLogin, setIsLogin] = useState(false);
+  const [isLogin, setIsLogin] = useState(
+    window.sessionStorage.getItem('userId') ? true : false
+  );
 
   return (
     <div className='App'>
