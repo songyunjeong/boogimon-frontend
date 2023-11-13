@@ -103,7 +103,7 @@ const Login = () => {
       return;
     }
 
-    const passwordRegex = /^[a-z\d!@*&-_]{4,20}$/;
+    const passwordRegex = /^(?=.*[a-zA-Z])(?=.*[0-9]).{4,20}$/;
 
     if (passwd === '') {
       setError('비밀번호를 입력해주세요.');
