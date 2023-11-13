@@ -57,6 +57,7 @@ const SignupBtn = styled.div`
   font-weight: 700;
   color: var(--gray1);
   transform: skew(-20deg);
+  margin: -30px auto 30px;
   
   >p {
   position: relative;
@@ -148,7 +149,6 @@ const Join = () => {
     const formData = new FormData();
     formData.append('userId', userId);
     formData.append('profileImg', profileImg);
-    console.log(profileImg)
 
     axios.post('/boogimon/user/userUpload.jsp', formData, {
       params: {
@@ -157,7 +157,6 @@ const Join = () => {
     })
     .then((response) => {
       if(response.data.resultCode === '00') {
-        console.log('New ImageURL:', response.data.newImageURL);
         setProfileImg(response.data.newImageURL);
       } 
       // else {
