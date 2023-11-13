@@ -121,7 +121,7 @@ const StampBook = (props) => {
           console.error('담기 요청 실패:', error);
         });
     } else {
-      console.log('담기는 로그인 후 가능합니다.');
+      alert('담기는 로그인 후 가능합니다.');
     }
   };
 
