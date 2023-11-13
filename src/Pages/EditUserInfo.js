@@ -156,45 +156,35 @@ const ErrMsg = styled.div`
   color: red;
 `;
 
-const MyProfileImg = styled.img`
-  width: 120px;
-  height: 120px;
-  object-fit: cover;
+const ImgBox = styled.div`
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  > img {
+    justify-content: left;
+  }
 `;
 
-const MyImg = styled.div`
-  width: 120px;
-  height: 120px;
+const ProfileImg = styled.div`
+  display: flex;
+  width: 127px;
+  height: 127px;
   border-radius: 50%;
-  position: absolute;
-  top: -4%;
-  left: -19%;
-  overflow: hidden;
   background-color: var(--gray1);
+  position: absolute;
+  left: -20%;
+  top: -4%;
+  overflow: hidden;
+  &:hover {
+    cursor: pointer;
+  }
 `;
 
-// const ImgBox = styled.div`
-//   display: flex;
-//   justify-content: center;
-//   align-items: center;
-//   > img {
-//     justify-content: left;
-//   }
-// `;
-
-// const ProfileImg = styled.div`
-//   display: flex;
-//   justify-content: center;
-//   width: 100px;
-//   height: 100px;
-//   border-radius: 50%;
-//   background-color: var(--gray1);
-//   margin: 20px 30px;
-//   overflow: hidden;
-//   &:hover {
-//     cursor: pointer;
-//   }
-// `;
+const ImgButton = styled(Button)`
+  position: absolute;
+  top: 49%;
+  left: -21%;
+`;
 
 const EditUserInfo = () => {
   const [popupOn, setPopupOn] = useState(false);
@@ -215,13 +205,6 @@ const EditUserInfo = () => {
     sessionStorage.getItem('nickname') || ''
   );
 
-  const [imgFile, setImgFile] = useState(avatar);
-  const imgRef = useRef();
-
-  const handleProfileClick = () => {
-    imgRef.current.click();
-  };
-
   const randomNickname = () => {
     axios
       .get('/boogimon/user/user.jsp', {
@@ -239,62 +222,45 @@ const EditUserInfo = () => {
       });
   };
 
-  const saveImgFile = () => {
-    const file = imgRef.current.files[0];
+  const [profileImg, setProfileImg] = useState('');
 
-    const formData = new FormData();
-    formData.append('profileImg', imgFile);
+  const fileInputRef = useRef(null);
 
-    const reader = new FileReader();
-    reader.readAsDataURL(file);
-    reader.onloadend = () => {
-      setImgFile(reader.result);
-    };
-    axios
-      .post('/boogimon/user/userUpload.jsp?command=changeImg', formData, {
-        params: {
-          userId: sessionId,
-        },
-      })
-      .then((res) => {
-        if (res.data.resultCode === '00') {
-          setImgFile(res.data.newImageURL);
-        }
-      });
+  const handleProfileClick = () => {
+    fileInputRef.current.click();
   };
 
-  // const [profileImg, setProfileImg] = useState('');
+  const imputRef = useRef(null);
 
-  // const fileInputRef = useRef(null);
+  const imgClickBtn = () => {
+    if (imputRef.current) {
+    }
+  };
 
-  // const handleProfileClick = () => {
-  //   console.log(fileInputRef);
-  //   fileInputRef.current.click();
-  // };
+  const handleImageChange = (e) => {
+    console.log(document.getElementById('profileImg'));
+    const selectedImage = e.target.files[0];
+    if (selectedImage) {
+      setProfileImg(selectedImage);
 
-  // const handleImageChange = (e) => {
-  //   console.log(document.getElementById('profileImg'));
-  //   const selectedImage = e.target.files[0];
-  //   if (selectedImage) {
-  //     setProfileImg(selectedImage);
+      const formData = new FormData();
+      formData.append('userId', sessionId);
+      formData.append('profileImg', profileImg);
 
-  //     const formData = new FormData();
-  //     formData.append('userId', sessionId);
-  //     formData.append('profileImg', profileImg);
+      axios
+        .post('/boogimon/user/userUpload.jsp', formData, {
+          params: {
+            command: 'changeImg',
+          },
+        })
+        .then((response) => {
+          if (response.data.resultCode === '00') {
+            setProfileImg(response.data.newImageURL);
+          }
+        });
+    }
+  };
 
-  //     axios
-  //       .post('/boogimon/user/userUpload.jsp', formData, {
-  //         params: {
-  //           command: 'changeImg',
-  //         },
-  //       })
-  //       .then((response) => {
-  //         if (response.data.resultCode === '00') {
-  //           setProfileImg(response.data.newImageURL);
-  //         }
-  //       });
-  //   }
-  // };
   useEffect(() => {
     boogi
       .get(
@@ -416,34 +382,10 @@ const EditUserInfo = () => {
         <Title>회원정보수정</Title>
 
         <Form>
-          <MyImg>
-            <MyProfileImg
-              src={
-                apiData?.user.profileImg ? apiData?.user.profileImg : imgFile
-              }
-              onClick={handleProfileClick}
-              // src={imgFile ? imgFile : avatar}
-              alt='프로필 이미지'
-            />
-
-            <input
-              type='file'
-              style={{ display: 'none' }}
-              accept='image/*'
-              name='profileImg'
-              onChange={saveImgFile}
-              ref={imgRef}
-            />
-          </MyImg>
-
-          {/* <ImgBox>
+          <ImgBox>
             <ProfileImg onClick={handleProfileClick}>
               {profileImg && (
-                <img
-                  src={URL.createObjectURL(profileImg)}
-
-                  alt=''
-                />
+                <img src={URL.createObjectURL(profileImg)} alt='' />
               )}
               <br />
               <input
@@ -456,7 +398,8 @@ const EditUserInfo = () => {
                 style={{ display: 'none' }}
               />
             </ProfileImg>
-          </ImgBox> */}
+            <ImgButton>완료</ImgButton>
+          </ImgBox>
 
           <Id>{sessionId}</Id>
 
