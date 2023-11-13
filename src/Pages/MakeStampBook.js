@@ -304,6 +304,12 @@ const MakeStampBook = () => {
       closeModal();
     };
 
+    const onSearchKeyDown = (e) => {
+      if (e.key === 'Enter') {
+        onSearch();
+      }
+    };
+
     return (
       <Modal>
         <PopupBg />
@@ -313,7 +319,7 @@ const MakeStampBook = () => {
             type='text'
             placeholder='주소 검색'
             id='searchInput'
-            //onInput={(e) => setSearchText(e.target.value)}
+            onKeyDown={onSearchKeyDown} // Enter 키 이벤트 핸들링 추가
           />
           <Button
             style={{
