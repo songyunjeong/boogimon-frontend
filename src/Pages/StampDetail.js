@@ -228,7 +228,7 @@ const StampDetail = () => {
           </StampBoardBox>
 
           <MapBox>
-            <Map />
+            <Map data={data?.stampbook?.stampList} />
           </MapBox>
         </div>
 
