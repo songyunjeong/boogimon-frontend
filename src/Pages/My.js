@@ -9,6 +9,7 @@ import html2canvas from 'html2canvas';
 import boogi from '../boogi';
 import StampBook from '../Components/StampBook';
 import logo from '../images/logo.png';
+import avatar from '../images/avatar.png';
 
 const Modal = styled.div`
   position: fixed;
@@ -340,7 +341,7 @@ const Exp = styled.p`
   position: absolute;
   font-size: var(--regular);
   top: 70%;
-  left: 82%;
+  left: 78%;
   text-align: center; /* 텍스트를 가운데 정렬 */
 `;
 
@@ -385,7 +386,7 @@ const My = () => {
           <BoogiCardContainer className='CardPopup'>
             <CardName>BOOGIMON</CardName>
             <RandomImg>
-              <MyProfileImg src={apiData.user.profileImg} alt='프로필 이미지' />
+              <MyProfileImg src={apiData.user.profileImg} alt='프로필이미지' />
             </RandomImg>
             <CardContent>
               {apiData.user.nickname ? apiData.user.nickname : '-'} 님<hr />
@@ -409,7 +410,10 @@ const My = () => {
     return (
       <Mypage>
         <MyImg>
-          <MyProfileImg src={apiData?.user.profileImg} alt='프로필이미지' />
+          <MyProfileImg
+            src={apiData.user.profileImg ? apiData.user.profileImg : avatar}
+            alt='프로필이미지'
+          />
         </MyImg>
         <MyproFile>
           <NickName>
@@ -439,14 +443,14 @@ const My = () => {
           </Rank>
           <Level>
             <span style={{ marginRight: '10px' }}>LV.</span>
-            {apiData?.user.exp < 100
+            {apiData?.user.exp < 1000
               ? 1
-              : Math.floor(apiData?.user.exp / 100) + 1}
+              : Math.floor(apiData?.user.exp / 1000) + 1}
           </Level>
           <Progress
-            value={!isNaN(apiData?.user.exp) ? apiData.user.exp % 100 : 0}
+            value={!isNaN(apiData?.user.exp) ? apiData.user.exp % 1000 : 0}
             min='0'
-            max='100'
+            max='1000'
           />
           <StampComplete>
             <span style={{ marginRight: '10px' }}>모은 스탬프</span>{' '}
@@ -458,7 +462,7 @@ const My = () => {
           </UserLike>
           <Exp>
             <span style={{ marginRight: '10px' }}>EXP.</span>
-            {apiData?.user.exp % 100}/100
+            {apiData?.user.exp % 1000}/1000
           </Exp>
         </MyProgress>
       </Mypage>
