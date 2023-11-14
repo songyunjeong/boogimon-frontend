@@ -340,7 +340,7 @@ const Exp = styled.p`
   position: absolute;
   font-size: var(--regular);
   top: 70%;
-  left: 82%;
+  left: 78%;
   text-align: center; /* 텍스트를 가운데 정렬 */
 `;
 
@@ -461,14 +461,14 @@ const My = () => {
           </Rank>
           <Level>
             <span style={{ marginRight: '10px' }}>LV.</span>
-            {apiData?.user.exp < 100
+            {apiData?.user.exp < 1000
               ? 1
-              : Math.floor(apiData?.user.exp / 100) + 1}
+              : Math.floor(apiData?.user.exp / 1000) + 1}
           </Level>
           <Progress
-            value={!isNaN(apiData?.user.exp) ? apiData.user.exp % 100 : 0}
+            value={!isNaN(apiData?.user.exp) ? apiData.user.exp % 1000 : 0}
             min='0'
-            max='100'
+            max='1000'
           />
           <StampComplete>
             <span style={{ marginRight: '10px' }}>모은 스탬프</span>{' '}
@@ -480,7 +480,7 @@ const My = () => {
           </UserLike>
           <Exp>
             <span style={{ marginRight: '10px' }}>EXP.</span>
-            {apiData?.user.exp % 100}/100
+            {apiData?.user.exp % 1000}/1000
           </Exp>
         </MyProgress>
       </Mypage>
