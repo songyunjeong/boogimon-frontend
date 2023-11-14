@@ -1,5 +1,5 @@
 import styled, { css } from 'styled-components';
-import React, { useEffect, useState } from 'react';
+import React, { useRef, useState } from 'react';
 import boogi from '../boogi';
 import { useLocation } from 'react-router-dom';
 
@@ -211,12 +211,15 @@ const Url = styled.div`
 
 const Stamp = (props) => {
   const { pathname } = useLocation();
+  const fileInputRef = useRef(null);
   const [popupOn, setPopupOn] = useState(false);
   const [data, setData] = useState();
   const [background, setBackground] = useState('');
   const [url, setUrl] = useState('');
   const [isStamped, setIsStamped] = useState(props.isstamped);
   const [lastVisit, setLastVisit] = useState(props.lastvisitdate);
+  const [isPick, setIsPick] = useState(props.ispick);
+  const [stampImg, setStampImg] = useState('');
 
   const onOpenPopup = async () => {
     if (window.location.pathname === '/stampDetail') {
@@ -346,22 +349,79 @@ const Stamp = (props) => {
     );
   };
 
+  const stampedImg = () => {
+    fileInputRef.current.click();
+  };
+
+  const handleImageChange = (e) => {
+    setStampImg(e.target.files[0]);
+
+    if (stampImg) {
+      const formData = new FormData();
+      formData.append('userId', window.sessionStorage.getItem('userId'));
+      formData.append('stampbookId', props.stampbookId);
+      formData.append('stampNo', props.stampno);
+      formData.append('profileImg', stampImg);
+      formData.append('command', 'newStamp');
+
+      boogi.post('/boogimon/stampbook/stampUpload.jsp', formData);
+    }
+  };
+
   return (
-    <StampBox {...props} onClick={onOpenPopup}>
-      <StampImgBox {...props}>
-        {(pathname === '/my' || pathname === '/stampDetail') && !isStamped ? (
-          <img src={props.src} alt={props.alt} style={{ opacity: '0.3' }} />
-        ) : pathname === '/boogiBook' && lastVisit === null ? (
-          <img src={props.src} alt={props.alt} style={{ opacity: '0.3' }} />
-        ) : (
-          <img src={props.src} alt={props.alt} />
-        )}
-      </StampImgBox>
-      <StampTitle {...props}>
-        {props.$small && props.title.length > 8
-          ? props.title.slice(0, 6) + '...'
-          : props.title}
-      </StampTitle>
+    <StampBox
+      {...props}
+      onClick={() => {
+        isPick === true ? stampedImg() : onOpenPopup();
+      }}
+    >
+      <form
+        id='stamped-img'
+        className='stamped-img'
+        encType='multipart/form-data'
+        method='POST'
+      >
+        <StampImgBox {...props}>
+          {pathname === '/my' && !isStamped ? (
+            <img
+              src={props.src}
+              alt={props.alt}
+              ref={fileInputRef}
+              style={{ opacity: '0.3' }}
+            />
+          ) : pathname === '/stampDetail' && isPick && !isStamped ? (
+            <img
+              src={props.src}
+              alt={props.alt}
+              ref={fileInputRef}
+              style={{ opacity: '0.3' }}
+            />
+          ) : pathname === '/boogiBook' && lastVisit === null ? (
+            <img
+              src={props.src}
+              alt={props.alt}
+              ref={fileInputRef}
+              style={{ opacity: '0.3' }}
+            />
+          ) : (
+            <img src={props.src} alt={props.alt} />
+          )}
+          <input
+            type='file'
+            name='stampImg'
+            id='stampImg'
+            accept='image/*'
+            ref={fileInputRef}
+            onChange={handleImageChange}
+            style={{ display: 'none' }}
+          />
+        </StampImgBox>
+        <StampTitle {...props}>
+          {props.$small && props.title.length > 8
+            ? props.title.slice(0, 6) + '...'
+            : props.title}
+        </StampTitle>
+      </form>
       {popupOn && <Popup />}
     </StampBox>
   );

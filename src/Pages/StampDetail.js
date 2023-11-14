@@ -221,6 +221,9 @@ const StampDetail = () => {
                   title={stamp.placeName}
                   placeid={stamp.placeId}
                   isstamped={stamp.isStamped}
+                  ispick={state.ispick}
+                  stampbookId={state.stampbookid}
+                  stampno={stamp.stampNo}
                   key={i}
                 />
               );
