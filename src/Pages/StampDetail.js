@@ -111,12 +111,27 @@ const StampDetail = () => {
   const [isValid, setIsValid] = useState(false);
 
   const getDetailData = () => {
-    boogi
-      .get(`/boogimon/stampbook/stampbook.jsp?stampbookId=${state.stampbookid}`)
-      .then((response) => {
-        setData(response.data);
-        console.log('스탬프북 디테일 데이터 가져오기 완료');
-      });
+    if (state.ispick) {
+      boogi
+        .get(
+          `/boogimon/stampbook/stampbook.jsp?stampbookId=${
+            state.stampbookid
+          }&userId=${window.sessionStorage.getItem('userId')}`
+        )
+        .then((response) => {
+          setData(response.data);
+          console.log('스탬프북 디테일 데이터 가져오기 완료');
+        });
+    } else {
+      boogi
+        .get(
+          `/boogimon/stampbook/stampbook.jsp?stampbookId=${state.stampbookid}`
+        )
+        .then((response) => {
+          setData(response.data);
+          console.log('스탬프북 디테일 데이터 가져오기 완료');
+        });
+    }
   };
 
   const downloadHandler = async (e) => {
@@ -205,6 +220,7 @@ const StampDetail = () => {
                   alt={stamp.placeName + ' 이미지'}
                   title={stamp.placeName}
                   placeid={stamp.placeId}
+                  isstamped={stamp.isStamped}
                   key={i}
                 />
               );
@@ -212,7 +228,7 @@ const StampDetail = () => {
           </StampBoardBox>
 
           <MapBox>
-            <Map />
+            <Map data={data?.stampbook?.stampList} />
           </MapBox>
         </div>
 

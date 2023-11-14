@@ -47,10 +47,9 @@ const StampBookBtnBox = styled.div`
 const StampBook = (props) => {
   const { isLogin } = useContext(AppContext);
   const { pathname } = useLocation();
-  const [likeBtn, setLikeBtn] = useState(props.islike);
-  const [likeCount, setLikeCount] = useState(props.likecount);
+  const [likeBtn, setLikeBtn] = useState();
+  const [likeCount, setLikeCount] = useState();
   const [pick, setPick] = useState(props.ispick);
-  const [data, setData] = useState();
 
   const likeHandler = () => {
     if (window.sessionStorage.getItem('userId')) {
@@ -126,20 +125,9 @@ const StampBook = (props) => {
   };
 
   useEffect(() => {
-    if (props.islike === 'true') {
-      setLikeBtn(true);
-    }
-
-    boogi
-      .get(
-        `/boogimon/stampbook/stampbook.jsp?command=mylist&userId=${window.sessionStorage.getItem(
-          'stampbookId'
-        )}`
-      )
-      .then((response) => {
-        setData(response.data);
-      });
-  }, [likeBtn]);
+    setLikeBtn(props.islike);
+    setLikeCount(props.likecount);
+  }, [props]);
 
   return (
     <div>

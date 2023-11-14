@@ -23,7 +23,11 @@ const BoogiBook = () => {
 
   useEffect(() => {
     boogi
-      .get(`/boogimon/place.jsp?command=boogibook&userId=red@google.com`)
+      .get(
+        `/boogimon/place.jsp?command=boogibook&userId=${window.sessionStorage.getItem(
+          'userId'
+        )}`
+      )
       .then((response) => {
         setData(response.data);
       });

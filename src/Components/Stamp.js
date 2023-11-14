@@ -1,6 +1,7 @@
 import styled, { css } from 'styled-components';
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import boogi from '../boogi';
+import { useLocation } from 'react-router-dom';
 
 const StampBox = styled.div`
   width: ${(props) => (props.$small ? '110px' : '150px')};
@@ -209,10 +210,13 @@ const Url = styled.div`
 `;
 
 const Stamp = (props) => {
+  const { pathname } = useLocation();
   const [popupOn, setPopupOn] = useState(false);
   const [data, setData] = useState();
   const [background, setBackground] = useState('');
   const [url, setUrl] = useState('');
+  const [isStamped, setIsStamped] = useState(props.isstamped);
+  const [lastVisit, setLastVisit] = useState(props.lastvisitdate);
 
   const onOpenPopup = async () => {
     if (window.location.pathname === '/stampDetail') {
@@ -345,7 +349,13 @@ const Stamp = (props) => {
   return (
     <StampBox {...props} onClick={onOpenPopup}>
       <StampImgBox {...props}>
-        <img src={props.src} alt={props.alt} />
+        {(pathname === '/my' || pathname === '/stampDetail') && !isStamped ? (
+          <img src={props.src} alt={props.alt} style={{ opacity: '0.3' }} />
+        ) : pathname === '/boogiBook' && lastVisit === null ? (
+          <img src={props.src} alt={props.alt} style={{ opacity: '0.3' }} />
+        ) : (
+          <img src={props.src} alt={props.alt} />
+        )}
       </StampImgBox>
       <StampTitle {...props}>
         {props.$small && props.title.length > 8

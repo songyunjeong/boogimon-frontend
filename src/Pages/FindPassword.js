@@ -2,8 +2,7 @@ import React, { useState } from 'react';
 import Header from '../Components/Header';
 import Button from '../Components/Button';
 import styled from 'styled-components';
-import { useNavigate } from 'react-router-dom';
-import axios from 'axios';
+import boogi from '../boogi';
 
 const Wrap = styled.div`
   display: flex;
@@ -52,8 +51,6 @@ const FindPassword = () => {
   const [userId, setUserId] = useState('');
   const [error, setError] = useState('');
 
-  const navigate = useNavigate();
-
   const handleFindPasswd = async () => {
     if (userId.length < 1 || userId.length > 30) {
       setError('아이디는 30자 이내여야 합니다.');
@@ -62,29 +59,19 @@ const FindPassword = () => {
       setError('');
     }
 
-    try {
-      const response = await axios.post('/boogimon/user/user.jsp', null, {
-        params: {
-          command: 'changePasswd',
-          userId: userId,
-        },
+    boogi
+      .get(`/boogimon/user/user.jsp?command=newPasswd&userId=` + userId)
+      .then((response) => {
+        if (response.data.resultCode === '00') {
+          setError('새 비밀번호는 ' + response.data.user.newPasswd + ' 입니다');
+        } 
+        else if(response.data.resultCode === '20'){
+            setError('존재하지 않는 회원입니다');
+        }
+        else {
+            setError('비밀번호 발급 실패');
+        }
       });
-
-      if (response.data.resultCode === '00') {
-        // console.log("json 데이터 출력 = " + JSON.stringify(response.data));
-
-        sessionStorage.setItem('userId', response.data.user.userId);
-
-        // let userId = sessionStorage.getItem('userId');
-        // console.log("userId = ", userId);
-
-        navigate('/');
-      } else {
-        setError('비밀번호 찾기 실패');
-      }
-    } catch (error) {
-      setError('비밀번호 찾기 실패');
-    }
   };
 
   return (
