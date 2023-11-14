@@ -9,6 +9,7 @@ import html2canvas from 'html2canvas';
 import boogi from '../boogi';
 import StampBook from '../Components/StampBook';
 import logo from '../images/logo.png';
+import avatar from '../images/avatar.png';
 
 const Modal = styled.div`
   position: fixed;
@@ -385,7 +386,7 @@ const My = () => {
           <BoogiCardContainer className='CardPopup'>
             <CardName>BOOGIMON</CardName>
             <RandomImg>
-              <MyProfileImg src={apiData.user.profileImg} alt='프로필 이미지' />
+              <MyProfileImg src={apiData.user.profileImg} alt='프로필이미지' />
             </RandomImg>
             <CardContent>
               {apiData.user.nickname ? apiData.user.nickname : '-'} 님<hr />
@@ -409,7 +410,10 @@ const My = () => {
     return (
       <Mypage>
         <MyImg>
-          <MyProfileImg src={apiData?.user.profileImg} alt='프로필이미지' />
+          <MyProfileImg
+            src={apiData.user.profileImg ? apiData.user.profileImg : avatar}
+            alt='프로필이미지'
+          />
         </MyImg>
         <MyproFile>
           <NickName>
