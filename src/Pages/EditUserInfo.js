@@ -6,7 +6,6 @@ import { AppContext } from '../App';
 import boogi from '../boogi';
 import axios from 'axios';
 import { SHA256 } from 'crypto-js';
-import avatar from '../images/avatar.png';
 
 const Warp = styled.div`
   width: 100vw;
@@ -183,7 +182,9 @@ const ProfileImg = styled.div`
 const ImgButton = styled(Button)`
   position: absolute;
   top: 49%;
-  left: -21%;
+  left: -20%;
+  padding: 11px 17px;
+  width: 114px;
 `;
 
 const EditUserInfo = () => {
@@ -230,16 +231,36 @@ const EditUserInfo = () => {
     fileInputRef.current.click();
   };
 
-  const imputRef = useRef(null);
-
-  const imgClickBtn = () => {
-    if (imputRef.current) {
-    }
+  const imgClickBtn = (e) => {
+    e.preventDefault();
+    const formData = new FormData();
+    formData.append('userId', sessionId);
+    formData.append('profileImg', profileImg);
+    let axiosConfig = {
+      headers: {
+        'Content-Type': 'multipart/form-data',
+      },
+    };
+    axios
+      .post(
+        '/boogimon/user/userUpload.jsp',
+        formData,
+        {
+          params: {
+            command: 'changeImg',
+          },
+        },
+        axiosConfig
+      )
+      .then((response) => {
+        if (response.data.resultCode === '00') {
+        }
+      });
   };
 
   const handleImageChange = (e) => {
-    console.log(document.getElementById('profileImg'));
     const selectedImage = e.target.files[0];
+
     if (selectedImage) {
       setProfileImg(selectedImage);
 
@@ -398,7 +419,7 @@ const EditUserInfo = () => {
                 style={{ display: 'none' }}
               />
             </ProfileImg>
-            <ImgButton>완료</ImgButton>
+            <ImgButton onClick={imgClickBtn}>등록</ImgButton>
           </ImgBox>
 
           <Id>{sessionId}</Id>

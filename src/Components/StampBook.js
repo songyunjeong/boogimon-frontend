@@ -45,15 +45,11 @@ const StampBookBtnBox = styled.div`
 `;
 
 const StampBook = (props) => {
-  const navigate = useNavigate();
-  const [likeBtn, setLikeBtn] = useState(false);
-
-  const goToStampDetail = () =>
-    navigate('/stampDetail', {
-      state: {
-        id: props.id,
-      },
-    });
+  const { isLogin } = useContext(AppContext);
+  const { pathname } = useLocation();
+  const [likeBtn, setLikeBtn] = useState(props.islike);
+  const [likeCount, setLikeCount] = useState(props.likecount);
+  const [data, setData] = useState();
 
   const likeHandler = () => {
     if (window.sessionStorage.getItem('userId')) {
