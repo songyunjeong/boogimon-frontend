@@ -216,6 +216,7 @@ const Stamp = (props) => {
   const [background, setBackground] = useState('');
   const [url, setUrl] = useState('');
   const [isStamped, setIsStamped] = useState(props.isstamped);
+  const [lastVisit, setLastVisit] = useState(props.lastvisitdate);
 
   const onOpenPopup = async () => {
     if (window.location.pathname === '/stampDetail') {
@@ -349,6 +350,8 @@ const Stamp = (props) => {
     <StampBox {...props} onClick={onOpenPopup}>
       <StampImgBox {...props}>
         {(pathname === '/my' || pathname === '/stampDetail') && !isStamped ? (
+          <img src={props.src} alt={props.alt} style={{ opacity: '0.3' }} />
+        ) : pathname === '/boogiBook' && lastVisit === null ? (
           <img src={props.src} alt={props.alt} style={{ opacity: '0.3' }} />
         ) : (
           <img src={props.src} alt={props.alt} />
