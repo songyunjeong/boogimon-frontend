@@ -419,7 +419,7 @@ const My = () => {
           <NickName>
             {apiData?.user.nickname ? apiData.user.nickname : '-'}
           </NickName>
-          <Link to='/edituserinfo'>
+          {/* <Link to='/edituserinfo'>
             <Button
               style={{
                 position: 'absolute',
@@ -430,7 +430,7 @@ const My = () => {
             >
               회원정보 수정
             </Button>
-          </Link>
+          </Link> */}
           <CompleteBtn>
             {/* <OpenBtn onClick={onOpenCard}>부기몬 카드</OpenBtn> */}
             {openCard && <Popup />}

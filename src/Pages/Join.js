@@ -142,7 +142,6 @@ const Join = () => {
   };
 
   const handleImageChange = (e) => {
-    console.log(document.getElementById('profileImg'));
     const selectedImage = e.target.files[0];
     if (selectedImage) {
       setProfileImg(selectedImage);
@@ -217,13 +216,13 @@ const Join = () => {
         }
       }
     } catch (error) {
-      console.log(error);
+      // console.log(error);
     }
   };
   const fileInputRef = useRef(null);
 
   const handleProfileClick = () => {
-    console.log(fileInputRef);
+    // console.log(fileInputRef);
     fileInputRef.current.click();
   };
 
