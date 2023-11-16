@@ -230,7 +230,6 @@ const EditUserInfo = () => {
       )
       .then((response) => {
         setApiData(response.data);
-        console.log(response.data);
       });
   }, [isLogin]);
 

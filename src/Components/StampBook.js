@@ -62,7 +62,6 @@ const StampBook = (props) => {
           },
         });
         setLikeCount(likeCount - 1);
-        console.log('좋아요 -1');
       } else {
         boogi.get(`/boogimon/stampbook/stampbook.jsp?command=like`, {
           params: {
@@ -71,10 +70,9 @@ const StampBook = (props) => {
           },
         });
         setLikeCount(likeCount + 1);
-        console.log('좋아요 +1');
       }
     } else {
-      console.log('좋아요는 로그인 후 가능합니다.');
+      // console.log('좋아요는 로그인 후 가능합니다.');
     }
   };
 
@@ -89,7 +87,7 @@ const StampBook = (props) => {
           },
         })
         .then((response) => {
-          console.log('삭제 요청 성공');
+          // console.log('삭제 요청 성공');
           // TODO: 삭제 후에 추가적인 작업을 수행할 수 있습니다.
           window.location.reload();
         })
@@ -97,7 +95,7 @@ const StampBook = (props) => {
           console.error('삭제 요청 실패:', error);
         });
     } else {
-      console.log('삭제는 로그인 후 가능합니다.');
+      // console.log('삭제는 로그인 후 가능합니다.');
     }
   };
 
@@ -112,7 +110,7 @@ const StampBook = (props) => {
           },
         })
         .then(() => {
-          console.log('담기 요청 성공');
+          // console.log('담기 요청 성공');
           // TODO: 담기 후에 추가적인 작업을 수행할 수 있습니다.
           setPick(true);
         })

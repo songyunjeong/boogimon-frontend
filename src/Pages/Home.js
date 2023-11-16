@@ -48,18 +48,12 @@ const Home = () => {
         )
         .then((response) => {
           setStampbookData(response.data);
-          console.log(
-            '로그인한 사용자 Home.js에서 stampbook list 데이터 가져오기 성공'
-          );
         });
     } else {
       boogi
         .get(`/boogimon/stampbook/stampbook.jsp?command=list`)
         .then((response) => {
           setStampbookData(response.data);
-          console.log(
-            '로그인 하지 않은 사용자 Home.js에서 stampbook list 데이터 가져오기 성공'
-          );
         });
     }
   }, []);
