@@ -354,14 +354,14 @@ const Stamp = (props) => {
   };
 
   const handleImageChange = (e) => {
-    setStampImg(e.target.files[0]);
-
-    if (stampImg) {
+    // setStampImg(e.target.files[0]);
+    const cstampImg = e.target.files[0];
+    if (cstampImg) {
       const formData = new FormData();
       formData.append('userId', window.sessionStorage.getItem('userId'));
       formData.append('stampbookId', props.stampbookId);
       formData.append('stampNo', props.stampno);
-      formData.append('profileImg', stampImg);
+      formData.append('stampImg', cstampImg);
       formData.append('command', 'newStamp');
 
       boogi.post('/boogimon/stampbook/stampUpload.jsp', formData);
