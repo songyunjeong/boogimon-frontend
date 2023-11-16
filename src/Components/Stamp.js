@@ -219,7 +219,7 @@ const Stamp = (props) => {
   const [isStamped, setIsStamped] = useState(props.isstamped);
   const [lastVisit, setLastVisit] = useState(props.lastvisitdate);
   const [isPick, setIsPick] = useState(props.ispick);
-  const [stampImg, setStampImg] = useState('');
+  const [stampImg, setStampImg] = useState(props.src);
 
   const onOpenPopup = async () => {
     if (window.location.pathname === '/stampDetail') {
@@ -354,18 +354,20 @@ const Stamp = (props) => {
   };
 
   const handleImageChange = (e) => {
-    setStampImg(e.target.files[0]);
+    const targetImg = e.target.files[0];
 
-    if (stampImg) {
+    if (targetImg) {
       const formData = new FormData();
       formData.append('userId', window.sessionStorage.getItem('userId'));
       formData.append('stampbookId', props.stampbookId);
       formData.append('stampNo', props.stampno);
-      formData.append('profileImg', stampImg);
+      formData.append('stampImg', targetImg);
       formData.append('command', 'newStamp');
 
       boogi.post('/boogimon/stampbook/stampUpload.jsp', formData);
     }
+
+    setStampImg(targetImg);
   };
 
   return (
@@ -384,27 +386,27 @@ const Stamp = (props) => {
         <StampImgBox {...props}>
           {pathname === '/my' && !isStamped ? (
             <img
-              src={props.src}
+              src={stampImg}
               alt={props.alt}
               ref={fileInputRef}
               style={{ opacity: '0.3' }}
             />
           ) : pathname === '/stampDetail' && isPick && !isStamped ? (
             <img
-              src={props.src}
+              src={stampImg}
               alt={props.alt}
               ref={fileInputRef}
               style={{ opacity: '0.3' }}
             />
           ) : pathname === '/boogiBook' && lastVisit === null ? (
             <img
-              src={props.src}
+              src={stampImg}
               alt={props.alt}
               ref={fileInputRef}
               style={{ opacity: '0.3' }}
             />
           ) : (
-            <img src={props.src} alt={props.alt} />
+            <img src={stampImg} alt={props.alt} />
           )}
           <input
             type='file'

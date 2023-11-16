@@ -57,7 +57,6 @@ const Home = () => {
         });
     }
   }, []);
-
   const sortStampBooks = (books, sortBy) => {
     const sortedBooks = [...books]; // 복사본을 만들어 정렬
     if (sortBy === 'new') {
