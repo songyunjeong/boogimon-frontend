@@ -196,7 +196,7 @@ const EditUserInfo = () => {
 
     axios
       .post(
-        `http://localhost:8080/boogimon/user/user.jsp?command=changeImg`,
+        `/boogimon/user/user.jsp?command=changeImg`,
         null,
         {
           params: {
@@ -324,7 +324,7 @@ const EditUserInfo = () => {
           <MyImg>
             {/* <MyProfileImg src={apiData.user.profileImg} alt='프로필이미지' /> */}
             <MyProfileImg
-              src={image}
+              src={apiData.user.profileImg ? apiData.user.profileImg : avatar}
               onClick={() => {
                 fileInput.current.click();
               }}
