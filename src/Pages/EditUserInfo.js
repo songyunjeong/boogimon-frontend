@@ -195,16 +195,12 @@ const EditUserInfo = () => {
     e.preventDefault();
 
     axios
-      .post(
-        `http://localhost:8080/boogimon/user/user.jsp?command=changeImg`,
-        null,
-        {
-          params: {
-            userId: sessionId,
-            profileImg: image,
-          },
-        }
-      )
+      .post(`/boogimon/user/user.jsp?command=changeImg`, null, {
+        params: {
+          userId: sessionId,
+          profileImg: image,
+        },
+      })
       .then((res) => {
         if (!e.target.files[0]) {
           setImage(avatar);
