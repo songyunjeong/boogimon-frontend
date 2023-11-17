@@ -226,7 +226,6 @@ const EditUserInfo = () => {
       )
       .then((response) => {
         setApiData(response.data);
-        console.log(response.data);
       });
   }, [isLogin]);
 
@@ -320,7 +319,7 @@ const EditUserInfo = () => {
           <MyImg>
             {/* <MyProfileImg src={apiData.user.profileImg} alt='프로필이미지' /> */}
             <MyProfileImg
-              src={image}
+              src={apiData.user.profileImg ? apiData.user.profileImg : avatar}
               onClick={() => {
                 fileInput.current.click();
               }}

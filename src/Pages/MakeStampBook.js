@@ -430,7 +430,7 @@ const MakeStampBook = () => {
         .post('/boogimon/stampbook/stampbook.jsp', null, requestData)
         .then((response) => {
           // 성공적으로 등록되었을 때의 처리
-          console.log('스탬프북이 성공적으로 등록되었습니다.', response);
+          // console.log('스탬프북이 성공적으로 등록되었습니다.', response);
 
           // 서버로부터 받은 스탬프 정보 업데이트
           const updatedStampList = response.data.stamps;

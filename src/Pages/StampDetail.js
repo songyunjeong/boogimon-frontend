@@ -120,7 +120,7 @@ const StampDetail = () => {
         )
         .then((response) => {
           setData(response.data);
-          console.log('스탬프북 디테일 데이터 가져오기 완료');
+          // console.log('스탬프북 디테일 데이터 가져오기 완료');
         });
     } else {
       boogi
@@ -129,7 +129,7 @@ const StampDetail = () => {
         )
         .then((response) => {
           setData(response.data);
-          console.log('스탬프북 디테일 데이터 가져오기 완료');
+          // console.log('스탬프북 디테일 데이터 가져오기 완료');
         });
     }
   };
@@ -162,7 +162,6 @@ const StampDetail = () => {
           },
         });
         setLikeCount(likeCount - 1);
-        console.log('좋아요 -1');
       } else {
         boogi.get(`/boogimon/stampbook/stampbook.jsp?command=like`, {
           params: {
@@ -171,10 +170,9 @@ const StampDetail = () => {
           },
         });
         setLikeCount(likeCount + 1);
-        console.log('좋아요 +1');
       }
     } else {
-      console.log('좋아요는 로그인 후 가능합니다.');
+      // console.log('좋아요는 로그인 후 가능합니다.');
     }
   };
 
@@ -193,10 +191,9 @@ const StampDetail = () => {
         .then(() => {
           setPost(true);
           setComment('');
-          console.log('댓글 작성 완료');
         });
     } else {
-      console.log('로그인 해주세요.');
+      // console.log('로그인 해주세요.');
     }
   };
 
@@ -221,6 +218,9 @@ const StampDetail = () => {
                   title={stamp.placeName}
                   placeid={stamp.placeId}
                   isstamped={stamp.isStamped}
+                  ispick={state.ispick}
+                  stampbookId={state.stampbookid}
+                  stampno={stamp.stampNo}
                   key={i}
                 />
               );
