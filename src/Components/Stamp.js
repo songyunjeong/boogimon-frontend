@@ -1,5 +1,5 @@
 import styled, { css } from 'styled-components';
-import React, { useRef, useState } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import boogi from '../boogi';
 import { useLocation } from 'react-router-dom';
 
@@ -367,8 +367,14 @@ const Stamp = (props) => {
       boogi.post('/boogimon/stampbook/stampUpload.jsp', formData);
     }
 
-    setStampImg(targetImg);
+    setStampImg(URL.createObjectURL(targetImg));
+    setIsStamped(true);
   };
+
+  useEffect(() => {
+    setStampImg(props.src);
+    setIsStamped(props.isstamped);
+  }, [props]);
 
   return (
     <StampBox
