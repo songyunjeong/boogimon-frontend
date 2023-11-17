@@ -225,12 +225,18 @@ const SearchStampName = styled.p`
 `;
 
 const MakeStampBook = () => {
-  const [MapPlace, setMapPlace] = useState(false);
+  const divRef = useRef();
+  const navigate = useNavigate();
+  const [mapPlace, setMapPlace] = useState(false);
   const [apiData, setApiData] = useState([]);
   const [selectedItem, setSelectedItem] = useState(null);
   const [thumbnail, setThumbnail] = useState(null);
   const [placeName, setplaceName] = useState(null);
   const [stampList, setStampList] = useState([]); // 새로운 상태 추가
+  const [screenShot, setScreenShot] = useState(false);
+  const [stampBookTitle, setStampBookTitle] = useState(''); // 타이틀 상태와 업데이트 함수
+  const [stampDetail, setStampDetail] = useState(''); // 상세설명 상태와 업데이트 함수
+  const MAX_LENGTH_BEFORE_NEWLINE = 9;
 
   const handleItemClick = (index) => {
     if (selectedItem === index) {
@@ -258,7 +264,7 @@ const MakeStampBook = () => {
       const apiData = response.data; // API 응답에서 데이터를 가져옴
 
       setApiData(apiData);
-      setMapPlace(!MapPlace);
+      setMapPlace(!mapPlace);
     });
   };
 
@@ -388,13 +394,6 @@ const MakeStampBook = () => {
     );
   };
 
-  const divRef = useRef();
-  const [screenShot, setScreenShot] = useState(false);
-  const [stampBookTitle, setStampBookTitle] = useState(''); // 타이틀 상태와 업데이트 함수
-  const [stampDetail, setStampDetail] = useState(''); // 상세설명 상태와 업데이트 함수
-  const MAX_LENGTH_BEFORE_NEWLINE = 9;
-  const navigate = useNavigate();
-
   const onTitleRegister = () => {
     if (stampList.length < 9) {
       // 9개 미만이면 알림 띄우고 종료
@@ -491,6 +490,7 @@ const MakeStampBook = () => {
     try {
       const div = divRef.current;
       const canvas = await html2canvas(div, { scale: 1 });
+
       canvas.toBlob((blob) => {
         if (blob != null && screenShot) {
           saveAs(blob, 'stampBook.png');
@@ -516,50 +516,45 @@ const MakeStampBook = () => {
             <Button children={'취소'} $marginright onClick={onCancel} />
             <Button children={'등록'} onClick={onTitleRegister} />
           </TitleButtonBox>
-          {MapPlace ? <Popup /> : ''}
+          {mapPlace ? <Popup /> : ''}
         </TitleBox>
 
         <div>
           <StampBoard ref={divRef}>
-            {!screenShot &&
-              stampList?.map((stamp, index) => (
-                <NewStamp key={index}>
-                  <NewStampImgBox>
-                    {stamp.thumbnail ? (
-                      <img
-                        src={stamp.thumbnail}
-                        alt='Thumbnail'
-                        style={{
-                          width: '100%',
-                          height: '100%',
-                          objectFit: 'cover',
-                        }}
-                      />
-                    ) : (
-                      <button>+</button>
-                    )}
-                  </NewStampImgBox>
-                  <NewStampBtnBox>
-                    <SearchStampName>
-                      {stamp.placeName.length > MAX_LENGTH_BEFORE_NEWLINE
-                        ? stamp.placeName
-                            .split(',')
-                            .map((part, index) => (
-                              <React.Fragment key={index}>
-                                {part}
-                              </React.Fragment>
-                            ))
-                        : stamp.placeName}
-                    </SearchStampName>
-                    <Button children={'삭제'} onClick={() => onDelete(index)} />
-                  </NewStampBtnBox>
-                </NewStamp>
-              ))}
-            <NewStamp>
-              <NewStampImgBox onClick={onOpenMap}>
-                <button>+</button>
-              </NewStampImgBox>
-            </NewStamp>
+            {stampList?.map((stamp, index) => (
+              <NewStamp key={index}>
+                <NewStampImgBox>
+                  <img
+                    src={stamp.thumbnail}
+                    alt={stamp.placeName + 'thumbnail'}
+                    style={{
+                      width: '100%',
+                      height: '100%',
+                      objectFit: 'cover',
+                    }}
+                  />
+                </NewStampImgBox>
+                <NewStampBtnBox>
+                  <SearchStampName>
+                    {stamp.placeName.length > MAX_LENGTH_BEFORE_NEWLINE
+                      ? stamp.placeName
+                          .split(',')
+                          .map((part, index) => (
+                            <React.Fragment key={index}>{part}</React.Fragment>
+                          ))
+                      : stamp.placeName}
+                  </SearchStampName>
+                  <Button children={'삭제'} onClick={() => onDelete(index)} />
+                </NewStampBtnBox>
+              </NewStamp>
+            ))}
+            {!screenShot && (
+              <NewStamp>
+                <NewStampImgBox onClick={onOpenMap}>
+                  <button>+</button>
+                </NewStampImgBox>
+              </NewStamp>
+            )}
           </StampBoard>
 
           <MapBox>

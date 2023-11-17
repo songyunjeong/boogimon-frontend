@@ -371,11 +371,6 @@ const Stamp = (props) => {
     setIsStamped(true);
   };
 
-  useEffect(() => {
-    setStampImg(props.src);
-    setIsStamped(props.isstamped);
-  }, [props]);
-
   return (
     <StampBox
       {...props}
