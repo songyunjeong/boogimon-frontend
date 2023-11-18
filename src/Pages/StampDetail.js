@@ -109,6 +109,7 @@ const StampDetail = () => {
   const [comment, setComment] = useState('');
   const [post, setPost] = useState(false);
   const [isValid, setIsValid] = useState(false);
+  const [pick, setPick] = useState(state.ispick);
 
   const getDetailData = () => {
     if (state.ispick) {
@@ -131,6 +132,29 @@ const StampDetail = () => {
           setData(response.data);
           // console.log('스탬프북 디테일 데이터 가져오기 완료');
         });
+    }
+  };
+
+  const addToMyListHandler = () => {
+    if (window.sessionStorage.getItem('userId')) {
+      // 담기 요청 보내기
+      boogi
+        .post(`/boogimon/stampbook/stampbook.jsp?command=pick`, null, {
+          params: {
+            stampbookId: state.stampbookid,
+            userId: window.sessionStorage.getItem('userId'),
+          },
+        })
+        .then(() => {
+          // console.log('담기 요청 성공');
+          // TODO: 담기 후에 추가적인 작업을 수행할 수 있습니다.
+          setPick(true);
+        })
+        .catch((error) => {
+          console.error('담기 요청 실패:', error);
+        });
+    } else {
+      alert('담기는 로그인 후 가능합니다.');
     }
   };
 
@@ -234,7 +258,13 @@ const StampDetail = () => {
 
         <ButtonBar>
           <Button children={'공유'} $marginright />
-          {!state.ispick && <Button children={'담기'} $marginright />}
+          {!pick && (
+            <Button
+              children={'담기'}
+              onClick={addToMyListHandler}
+              $marginright
+            />
+          )}
           <Button
             children={'스탬프북 이미지 다운로드'}
             onClick={() => {
@@ -264,11 +294,7 @@ const StampDetail = () => {
                 e.target.value.length > 0 ? setIsValid(true) : setIsValid(false)
               }
             />
-            <Button
-              children={'등록'}
-              onClick={postComment}
-              disabled={isValid ? false : true}
-            />
+            <Button children={'등록'} onClick={postComment} />
           </InputBox>
 
           <CommentListBox>
