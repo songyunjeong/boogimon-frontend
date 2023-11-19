@@ -4,22 +4,24 @@ import styled from 'styled-components';
 import { useNavigate } from 'react-router-dom';
 import { AppContext } from '../App';
 import boogi from '../boogi';
-import axios from 'axios';
 import { SHA256 } from 'crypto-js';
 import avatar from '../images/avatar.png';
 
-const Warp = styled.div`
-  width: 100vw;
+const Wrap = styled.div`
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 1280px;
   height: 100vh;
-  position: relative;
+  margin: 0 auto;
 `;
 
-const Title = styled.span`
+const Title = styled.div`
   font-size: var(--big);
   font-weight: bold;
-  position: absolute;
-  left: 44%;
-  top: -6%;
+  margin-top: -120px;
+  margin-bottom: 50px;
+  text-align: center;
 `;
 
 const Button = styled.button`
@@ -174,37 +176,28 @@ const MyImg = styled.div`
 `;
 
 const EditUserInfo = () => {
+  const { isLogin, setIsLogin } = useContext(AppContext);
+  const navigate = useNavigate();
+  const fileInput = useRef(null);
   const [popupOn, setPopupOn] = useState(false);
   const [apiData, setApiData] = useState({ user: [] });
-  const { isLogin } = useContext(AppContext);
-
   const [password, setPassword] = useState('');
   const [confirm, setConfirm] = useState('');
-
   const [passwordError, setPasswordError] = useState('');
   const [confirmError, setConfirmError] = useState('');
-
+  const [image, setImage] = useState(avatar);
   const sessionId = sessionStorage.getItem('userId');
 
-  const { setIsLogin } = useContext(AppContext);
-
-  const [image, setImage] = useState(avatar);
-  const fileInput = useRef(null);
-
-  const onChange = (e) => {
+  const onChangeProfile = (e) => {
     e.preventDefault();
 
-    axios
-      .post(
-        `/boogimon/user/user.jsp?command=changeImg`,
-        null,
-        {
-          params: {
-            userId: sessionId,
-            profileImg: image,
-          },
-        }
-      )
+    boogi
+      .post(`/boogimon/user/user.jsp?command=changeImg`, null, {
+        params: {
+          userId: sessionId,
+          profileImg: image,
+        },
+      })
       .then((res) => {
         if (!e.target.files[0]) {
           setImage(avatar);
@@ -220,25 +213,6 @@ const EditUserInfo = () => {
         res.reader.readAsDataURL(e.target.files[0]);
       });
   };
-
-  useEffect(() => {
-    boogi
-      .get(
-        `/boogimon/user/user.jsp?userId=${window.sessionStorage?.getItem(
-          'userId'
-        )}`
-      )
-      .then((response) => {
-        setApiData(response.data);
-      });
-  }, [isLogin]);
-
-  const onOpenPopup = () => {
-    setPopupOn(!popupOn);
-  };
-
-  const navigate = useNavigate();
-  const goHome = () => navigate('/', {});
 
   const passwordCheckHandler = (password, confirm) => {
     //정규표현식
@@ -264,7 +238,7 @@ const EditUserInfo = () => {
     }
   };
 
-  const onChangePasswordHandler = (e) => {
+  const onChangePassword = (e) => {
     const { name, value } = e.target;
     if (name === 'password') {
       setPassword(value);
@@ -275,8 +249,8 @@ const EditUserInfo = () => {
     }
   };
 
-  const onClickPasswordHandler = (event) => {
-    event.preventDefault();
+  const onClickPassword = (e) => {
+    e.preventDefault();
 
     boogi
       .post(`/boogimon/user/user.jsp?command=changePasswd`, null, {
@@ -294,6 +268,10 @@ const EditUserInfo = () => {
       });
   };
 
+  const onOpenPopup = () => {
+    setPopupOn(!popupOn);
+  };
+
   const Popup = () => {
     return (
       <ModelBox>
@@ -305,62 +283,76 @@ const EditUserInfo = () => {
               <br />
               (탈퇴한 아이디로는 가입안됨)
             </DeleteMsg>
-            <DeleteButton onClick={goHome}>예</DeleteButton>
+            <DeleteButton onClick={() => navigate('/', {})}>예</DeleteButton>
             <DeleteButton onClick={onOpenPopup}>아니요</DeleteButton>
           </DeleteBox>
         </Model>
       </ModelBox>
     );
   };
+
+  useEffect(() => {
+    boogi
+      .get(
+        `/boogimon/user/user.jsp?userId=${window.sessionStorage?.getItem(
+          'userId'
+        )}`
+      )
+      .then((response) => {
+        setApiData(response.data);
+      });
+  }, [isLogin]);
+
   return (
     <>
       <Header />
 
-      <Warp>
-        <Title>회원정보수정</Title>
+      <Wrap>
+        <div>
+          <Title>회원정보수정</Title>
 
-        <Form>
-          <MyImg>
-            {/* <MyProfileImg src={apiData.user.profileImg} alt='프로필이미지' /> */}
-            <MyProfileImg
-              src={apiData.user.profileImg ? apiData.user.profileImg : avatar}
-              onClick={() => {
-                fileInput.current.click();
-              }}
-            />
-            <input
-              type='file'
-              style={{ display: 'none' }}
-              accept='image/jpg,impge/png,image/jpeg'
-              name='profile_img'
-              onChange={onChange}
-              ref={fileInput}
-            />
-          </MyImg>
+          <Form>
+            <MyImg>
+              <MyProfileImg
+                src={apiData.user.profileImg ? apiData.user.profileImg : avatar}
+                onClick={() => {
+                  fileInput.current.click();
+                }}
+              />
+              <input
+                type='file'
+                style={{ display: 'none' }}
+                accept='image/jpg,impge/png,image/jpeg'
+                name='profile_img'
+                onChange={onChangeProfile}
+                ref={fileInput}
+              />
+            </MyImg>
 
-          <Id>{sessionId}</Id>
+            <Id>{sessionId}</Id>
 
-          <>
-            <Nickname>{apiData.user.nickname}</Nickname>
-            <>
-              <Button>랜덤 버튼</Button>
-              <Button>닉네임 변경</Button>
-            </>
-          </>
+            <div>
+              <Nickname>{apiData.user.nickname}</Nickname>
+              <div>
+                <Button>랜덤 버튼</Button>
+                <Button>닉네임 변경</Button>
+              </div>
+            </div>
 
-          <Pwd onChange={onChangePasswordHandler} value={password} />
-          <ErrMsg>{passwordError && <small>{passwordError}</small>}</ErrMsg>
+            <Pwd onChange={onChangePassword} value={password} />
+            <ErrMsg>{passwordError && <small>{passwordError}</small>}</ErrMsg>
 
-          <PwdConfirm onChange={onChangePasswordHandler} value={confirm} />
-          <Button onClick={onClickPasswordHandler}>비밀번호 변경</Button>
-          <ErrMsg>{confirmError && <small>{confirmError}</small>}</ErrMsg>
+            <PwdConfirm onChange={onChangePassword} value={confirm} />
+            <Button onClick={onClickPassword}>비밀번호 변경</Button>
+            <ErrMsg>{confirmError && <small>{confirmError}</small>}</ErrMsg>
 
-          <Adiv>
-            <Edit onClick={onOpenPopup}>회원을 탈퇴하시겠습니까?</Edit>
-            {popupOn ? <Popup /> : ''}
-          </Adiv>
-        </Form>
-      </Warp>
+            <Adiv>
+              <Edit onClick={onOpenPopup}>회원을 탈퇴하시겠습니까?</Edit>
+              {popupOn ? <Popup /> : ''}
+            </Adiv>
+          </Form>
+        </div>
+      </Wrap>
     </>
   );
 };

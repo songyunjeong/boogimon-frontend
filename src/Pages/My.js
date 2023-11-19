@@ -406,69 +406,6 @@ const My = () => {
     );
   };
 
-  const View = () => {
-    return (
-      <Mypage>
-        <MyImg>
-          <MyProfileImg
-            src={apiData.user.profileImg ? apiData.user.profileImg : avatar}
-            alt='프로필이미지'
-          />
-        </MyImg>
-        <MyproFile>
-          <NickName>
-            {apiData?.user.nickname ? apiData.user.nickname : '-'}
-          </NickName>
-          {/* <Link to='/edituserinfo'>
-            <Button
-              style={{
-                position: 'absolute',
-                top: '120px',
-                left: '58px',
-                textAlign: 'center',
-              }}
-            >
-              회원정보 수정
-            </Button>
-          </Link> */}
-          <CompleteBtn>
-            {/* <OpenBtn onClick={onOpenCard}>부기몬 카드</OpenBtn> */}
-            {openCard && <Popup />}
-          </CompleteBtn>
-        </MyproFile>
-        <MyProgress>
-          <Rank>
-            Rank <b style={{ marginLeft: '10px' }}>{apiData?.user.ranking}</b>
-            <small> th</small>
-          </Rank>
-          <Level>
-            <span style={{ marginRight: '10px' }}>LV.</span>
-            {apiData?.user.exp < 1000
-              ? 1
-              : Math.floor(apiData?.user.exp / 1000) + 1}
-          </Level>
-          <Progress
-            value={!isNaN(apiData?.user.exp) ? apiData.user.exp % 1000 : 0}
-            min='0'
-            max='1000'
-          />
-          <StampComplete>
-            <span style={{ marginRight: '10px' }}>모은 스탬프</span>{' '}
-            {apiData?.user.userTotalVisit} 개
-          </StampComplete>
-          <UserLike>
-            <span style={{ marginRight: '10px' }}>받은 좋아요</span>{' '}
-            {apiData?.user.userLikeCount} 개
-          </UserLike>
-          <Exp>
-            <span style={{ marginRight: '10px' }}>EXP.</span>
-            {apiData?.user.exp % 1000}/1000
-          </Exp>
-        </MyProgress>
-      </Mypage>
-    );
-  };
-
   const handleSortChange = (e) => {
     const selectedSort = e.target.value;
     setSort(selectedSort);
@@ -515,7 +452,66 @@ const My = () => {
   return (
     <div>
       <Header />
-      <View />
+
+      <Mypage>
+        <MyImg>
+          <MyProfileImg
+            src={apiData.user.profileImg ? apiData.user.profileImg : avatar}
+            alt='프로필이미지'
+          />
+        </MyImg>
+        <MyproFile>
+          <NickName>
+            {apiData?.user.nickname ? apiData.user.nickname : '-'}
+          </NickName>
+          <Link to='/edituserinfo'>
+            <Button
+              style={{
+                position: 'absolute',
+                top: '120px',
+                left: '58px',
+                textAlign: 'center',
+              }}
+            >
+              회원정보 수정
+            </Button>
+          </Link>
+          <CompleteBtn>
+            {/* <OpenBtn onClick={onOpenCard}>부기몬 카드</OpenBtn> */}
+            {openCard && <Popup />}
+          </CompleteBtn>
+        </MyproFile>
+        <MyProgress>
+          <Rank>
+            Rank <b style={{ marginLeft: '10px' }}>{apiData?.user.ranking}</b>
+            <small> th</small>
+          </Rank>
+          <Level>
+            <span style={{ marginRight: '10px' }}>LV.</span>
+            {apiData?.user.exp < 1000
+              ? 1
+              : Math.floor(apiData?.user.exp / 1000) + 1}
+          </Level>
+          <Progress
+            value={!isNaN(apiData?.user.exp) ? apiData.user.exp % 1000 : 0}
+            min='0'
+            max='1000'
+          />
+          <StampComplete>
+            <span style={{ marginRight: '10px' }}>모은 스탬프</span>{' '}
+            {apiData?.user.userTotalVisit} 개
+          </StampComplete>
+          <UserLike>
+            <span style={{ marginRight: '10px' }}>받은 좋아요</span>{' '}
+            {apiData?.user.userLikeCount} 개
+          </UserLike>
+          <Exp>
+            <span style={{ marginRight: '10px' }}>EXP.</span>
+            {apiData?.user.exp % 1000}/1000
+          </Exp>
+        </MyProgress>
+      </Mypage>
+
       <Wrap>
         <Sort onChange={handleSortChange} value={sort}>
           <option value='popular'>인기순</option>
